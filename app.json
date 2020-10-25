@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "App Name",
+    "slug": "app_name",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.company.appname"
+    },
+    "android": {
+      "package": "com.company.app_name",
+      "config": {
+        "googleMaps": {
+          "apiKey": ""
+        }
+      },
+      "versionCode": 1
+    }
+  }
+}
