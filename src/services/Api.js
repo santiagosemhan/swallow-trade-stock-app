@@ -22,33 +22,12 @@ const setAuthToken = (authToken) => {
   }
 };
 
-const request = (method, url, data) => {
-  axios
-    .request({ url, method, data })
-    .then(response => response)
-    .catch(error => console.log(error, error.response));
-};
-
 const get = (url) => {
-  const res = axios
-    .get(url)
-    .then(response => response)
-    .catch(error => {
-      console.log('Api Service - Get error: ', error, error.response);
-      return error;
-    });
-    return res;
+  return axios.get(url);
 };
 
 const post = (url, data) => {
-  const res = axios
-    .post(url, data)
-    .then(response => response)
-    .catch(error => {
-      console.log('Api Service - Post error: ', error, error.response);
-      return error;
-    });
-  return res;
+  return axios.post(url, data);
 };
 
 const put = () => {
@@ -59,7 +38,6 @@ export default {
   get,
   post,
   put,
-  request,
   setAuthToken,
   getAuthToken,
   resetAuthToken,

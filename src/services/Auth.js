@@ -9,20 +9,38 @@ const loginIfOk = async (res, dispatch) => {
             await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
             dispatch(setLoggedIn(true));
         } catch (error) {
-            console.log('Auth Service - Login Error: ', error);
+            console.log('Auth Service - LoginIfOk Error: ', error);
         }
     } else {
-        console.log('Login error: ', res.data);
+        console.log('Auth Service - LoginIfOk Error: ', res.data);
     }
 };
 
 const login = async (credentials, dispatch) => {
-    const res = await ApiService.post(
-        'auth/local', {
-        identifier: credentials.email,
-        password: credentials.password
-    });
-    loginIfOk(res, dispatch);
+    try {
+        const res = await ApiService.post(
+            'auth/local', {
+            identifier: credentials.email,
+            password: credentials.password
+        });
+        loginIfOk(res, dispatch);
+    } catch (error) {
+        console.log('AuthService - Login Error:', error.response);
+    }
+};
+
+const register = async (userData, dispatch) => {
+    try {
+        const res = await ApiService.post(
+            'auth/local/register',
+            {
+                ...userData,
+            }
+        );
+        loginIfOk(res, dispatch);
+    } catch (error) {
+        console.log('AuthService - Register Error: ', error.response);
+    }
 };
 
 const logout = async (dispatch) => {
@@ -33,17 +51,6 @@ const logout = async (dispatch) => {
     } catch (error) {
         console.log('Auth Service - logOut Error: ', error);
     }
-};
-
-const register = async (userData, dispatch) => {
-    const res = await ApiService.post(
-        'auth/local/register',
-        {
-            ...userData,
-        }
-    );
-    console.log('REGISTER RESPONSE', res);
-    loginIfOk(res, dispatch);
 };
 
 const isSignedIn = async (dispatch) => {
