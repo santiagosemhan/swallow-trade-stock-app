@@ -7,6 +7,8 @@ import validate from '../../../services/Validate';
 import colors from '../../../constants/colors';
 import ApiService from './../../../services/Api';
 
+import Constants from 'expo-constants'
+
 const HomeScreen = props => {
 
     const fields = {
@@ -73,7 +75,7 @@ const HomeScreen = props => {
     const dummyStocVolumes = [
         { id: null, name: 'Seleccione una opción...' },
         { id: 'Pie', name: 'Pie' },
-        { id: 'm3', name: 'm3' },
+        { id: 'M3', name: 'm3' },
     ];
 
     const fetchData = async () => {
@@ -131,11 +133,26 @@ const HomeScreen = props => {
     const handleSend = async () => {
         setIsloading(true);
         try {
-            // send data
+            const data = {
+                producto: inputs.category,
+                espesor: inputs.thickness,
+                ancho: inputs.width,
+                largo: inputs.height,
+                calidad: inputs.quality,
+                volumen_stock: inputs.stockVolume,
+                cantidad: inputs.stockQuantity,
+                especie: inputs.species,
+                comentarios: inputs.comments,
+            };
+            const result = await ApiService.post('stocks', data);
+            resetFields();
             setIsloading(false);
+            if(result.status == 200){
+                Alert.alert('Stock cargado con éxito.');
+            }            
         } catch (error) {
             setIsloading(false);
-            console.log("Error: " + error.code + " " + error.message);
+            console.log(error.response);
             Alert.alert(error.message);
         }
     };
