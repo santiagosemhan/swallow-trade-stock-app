@@ -14,6 +14,7 @@ import HomeScreen from '../screens/main/HomeScreen';
 import ProfileScreen from '../screens/main/ProfileScreen';
 import ChangePasswordScreen from '../screens/main/ProfileScreen/changePassword';
 
+import StockScreen from '../screens/main/StockScreen';
 import InfoScreen from '../screens/main/InfoScreen';
 import Auth from '../services/Auth';
 import { FontAwesome, Feather } from 'react-native-vector-icons';
@@ -24,6 +25,7 @@ const RootNavigator = () => {
     const HomeTabs = createBottomTabNavigator();
 
     const HomeStack = createStackNavigator();
+    const StockStack = createStackNavigator();
     const ProfileStack = createStackNavigator();
 
     const Drawer = createDrawerNavigator();
@@ -39,6 +41,14 @@ const RootNavigator = () => {
             <HomeStack.Navigator>
                 <HomeStack.Screen name={'Index'} component={HomeScreen} options={{ headerShown: false }} />
             </HomeStack.Navigator>
+        );
+    };
+
+    const ProductNavigator = () => {
+        return (
+            <StockStack.Navigator>
+                <StockStack.Screen name={'Index'} component={StockScreen} options={{ headerShown: false }} />
+            </StockStack.Navigator>
         );
     };
 
@@ -66,6 +76,16 @@ const RootNavigator = () => {
                         tabBarLabel: 'Inicio',
                         tabBarIcon: ({ color, size }) => (
                             <Feather name="home" color={color} size={size} />
+                        ),
+                    }}
+                />
+                <HomeTabs.Screen
+                    name={'Product'}
+                    component={StockScreen}
+                    options={{
+                        tabBarLabel: 'Product',
+                        tabBarIcon: ({ color, size }) => (
+                            <Feather name="box" color={color} size={size} />
                         ),
                     }}
                 />

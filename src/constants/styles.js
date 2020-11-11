@@ -33,7 +33,7 @@ export const styles = {
     container: {
         flex: 1,
         width: '100%',
-        padding: 30,
+        padding: 20,
     },
     screenLogoLogin: {
         alignItems: 'center',
@@ -189,8 +189,11 @@ export const styles = {
     pickerTitle: {
         marginLeft: 12,
         color: colors.primaryDavysGray,
-        fontSize: 19,
+        fontSize: 12,
         fontFamily: 'NunitoSans-Regular'
+    },
+    pickerSelector: {        
+        height: 35
     },
     customInputContainer: {
         marginTop: 12,

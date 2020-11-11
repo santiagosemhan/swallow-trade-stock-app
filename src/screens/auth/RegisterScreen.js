@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator, StyleSheet } from 'react-native'
+import { Picker } from '@react-native-community/picker';
 import { useDispatch } from 'react-redux';
 import { setLoggedIn } from "../../redux/auth/actions";
 import { TextInput, HelperText } from 'react-native-paper';
@@ -9,6 +10,7 @@ import Installation from '../../services/Installation';
 import colors from '../../constants/colors';
 import Slugify from 'slugify';
 import AuthService from './../../services/Auth';
+import ApiService from './../../services/Api';
 
 const RegisterScreen = props => {
 
@@ -16,13 +18,31 @@ const RegisterScreen = props => {
         firstName: '',
         lastName: '',
         email: '',
+        company: '',
         password: '',
         passwordConfirm: ''
     };
     const [inputs, setInputs] = useState(fields);
+    const [companies, setCompanies] = useState(null);
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
     const dispatch = useDispatch();
+
+    const fetchData = async () => {
+        setIsloading(true);
+        try {
+            const result = await ApiService.get('companies');
+            const data = {
+                ...inputs,
+                company: result.data[0].id,
+            }
+            setInputs(data);
+            setCompanies(result.data);
+        } catch (error) {
+            console.log('RegisterScreen - fetchData Error:', error);
+        }
+        setIsloading(false);
+    };
 
     const checkErrors = errors => {
         for (item in errors) {
@@ -68,6 +88,14 @@ const RegisterScreen = props => {
         setInputs(fields);
     };
 
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        console.log(inputs);
+    }, [inputs]);
+
     const handleRegister = async () => {
         setIsloading(true);
         try {
@@ -80,7 +108,7 @@ const RegisterScreen = props => {
                 password: inputs.password,
                 username: Slugify(`${inputs.firstName.charAt(0)} ${inputs.lastName}`, '_').toLowerCase(),
                 confirmed: "true",
-                empresa: "5f92c002d152a900173c39c6"
+                empresa: inpunts.company
             };
             await AuthService.register(userData, dispatch);
             setIsloading(false);
@@ -146,6 +174,19 @@ const RegisterScreen = props => {
                         >
                             {errorMessages.email}
                         </HelperText>
+                        <View style={styles.pickerContainer}>
+                            <Text style={styles.pickerTitle}>Empresa</Text>
+                            <Picker style={{}}
+                                selectedValue={inputs.company}
+                                onValueChange={value => handleInput('company', value)}
+                            >
+                                {companies && companies.map(item => {
+                                    return (
+                                        <Picker.Item key={item.id} label={item.name} value={item.id} />
+                                    );
+                                })}
+                            </Picker>
+                        </View>
                         <TextInput
                             style={styles.inputsStyle}
                             theme={theme}
@@ -196,5 +237,22 @@ const RegisterScreen = props => {
         </View >
     )
 };
+
+const customStyles = StyleSheet.create({
+    pickerContainer: {
+        borderBottomColor: '#c6c6c6',
+        borderBottomWidth: 1.35,
+    },
+    picker: {
+        marginLeft: 15,
+    },
+    label: {
+        color: colors.primaryDavysGray,
+        marginTop: 25,
+        marginBottom: 10,
+        marginLeft: 12,
+        fontSize: 18,
+    }
+});
 
 export default RegisterScreen;

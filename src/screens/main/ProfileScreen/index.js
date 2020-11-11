@@ -22,31 +22,21 @@ const ProfileScreen = props => {
         lastName: '',
         nickname: '',
         email: '',
-        aboutMe: '',
-        address: '',
-        street: '',
-        city: '',
-        state: '',
-        country: '',
-        addressDescription: '',
-        coords: { latitude: -27.3715333, longitude: -55.9170078 }
     };
 
     const [inputs, setInputs] = useState(fields);
     const [errorMessages, setErrorMessages] = useState(fields);
     const [userAccount, setUserAccount] = useState(null);
-    const [userAddress, setUserAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
     const fetchData = async () => {
+        setIsLoading(true);
         try {
-            setIsLoading(true);
             //TODO: Load all data
             //TODO: Set data in the fields
-            setIsLoading(false);
         } catch (err) {
             console.log('Error!! ' + err);
         }
@@ -88,14 +78,6 @@ const ProfileScreen = props => {
 
     const handleChangePassword = () => {
         props.navigation.navigate('ChangePassword');
-    };
-
-    const handleChangeAddress = async () => {
-
-    };
-
-    const getAddressFromLatLng = async (latLng) => {
-        
     };
 
     const handleSaveButton = async () => {
@@ -235,47 +217,7 @@ const ProfileScreen = props => {
                                 value={inputs.email}
                                 error={errorMessages.email}
                                 onChangeText={value => handleInput('email', value)}
-                            />
-                            <Input
-                                label={'Acerca de mí'}
-                                style={styles.input}
-                                blurOnSubmit
-                                keyboardType={'default'}
-                                autoCapitalize={'none'}
-                                autoCorrect={false}
-                                value={inputs.aboutMe}
-                                error={errorMessages.aboutMe}
-                                onChangeText={value => handleInput('aboutMe', value)}
-                            />
-                            <Input
-                                label={'Dirección'}
-                                style={styles.input}
-                                blurOnSubmit
-                                keyboardType={'default'}
-                                autoCapitalize={'none'}
-                                autoCorrect={false}
-                                value={inputs.address}
-                                error={errorMessages.address}
-                                onChangeText={value => handleInput('address', value)}
-                                onEndEditing={handleChangeAddress}
-                            />
-                            <TextInput
-                                label={'Info extra de tu ubicación'}
-                                style={{ borderRadius: 3, paddingLeft: 12, padding: 5, ...styles.input, borderColor: '#cccccc', borderWidth: 1, textAlign: 'left', textAlignVertical: 'top' }}
-                                blurOnSubmit
-                                keyboardType={'default'}
-                                autoCapitalize={'none'}
-                                placeholder={'Info extra. Ej: Casa de portón verde, tocar timbre, etc...'}
-                                numberOfLines={4}
-                                multiline
-                                autoCorrect={false}
-                                value={inputs.addressDescription}
-                                error={errorMessages.addressDescription}
-                                onChangeText={value => handleInput('addressDescription', value)}
-                            />
-                            <View>
-                                <MapPicker coords={inputs.coords} getCoords={value => getAddressFromLatLng(value)} />
-                            </View>
+                            />                            
                             {/* <TouchableOpacity onPress={handleChangePassword} style={styles.changePassword}>
                                 <Text>Cambiar contraseña</Text>
                                 <MaterialIcons name={'chevron-right'} size={36} color={colors.primaryOldMossGreen} />
