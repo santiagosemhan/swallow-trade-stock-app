@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import { Picker } from '@react-native-community/picker';
-import { useDispatch } from 'react-redux';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../../constants/styles';
 import validate from '../../../services/Validate';
 import colors from '../../../constants/colors';
-import Slugify from 'slugify';
+import ApiService from './../../../services/Api';
 
 const HomeScreen = props => {
 
@@ -17,6 +16,7 @@ const HomeScreen = props => {
         height: '',
         quality: '',
         stockVolume: '',
+        species: '',
         stockQuantity: '',
         comments: ''
     };
@@ -26,24 +26,17 @@ const HomeScreen = props => {
     const [widths, setWidths] = useState(null);
     const [heights, setHeights] = useState(null);
     const [qualities, setQualities] = useState(null);
+    const [species, setSpecies] = useState(null);
     const [stockVolumes, setStockVolumes] = useState(null);
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
 
-    const dummyCategories = [
-        { id: null, name: 'Seleccione una opción...' },
-        { id: '5f92c002d152a900173c39c1', name: 'Category 1' },
-        { id: '5f92c002d152a900173c39c2', name: 'Category 2' },
-        { id: '5f92c002d152a900173c39c3', name: 'Category 3' },
-        { id: '5f92c002d152a900173c39c4', name: 'Category 4' },
-    ];
-
     const dummyThicknesses = [
         { id: null, name: 'Seleccione una opción...' },
-        { id: '5f92c002d152a900173c39c1', name: '1/2' },
-        { id: '5f92c002d152a900173c39c2', name: '3/4' },
-        { id: '5f92c002d152a900173c39c3', name: '1' },
-        { id: '5f92c002d152a900173c39c4', name: '1.5' },
+        { id: '1/2', name: '1/2"' },
+        { id: '3/4', name: '3/4"' },
+        { id: '1', name: '1"' },
+        { id: '1.5', name: '1.5"' },
     ];
 
     const dummyWidths = [
@@ -72,26 +65,28 @@ const HomeScreen = props => {
 
     const dummyQualities = [
         { id: null, name: 'Seleccione una opción...' },
-        { id: '1', name: 'Primera' },
-        { id: '2', name: 'Segunda' },
-        { id: '3', name: 'Tercera' },
+        { id: 'Primera', name: 'Primera' },
+        { id: 'Segunda', name: 'Segunda' },
+        { id: 'Tercera', name: 'Tercera' },
     ];
 
     const dummyStocVolumes = [
         { id: null, name: 'Seleccione una opción...' },
-        { id: '1', name: 'Pie' },
-        { id: '2', name: 'm3' },
+        { id: 'Pie', name: 'Pie' },
+        { id: 'm3', name: 'm3' },
     ];
 
-    const fetchData = () => {
+    const fetchData = async () => {
         setIsloading(true);
         try {
-            // fetch
-            setCategories(dummyCategories);
+            const speciesResult = await ApiService.get('especies');
+            const categoriesResult = await ApiService.get('productos');
+            setCategories(categoriesResult.data);
             setThicknesses(dummyThicknesses);
             setWidths(dummyWidths);
             setHeights(dummyHeights);
             setQualities(dummyQualities);
+            setSpecies(speciesResult.data);
             setStockVolumes(dummyStocVolumes);
         } catch (error) {
             console.log('HomeScreen - fetchData Error:', error);
@@ -147,8 +142,8 @@ const HomeScreen = props => {
 
     return (
         <View style={styles.screen}>
-            {isLoading ? <ActivityIndicator style={styles.screen} size={'large'} color={colors.accentLaurelGreen} /> :
-                <ScrollView style={styles.container}>
+            {isLoading ? <ActivityIndicator style={styles.screen} size={'large'} color={colors.bs.primary} /> :
+                <ScrollView style={{ flex: 1 }}>
                     <View style={{ ...styles.headerIcons, paddingHorizontal: 20, paddingTop: 20, paddingLeft: 7 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -159,22 +154,22 @@ const HomeScreen = props => {
                         </View>
                     </View>
                     <View style={{ width: '100%', padding: 15 }}>
-                        <View style={styles.pickerContainer}>
-                            <Text style={styles.pickerTitle}>Categoria</Text>
+                        <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.category ? colors.bs.primary : '#9a9a9a' }}>
+                            <Text style={{ ...styles.pickerTitle, color: inputs.category ? colors.bs.primary : colors.primaryDavysGray }}>Categoría</Text>
                             <Picker style={styles.pickerSelector}
-                                mode={'dropdown'}
                                 selectedValue={inputs.category}
                                 onValueChange={value => handleInput('category', value)}
                             >
+                                <Picker.Item key={'category_id'} label={'Seleccione una opción...'} value={null} />
                                 {categories && categories.map(item => {
                                     return (
-                                        <Picker.Item key={item.id} label={item.name} value={item.id} />
+                                        <Picker.Item key={item.id} label={item.nombre} value={item.id} />
                                     );
                                 })}
                             </Picker>
                         </View>
-                        <View style={styles.pickerContainer}>
-                            <Text style={styles.pickerTitle}>Espesor</Text>
+                        <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.thickness ? colors.bs.primary : '#9a9a9a' }}>
+                            <Text style={{ ...styles.pickerTitle, color: inputs.thickness ? colors.bs.primary : colors.primaryDavysGray }}>Espesor</Text>
                             <Picker style={styles.pickerSelector}
                                 selectedValue={inputs.thickness}
                                 onValueChange={value => handleInput('thickness', value)}
@@ -186,8 +181,8 @@ const HomeScreen = props => {
                                 })}
                             </Picker>
                         </View>
-                        <View style={styles.pickerContainer}>
-                            <Text style={styles.pickerTitle}>Ancho</Text>
+                        <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.width ? colors.bs.primary : '#9a9a9a' }}>
+                            <Text style={{ ...styles.pickerTitle, color: inputs.width ? colors.bs.primary : colors.primaryDavysGray }}>Ancho</Text>
                             <Picker style={styles.pickerSelector}
                                 selectedValue={inputs.width}
                                 onValueChange={value => handleInput('width', value)}
@@ -200,8 +195,8 @@ const HomeScreen = props => {
                                     })}
                             </Picker>
                         </View>
-                        <View style={styles.pickerContainer}>
-                            <Text style={styles.pickerTitle}>Largo</Text>
+                        <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.height ? colors.bs.primary : '#9a9a9a' }}>
+                            <Text style={{ ...styles.pickerTitle, color: inputs.height ? colors.bs.primary : colors.primaryDavysGray }}>Largo</Text>
                             <Picker style={styles.pickerSelector}
                                 selectedValue={inputs.height}
                                 onValueChange={value => handleInput('height', value)}
@@ -213,8 +208,8 @@ const HomeScreen = props => {
                                 })}
                             </Picker>
                         </View>
-                        <View style={styles.pickerContainer}>
-                            <Text style={styles.pickerTitle}>Calidad</Text>
+                        <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.quality ? colors.bs.primary : '#9a9a9a' }}>
+                            <Text style={{ ...styles.pickerTitle, color: inputs.quality ? colors.bs.primary : colors.primaryDavysGray }}>Calidad</Text>
                             <Picker style={styles.pickerSelector}
                                 selectedValue={inputs.quality}
                                 onValueChange={value => handleInput('quality', value)}
@@ -226,8 +221,8 @@ const HomeScreen = props => {
                                 })}
                             </Picker>
                         </View>
-                        <View style={styles.pickerContainer}>
-                            <Text style={styles.pickerTitle}>Volumen de stock</Text>
+                        <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.stockVolume ? colors.bs.primary : '#9a9a9a' }}>
+                            <Text style={{ ...styles.pickerTitle, color: inputs.stockVolume ? colors.bs.primary : colors.primaryDavysGray }}>Volumen de stock</Text>
                             <Picker style={styles.pickerSelector}
                                 selectedValue={inputs.stockVolume}
                                 onValueChange={value => handleInput('stockVolume', value)}
@@ -239,10 +234,23 @@ const HomeScreen = props => {
                                 })}
                             </Picker>
                         </View>
+                        <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.species ? colors.bs.primary : '#9a9a9a' }}>
+                            <Text style={{ ...styles.pickerTitle, color: inputs.species ? colors.bs.primary : colors.primaryDavysGray }}>Especie</Text>
+                            <Picker style={styles.pickerSelector}
+                                selectedValue={inputs.species}
+                                onValueChange={value => handleInput('species', value)}
+                            >
+                                <Picker.Item key={'species_id'} label={'Seleccione una opción...'} value={null} />
+                                {species && species.map(item => {
+                                    return (
+                                        <Picker.Item key={item.id} label={item.nombre} value={item.id} />
+                                    );
+                                })}
+                            </Picker>
+                        </View>
                         <TextInput
                             style={styles.inputsStyle}
                             theme={theme}
-                            secureTextEntry
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             keyboardType={'numeric'}
@@ -258,7 +266,6 @@ const HomeScreen = props => {
                         <TextInput
                             style={styles.inputsStyle}
                             theme={theme}
-                            secureTextEntry
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Comentarios'}

@@ -22,6 +22,14 @@ export const theme = {
     },
 };
 
+export const theme_selected = {
+    colors: {
+        primary: colors.bs.primary,
+        text: colors.primaryDavysGray,
+        placeholder: colors.primaryDavysGray,
+    },
+};
+
 export const styles = {
     screen: {
         flex: 1,
