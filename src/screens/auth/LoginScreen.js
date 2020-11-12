@@ -131,7 +131,7 @@ const LoginScreen = (props) => {
                                 ¿No tenés cuenta?{" "}
                                 <Text style={styles.infoTextLink} onPress={handlePressRegister}>
                                     Registrate
-              </Text>
+                                </Text>
                             </Text>
                         </View>
                         <View style={{ ...styles.infoContainer, marginBottom: 70 }}>

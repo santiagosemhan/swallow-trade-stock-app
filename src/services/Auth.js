@@ -7,6 +7,7 @@ const loginIfOk = async (res, dispatch) => {
         try {
             ApiService.setAuthToken(res.data.jwt);
             await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
+            await AsyncStorage.setItem('auth_token', JSON.stringify(res.data.jwt));
             dispatch(setLoggedIn(true));
         } catch (error) {
             console.log('Auth Service - LoginIfOk Error: ', error);
@@ -47,6 +48,7 @@ const logout = async (dispatch) => {
     try {
         ApiService.resetAuthToken();
         await AsyncStorage.removeItem('user');
+        await AsyncStorage.removeItem('auth_token');
         dispatch(setLoggedIn(false));
     } catch (error) {
         console.log('Auth Service - logOut Error: ', error);
@@ -55,13 +57,17 @@ const logout = async (dispatch) => {
 
 const isSignedIn = async (dispatch) => {
     let user = undefined;
+    let auth_token = undefined;
     try {
         const res = await AsyncStorage.getItem('user');
+        const jwt = await AsyncStorage.getItem('auth_token');
         user = JSON.parse(res);
+        auth_token = JSON.parse(jwt);
     } catch (error) {
         console.log('Aut hService - isSignedIn error: ', error);
     }
-    if (user) {
+    if (user && auth_token) {
+        ApiService.setAuthToken(auth_token);
         dispatch(setLoggedIn(user ? true : false));
         return user;
     } else {
