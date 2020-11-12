@@ -1,12 +1,29 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { styles } from '../../../constants/styles';
+import StockItem from './../../../components/stock/stockItem';
 
 const StockScreen = props => {
 
     return (
         <View style={styles.screen}>
-            <Text style={styles.blankScreenText}>Stock Screen!</Text>
+            <View style={{ ...styles.headerIcons, paddingHorizontal: 20, paddingTop: 20, paddingLeft: 7 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Text style={{ fontFamily: 'NunitoSans-Bold', fontSize: 26, paddingLeft: 10 }}>
+                            Mi Stock
+                        </Text>
+                    </View>
+                </View>
+            </View>
+            <ScrollView style={{ flex: 1 }}>
+                <StockItem />
+                <StockItem />
+                <StockItem />
+                <StockItem />
+                <StockItem />
+                <StockItem />
+            </ScrollView>
         </View>
     );
 };
