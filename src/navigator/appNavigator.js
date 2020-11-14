@@ -15,6 +15,8 @@ import ProfileScreen from '../screens/main/ProfileScreen';
 import ChangePasswordScreen from '../screens/main/ProfileScreen/changePassword';
 
 import StockScreen from '../screens/main/StockScreen';
+import StockDetailsScreen from '../screens/main/StockScreen/details';
+
 import InfoScreen from '../screens/main/InfoScreen';
 import Auth from '../services/Auth';
 import { FontAwesome, Feather } from 'react-native-vector-icons';
@@ -44,10 +46,11 @@ const RootNavigator = () => {
         );
     };
 
-    const ProductNavigator = () => {
+    const StockNavigator = () => {
         return (
             <StockStack.Navigator>
                 <StockStack.Screen name={'Index'} component={StockScreen} options={{ headerShown: false }} />
+                <StockStack.Screen name={'Details'} component={StockDetailsScreen} options={{ headerShown: false }} />
             </StockStack.Navigator>
         );
     };
@@ -81,9 +84,9 @@ const RootNavigator = () => {
                 />
                 <HomeTabs.Screen
                     name={'Product'}
-                    component={StockScreen}
+                    component={StockNavigator}
                     options={{
-                        tabBarLabel: 'Product',
+                        tabBarLabel: 'Stock',
                         tabBarIcon: ({ color, size }) => (
                             <Feather name="box" color={color} size={size} />
                         ),

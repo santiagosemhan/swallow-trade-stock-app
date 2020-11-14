@@ -22,7 +22,7 @@ const StockItem = props => {
     };
 
     return (
-        <TouchableOpacity onPress={() => console.log('ASD')} style={styles.component}>
+        <TouchableOpacity onPress={handleOnDetailPress} style={styles.component}>
             <Image style={{ width: 65, height: 65 }} source={require('./../../../assets/img/wood.jpeg')} />
             <View style={{ padding: 3, flex: 1 }}>
                 <Text>NOMBRE DEL PRODUCTO</Text>

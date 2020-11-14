@@ -17,8 +17,9 @@ const btnText = {
 export const theme = {
     colors: {
         primary: colors.bs.primary,
-        text: colors.primaryDavysGray,
+        text: colors.primaryGunMetal,
         placeholder: colors.primaryDavysGray,
+        disabled: colors.bs.primary,
     },
 };
 

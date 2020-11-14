@@ -6,7 +6,7 @@ import StockItem from './../../../components/stock/stockItem';
 const StockScreen = props => {
 
     const handleOnDetailPress = stock => {
-        props.navigation.navigate('');
+        props.navigation.navigate('Details');
     };
 
     return (
