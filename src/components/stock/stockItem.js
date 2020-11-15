@@ -5,17 +5,7 @@ import colors from './../../constants/colors';
 
 const StockItem = props => {
 
-    const data = {
-        producto: 'Madera durísima',
-        espesor: '13"',
-        ancho: '10"',
-        largo: '12"',
-        calidad: "Primera",
-        volumen_stock: "Pie",
-        cantidad: 3,
-        especie: 'Pino',
-        comentarios: 'Alto comentario',
-    };
+    const item = props.item;
 
     const handleOnDetailPress = () => {
         props.onPress();
@@ -25,9 +15,9 @@ const StockItem = props => {
         <TouchableOpacity onPress={handleOnDetailPress} style={styles.component}>
             <Image style={{ width: 65, height: 65 }} source={require('./../../../assets/img/wood.jpeg')} />
             <View style={{ padding: 3, flex: 1 }}>
-                <Text>NOMBRE DEL PRODUCTO</Text>
-                <Text style={{ color: colors.primarySilver }}>Descripciones varias</Text>
-                <Text style={{ color: colors.primarySilver }}>Más descripciones</Text>
+                <Text style={{}}>{item.producto.nombre.toUpperCase()}</Text>
+                <Text style={{ color: colors.primarySilver }}>Especie: {item.especie.nombre}</Text>
+                <Text style={{ color: colors.primarySilver }}>Ancho: {item.ancho}" - Largo: {item.largo}"</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
                 <AntDesign name={'right'} size={24} />

@@ -1,15 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator } from 'react-native'
+import { View, TouchableOpacity, Text, Button, ScrollView, Alert, ActivityIndicator } from 'react-native'
 import { Picker } from '@react-native-community/picker';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../../constants/styles';
 import validate from '../../../services/Validate';
 import colors from '../../../constants/colors';
 import ApiService from './../../../services/Api';
+import ImagerPicker from './../../../components/form/ImagePicker';
+
+
+import FormData from 'form-data';
 
 import Constants from 'expo-constants'
 
 const HomeScreen = props => {
+
+    const [postImage, setPostImage] = useState(null);
+    const [filename, setFilename] = useState('');
+    const [showImagePicker, setShowImagePicker] = useState(false);
+
+    const handleTakenImage = (image, filename) => {
+        setPostImage(image);
+        setFilename(filename);
+    };
+
+    const handleShowImagePicker = show => {
+        setShowImagePicker(show);
+    };
 
     const fields = {
         category: '',
@@ -133,23 +150,51 @@ const HomeScreen = props => {
     const handleSend = async () => {
         setIsloading(true);
         try {
-            const data = {
-                producto: inputs.category,
-                espesor: inputs.thickness,
-                ancho: inputs.width,
-                largo: inputs.height,
-                calidad: inputs.quality,
-                volumen_stock: inputs.stockVolume,
-                cantidad: inputs.stockQuantity,
-                especie: inputs.species,
-                comentarios: inputs.comments,
-            };
-            const result = await ApiService.post('stocks', data);
-            resetFields();
+            const fileName = postImage.uri.match(/\/([a-zA-Z0-9\-.]+\.[\w]+)$/i)[1];
+            const extension = postImage.uri.match(/\.([0-9a-z]+)$/i)[1];
+            const formData = new FormData();
+
+            formData.append(
+                'files',
+                { uri: postImage.uri, name: fileName, type: `image/${extension}` },
+            );
+            const imageResponse = await ApiService.post(`/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            });
+            console.log('RESPONSEEEE', imageResponse.data);
+
+            // const file = base64.decode(postImage);
+            // console.log('file', file);
+            // formData.append('images', file);
+
+
+            // const resultadoImageUpload = await ApiService.post('/upload', { data: formData }, {
+            //     headers: {
+            //         "Content-Type": "multipart/form-data"
+            //     }
+            // });
+
+            // console.log(resultadoImageUpload);
+
+            // const data = {
+            //     producto: inputs.category,
+            //     espesor: inputs.thickness,
+            //     ancho: inputs.width,
+            //     largo: inputs.height,
+            //     calidad: inputs.quality,
+            //     volumen_stock: inputs.stockVolume,
+            //     cantidad: inputs.stockQuantity,
+            //     especie: inputs.species,
+            //     comentarios: inputs.comments,
+            // };
+            // const result = await ApiService.post('stocks', data);
+            // resetFields();
             setIsloading(false);
-            if(result.status == 200){
-                Alert.alert('Stock cargado con éxito.');
-            }            
+            // if (result.status == 200) {
+            //     Alert.alert('Stock cargado con éxito.');
+            // }
         } catch (error) {
             setIsloading(false);
             console.log(error.response);
@@ -296,6 +341,14 @@ const HomeScreen = props => {
                         >
                             {errorMessages.passwordConfirm}
                         </HelperText>
+                        <ImagerPicker
+                            aspect={[1, 1]}
+                            onRequestClose={() => setShowImagePicker(false)}
+                            show={handleShowImagePicker}
+                            visible={showImagePicker}
+                            takenImage={handleTakenImage}
+                        />
+                        <Button title={'SACAR FOTO'} onPress={() => handleShowImagePicker(true)} />
                         <View style={{ width: '100%', marginTop: 40, marginBottom: 10 }}>
                             <TouchableOpacity style={styles.btnPrimary} onPress={handleSend}>
                                 <Text style={styles.btnTextWhite}>

@@ -108,7 +108,7 @@ const RegisterScreen = props => {
                 password: inputs.password,
                 username: Slugify(`${inputs.firstName.charAt(0)} ${inputs.lastName}`, '_').toLowerCase(),
                 confirmed: "true",
-                empresa: inpunts.company
+                empresa: inputs.company
             };
             await AuthService.register(userData, dispatch);
             setIsloading(false);

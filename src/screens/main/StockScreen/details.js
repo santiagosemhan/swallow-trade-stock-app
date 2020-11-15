@@ -7,6 +7,8 @@ import colors from './../../../constants/colors';
 
 const StockDetails = props => {
 
+    const stock = props.route.params.stock
+
     const data = {
         producto: 'Madera durísima',
         espesor: '13"',
@@ -38,7 +40,7 @@ const StockDetails = props => {
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
                         label={'Categoría'}
-                        value={data.producto}
+                        value={stock.producto.nombre}
                     />
                     <TextInput
                         disabled={true}
@@ -46,7 +48,7 @@ const StockDetails = props => {
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
                         label={'Espesor'}
-                        value={data.espesor}
+                        value={stock.espesor + '"'}
                     />
                     <TextInput
                         disabled={true}
@@ -54,7 +56,7 @@ const StockDetails = props => {
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
                         label={'Ancho'}
-                        value={data.ancho}
+                        value={stock.ancho + '"'}
                     />
                     <TextInput
                         disabled={true}
@@ -62,7 +64,7 @@ const StockDetails = props => {
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
                         label={'Largo'}
-                        value={data.largo}
+                        value={stock.largo + "'"}
                     />
                     <TextInput
                         disabled={true}
@@ -70,7 +72,7 @@ const StockDetails = props => {
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
                         label={'Calidad'}
-                        value={data.calidad}
+                        value={stock.calidad}
                     />
                     <TextInput
                         disabled={true}
@@ -78,7 +80,7 @@ const StockDetails = props => {
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
                         label={'Volumen Stock'}
-                        value={data.volumen_stock}
+                        value={stock.volumen_stock}
                     />
                     <TextInput
                         disabled={true}
@@ -86,7 +88,7 @@ const StockDetails = props => {
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
                         label={'Cantidad'}
-                        value={data.cantidad + ''}
+                        value={stock.cantidad + ''}
                     />
                     <TextInput
                         disabled={true}
@@ -94,7 +96,7 @@ const StockDetails = props => {
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
                         label={'Especie'}
-                        value={data.especie}
+                        value={stock.especie.nombre}
                     />
                 </View>
             </ScrollView>

@@ -26,8 +26,8 @@ const get = (url) => {
   return axios.get(url);
 };
 
-const post = (url, data) => {
-  return axios.post(url, data);
+const post = (url, data, config) => {
+  return axios.post(url, data, config);
 };
 
 const put = () => {
