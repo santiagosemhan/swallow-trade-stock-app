@@ -48,7 +48,7 @@ const StockScreen = props => {
             </View>
             <ScrollView style={{ flex: 1, marginTop: 20 }}>
                 <View style={{ alignItems: 'center' }}>
-                    {stocks ? stocks.map(stock => <StockItem key={stock.id} item={stock} onPress={() => handleOnDetailPress(stock)} />)
+                    {stocks ? stocks.map(stock => <StockItem key={stock.id} stock={stock} onPress={() => handleOnDetailPress(stock)} />)
                         :
                         <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.bs.primary} />
                     }

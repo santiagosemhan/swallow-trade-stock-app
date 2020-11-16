@@ -1,25 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
-import { TextInput, HelperText } from 'react-native-paper';
+import { View, Text, StyleSheet, ScrollView, Image, Dimensions } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import { styles, theme } from './../../../constants/styles';
 import colors from './../../../constants/colors';
+import env from './../../../../env';
 
 const StockDetails = props => {
 
-    const stock = props.route.params.stock
-
-    const data = {
-        producto: 'Madera durísima',
-        espesor: '13"',
-        ancho: '10"',
-        largo: '12"',
-        calidad: "Primera",
-        volumen_stock: "Pie",
-        cantidad: 3,
-        especie: 'Pino',
-        comentarios: 'Alto comentario',
-    };
+    const screenWidth = Dimensions.get('window').width;
+    const stock = props.route.params.stock;
+    const stockImage = stock.imagenes[0] && stock.imagenes[0].name ? env.BASE_URL + 'files/' + stock.imagenes[0].name : null;
 
     return (
         <View style={styles.screen}>
@@ -33,7 +23,14 @@ const StockDetails = props => {
                 </View>
             </View>
             <ScrollView>
-                <View style={{ width: '100%', padding: 15 }}>
+                <View style={{}}>
+                    {stockImage ?
+                        <View style={{ width: '100%', height: screenWidth + 1, alignItems: 'center' }}>
+                            <Image style={{ resizeMode: 'contain', borderRadius: 2, width: '100%', height: '100%' }} source={{ uri: stockImage }} />
+                        </View>
+                        : <View></View>}
+                </View>
+                <View style={{ width: '100%', paddingHorizontal: 15 }}>
                     <TextInput
                         disabled={true}
                         style={styles.inputsStyle}

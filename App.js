@@ -8,12 +8,8 @@ import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
 import store from './src/redux/store/store';
 import colors from './src/constants/colors';
-import env from './env';
 
-// import Parse from 'parse/react-native';
-// Parse.setAsyncStorage(AsyncStorage);
-// Parse.initialize(env.PARSE_API_KEY);
-// Parse.serverURL = env.PARSE_URL;
+import { Appearance } from 'react-native'
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -80,11 +76,13 @@ export default App = () => {
     },
   };
 
+  const fondo = Appearance.getColorScheme() === 'dark' ? 'black' : 'white';
+
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
         <StatusBar barStyle="light-content" backgroundColor={colors.primaryGunMetal} />
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: fondo }}>
           <RootNavigator />
         </SafeAreaView>
       </PaperProvider>

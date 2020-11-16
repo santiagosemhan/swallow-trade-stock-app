@@ -2,10 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import colors from './../../constants/colors';
+import env from './../../../env';
 
 const StockItem = props => {
 
-    const item = props.item;
+    const stock = props.stock;
+    const stockImage = stock.imagenes[0] && stock.imagenes[0].name ? env.BASE_URL + 'files/' + stock.imagenes[0].name : null;
 
     const handleOnDetailPress = () => {
         props.onPress();
@@ -13,11 +15,15 @@ const StockItem = props => {
 
     return (
         <TouchableOpacity onPress={handleOnDetailPress} style={styles.component}>
-            <Image style={{ width: 65, height: 65 }} source={require('./../../../assets/img/wood.jpeg')} />
+            {stockImage ?
+                <Image style={{ width: 65, height: 65 }} source={{ uri: env.BASE_URL + 'files/' + stockImage }} />
+                :
+                <Image style={{ width: 65, height: 65 }} source={require('./../../../assets/img/wood.jpeg')} />
+            }
             <View style={{ padding: 3, flex: 1 }}>
-                <Text style={{}}>{item.producto.nombre.toUpperCase()}</Text>
-                <Text style={{ color: colors.primarySilver }}>Especie: {item.especie.nombre}</Text>
-                <Text style={{ color: colors.primarySilver }}>Ancho: {item.ancho}" - Largo: {item.largo}"</Text>
+                <Text style={{}}>{stock.producto.nombre.toUpperCase()}</Text>
+                <Text style={{ color: colors.primarySilver }}>Especie: {stock.especie.nombre}</Text>
+                <Text style={{ color: colors.primarySilver }}>Ancho: {stock.ancho}" - Largo: {stock.largo}"</Text>
             </View>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginRight: 10 }}>
                 <AntDesign name={'right'} size={24} />

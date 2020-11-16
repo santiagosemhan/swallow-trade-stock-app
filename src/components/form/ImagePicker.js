@@ -19,7 +19,10 @@ const ImagePicker = props => {
 
     const handleTakePhoto = async () => {
         try {
-            getPermissionAsync();
+            const hasPermission = await verifyPermissions();
+            if (!hasPermission) {
+                return;
+            }
             let result = await ImagePickerExpo.launchCameraAsync({
                 mediaTypes: ImagePickerExpo.MediaTypeOptions.All,
                 allowsEditing: true,
@@ -42,7 +45,10 @@ const ImagePicker = props => {
 
     const handlePickFromGallery = async () => {
         try {
-            getPermissionAsync();
+            const hasPermission = await verifyPermissions();
+            if (!hasPermission) {
+                return;
+            }
             let result = await ImagePickerExpo.launchImageLibraryAsync({
                 mediaTypes: ImagePickerExpo.MediaTypeOptions.All,
                 allowsEditing: true,
@@ -61,11 +67,13 @@ const ImagePicker = props => {
         }
     };
 
-    const getPermissionAsync = async () => {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        if (status !== 'granted') {
-            alert('Lo sentimos! Swallow Trade necesita los permisos de la cámara!');
+    const verifyPermissions = async () => {
+        const result = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
+        if (result.status !== 'granted') {
+            Alert.alert('Permisos insuficientes.', 'Se debe dar permiso a la cámara para efectuar la operación.', [{ text: 'Ok' }]);
+            return false;
         }
+        return true;
     };
 
     return (
@@ -108,7 +116,8 @@ const styles = StyleSheet.create({
     },
     card: {
         backgroundColor: '#fff',
-        paddingVertical: 10
+        padding: 10,
+        borderRadius: 10,
     },
     btnContainer: {
         flexDirection: 'row',

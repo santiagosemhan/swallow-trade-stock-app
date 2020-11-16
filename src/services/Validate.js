@@ -26,54 +26,6 @@ export default function validate(fieldName, value) {
         message: "^Ingrese un apellido válido."
       },
     },
-    nationality: {
-      presence: true,
-      format: {
-        pattern: /[a-zA-Z\s\.\//\á\é\í\ó\ú]+/,
-        flags: "i",
-        message: "^Ingrese una nacionalidad válida."
-      },
-    },
-    dni: {
-      presence: true,
-      format: {
-        pattern: /[0-9]{8}$/,
-        flags: "i",
-        message: "^Ingrese un DNI válido."
-      },
-    },
-    cuil: {
-      presence: true,
-      format: {
-        pattern: /[0-9]{2}[-.][0-9]{8}[-.][0-9]{1}$/,
-        flags: "i",
-        message: "^Ingrese un CUIL/CUIT válido."
-      },
-    },
-    street: {
-      presence: { allowEmpty: true },
-      format: {
-        pattern: /[a-zA-Z\s\.\//\á\é\í\ó\ú]*/,
-        flags: "i",
-        message: "^Ingrese un calle válida."
-      },
-    },
-    streetNumber: {
-      presence: { allowEmpty: true },
-      format: {
-        pattern: /[0-9]*$/,
-        flags: "i",
-        message: "^Ingrese un número válido."
-      },
-    },
-    city: {
-      presence: true,
-      format: {
-        pattern: /[a-zA-Z\s\.\//\á\é\í\ó\ú]+/,
-        flags: "i",
-        message: "^Ingrese una ciudad válida."
-      },
-    },
     startDate: {
       presence: true,
       format: {
@@ -109,46 +61,62 @@ export default function validate(fieldName, value) {
         message: '^Ingrese su contraseña actual.',
       },
     },
-    brand: {
-      presence: true,
-      format: {
-        pattern: /[a-zA-Z\s\.\//\á\é\í\ó\ú\ü\ç]+/,
-        flags: "i",
-        message: "^Ingrese una marca válida."
-      },
-    },
-    model: {
-      presence: true,
-      format: {
-        pattern: /[a-zA-Z0-9\s\.\//\á\é\í\ó\ú\ü\ç]+/,
-        flags: "i",
-        message: "^Ingrese un modelo válido."
-      },
-    },
-    color: {
-      presence: true,
-      format: {
-        pattern: /[a-zA-Z]+/,
-        flags: "i",
-        message: "^Ingrese un color válido."
-      },
-    },
-    licensePlate: {
+    category: {
       presence: {
         allowEmpty: false,
-        message: '^Ingrese un dominio válido.',
+        message: '^Ingrese una categoría válida.',
+      },
+      format: {
+        pattern: /[a-zA-Z0-9]+/,
+        message: "^Ingrese una categoría válida."
       },
     },
-    motorNumber: {
+    thickness: {
       presence: {
         allowEmpty: false,
-        message: '^Ingrese un número de motor válido.',
+        message: '^Ingrese un espesor válido.',
       },
     },
-    chassisNumber: {
+    width: {
       presence: {
         allowEmpty: false,
-        message: '^Ingrese un número de chasis válido.',
+        message: '^Ingrese un ancho válido.',
+      },
+    },
+    height: {
+      presence: {
+        allowEmpty: false,
+        message: '^Ingrese un largo válido.',
+      },
+    },
+    quality: {
+      presence: {
+        allowEmpty: false,
+        message: '^Ingrese una calidad válida.',
+      },
+    },
+    stockVolume: {
+      presence: {
+        allowEmpty: false,
+        message: '^Ingrese un volumen de stock válido.',
+      },
+    },
+    species: {
+      presence: {
+        allowEmpty: false,
+        message: '^Ingrese una especie válida.',
+      },
+    },
+    stockQuantity: {
+      presence: {
+        allowEmpty: false,
+        message: '^Ingrese una cantidad de stock válida.',
+      },
+    },
+    comments: {
+      presence: {
+        allowEmpty: true,
+        message: '^Ingrese un comentario válido.',
       },
     },
   };

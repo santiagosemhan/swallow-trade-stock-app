@@ -191,7 +191,7 @@ export const styles = {
     },
     pickerContainer: {
         marginTop: 12,
-        marginBottom: 20,
+        marginBottom: 0,
         borderBottomColor: '#9a9a9a',
         borderBottomWidth: 1.5,
     },
