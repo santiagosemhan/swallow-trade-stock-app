@@ -14,7 +14,7 @@ const StockScreen = props => {
     const fetchData = async () => {
         try {
             const res = await ApiService.get('stocks');
-            setStocks(res.data);
+            setStocks(res.data.reverse());
         } catch (error) {
             console.log('StockScreen - fetchData Error: ', error.response);
         }

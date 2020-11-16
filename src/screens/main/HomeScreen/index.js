@@ -124,7 +124,7 @@ const HomeScreen = props => {
                         'Content-Type': 'multipart/form-data'
                     },
                 });
-                image = imageResponse.data && imageResponse.data[0].id ? imageResponse.data[0].id : null
+                image = imageResponse.data && imageResponse.data[0].id ? imageResponse.data[0].id : null;
             }
             const data = {
                 producto: inputs.category,

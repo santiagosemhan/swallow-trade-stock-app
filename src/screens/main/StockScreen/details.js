@@ -10,6 +10,9 @@ const StockDetails = props => {
     const screenWidth = Dimensions.get('window').width;
     const stock = props.route.params.stock;
     const stockImage = stock.imagenes[0] && stock.imagenes[0].name ? env.BASE_URL + 'files/' + stock.imagenes[0].name : null;
+    const date = new Date(stock.createdAt);
+    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    const formattedHour = `${date.getHours()}:${date.getMinutes()}`;
 
     return (
         <View style={styles.screen}>
@@ -26,13 +29,21 @@ const StockDetails = props => {
                 <View style={{}}>
                     {stockImage ?
                         <View style={{ width: '100%', height: screenWidth + 1, alignItems: 'center' }}>
-                            <Image style={{ resizeMode: 'contain', borderRadius: 2, width: '100%', height: '100%' }} source={{ uri: stockImage }} />
+                            <Image style={{ resizeMode: 'contain', width: '100%', height: '100%' }} source={{ uri: stockImage }} />
                         </View>
                         : <View></View>}
                 </View>
-                <View style={{ width: '100%', paddingHorizontal: 15 }}>
+                <View style={{ width: '100%', paddingHorizontal: 15, marginBottom: 20 }}>
                     <TextInput
-                        disabled={true}
+                        editable={false}
+                        style={styles.inputsStyle}
+                        theme={theme}
+                        underlineColor={colors.primaryDavysGray}
+                        label={'Fecha de carga'}
+                        value={formattedDate + ' - ' + formattedHour}
+                    />
+                    <TextInput
+                        editable={false}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -40,7 +51,7 @@ const StockDetails = props => {
                         value={stock.producto.nombre}
                     />
                     <TextInput
-                        disabled={true}
+                        editable={false}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -48,7 +59,7 @@ const StockDetails = props => {
                         value={stock.espesor + '"'}
                     />
                     <TextInput
-                        disabled={true}
+                        editable={false}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -56,7 +67,7 @@ const StockDetails = props => {
                         value={stock.ancho + '"'}
                     />
                     <TextInput
-                        disabled={true}
+                        editable={false}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -64,7 +75,7 @@ const StockDetails = props => {
                         value={stock.largo + "'"}
                     />
                     <TextInput
-                        disabled={true}
+                        editable={false}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -72,7 +83,7 @@ const StockDetails = props => {
                         value={stock.calidad}
                     />
                     <TextInput
-                        disabled={true}
+                        editable={false}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -80,7 +91,7 @@ const StockDetails = props => {
                         value={stock.volumen_stock}
                     />
                     <TextInput
-                        disabled={true}
+                        editable={false}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -88,7 +99,7 @@ const StockDetails = props => {
                         value={stock.cantidad + ''}
                     />
                     <TextInput
-                        disabled={true}
+                        editable={false}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}

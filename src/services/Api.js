@@ -30,8 +30,8 @@ const post = (url, data, config) => {
   return axios.post(url, data, config);
 };
 
-const put = () => {
-
+const put = (url, data, config) => {
+  return axios.post(url, data, config);
 };
 
 export default {

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity, Text, Image, Alert, ScrollView, ActivityIndicator } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
-import { setLoggedIn } from "../../redux/auth/actions";
 import { TextInput, HelperText } from "react-native-paper";
 import { styles, theme } from "../../constants/styles";
 import validate from "../../services/Validate";
@@ -23,13 +21,17 @@ const LoginScreen = (props) => {
     AuthService.isSignedIn(dispatch);
 
     const checkErrors = () => {
-        const errors = { ...errorMessages };
-        for (item in errors) {
-            if (errors[item] !== null) {
-                console.log(item + " => " + errors[item]);
-                throw { message: "Revise los datos!" };
+        let errors = { ...errorMessages };
+        for (const [key, value] of Object.entries(inputs)) {
+            errors[key] = validate(key, value);
+        }
+        setErrorMessages(errors);
+        for (const [key, value] of Object.entries(errors)) {
+            if (errors[key] !== null) {
+                throw new Error(errors[key]);
             }
         }
+        return false;
     };
 
     const handleError = (field, value) => {
@@ -64,8 +66,9 @@ const LoginScreen = (props) => {
     const handleLogin = async () => {
         setIsloading(true);
         try {
-            // resetFields();
+            checkErrors();
             await AuthService.login({ email: inputs.email, password: inputs.password }, dispatch);
+            resetFields();
             setIsloading(false);
         } catch (err) {
             setIsloading(false);

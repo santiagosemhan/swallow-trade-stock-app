@@ -1,59 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, TextInput, ScrollView, ActivityIndicator, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { TextInput, HelperText } from 'react-native-paper';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Avatar } from 'react-native-elements';
-import { Parse } from 'parse/react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { Entypo } from 'react-native-vector-icons';
-import * as ImagePicker from 'expo-image-picker';
-import * as Permissions from 'expo-permissions';
-import Input from '../../../components/form/Input';
-import MapPicker from '../../../components/address/MapPicker';
 import validate from '../../../services/Validate';
 import colors from '../../../constants/colors';
-import { styles } from '../../../constants/styles';
+import { theme, styles } from '../../../constants/styles';
+import ImagerPicker from './../../../components/form/ImagePicker';
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 import AuthService from '../../../services/Auth';
+import ApiService from './../../../services/Api';
 
 const ProfileScreen = props => {
 
     const fields = {
+        id: '',
         firstName: '',
         lastName: '',
-        nickname: '',
+        username: '',
         email: '',
     };
-
     const [inputs, setInputs] = useState(fields);
     const [errorMessages, setErrorMessages] = useState(fields);
-    const [userAccount, setUserAccount] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
+    const [showImagePicker, setShowImagePicker] = useState(false);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            //TODO: Load all data
-            //TODO: Set data in the fields
+            const storageUser = await AsyncStorage.getItem('user');
+            const user = JSON.parse(storageUser);
+            setInputs({
+                ...inputs,
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                username: user.username,
+            })
         } catch (err) {
             console.log('Error!! ' + err);
         }
         setIsLoading(false);
     };
 
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            fetchData();
-        });
-        return unsubscribe;
-    }, [navigation]);
-
-    const hasErrors = errors => {
+    const checkErrors = () => {
+        let errors = { ...errorMessages };
+        for (const [key, value] of Object.entries(inputs)) {
+            errors[key] = validate(key, value);
+        }
+        setErrorMessages(errors);
         for (const [key, value] of Object.entries(errors)) {
             if (errors[key] !== null) {
-                return true;
+                throw new Error(errors[key]);
             }
         }
         return false;
@@ -76,56 +81,83 @@ const ProfileScreen = props => {
         handleField(field, value);
     };
 
+    const resetFields = () => {
+        setUserProfilePhoto(null);
+        setInputs(fields);
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            fetchData();
+        });
+        return unsubscribe;
+    }, [navigation]);
+
     const handleChangePassword = () => {
         props.navigation.navigate('ChangePassword');
+    };
+
+    const handleLogOut = async () => {
+        await AuthService.logout(dispatch);
+    };
+
+    const handleTakenImage = async (image) => {
+        setUserProfilePhoto(image);
+        if (image) {
+            const fileName = image.uri.match(/\/([a-zA-Z0-9\-.]+\.[\w]+)$/i)[1];
+            const extension = image.uri.match(/\.([0-9a-z]+)$/i)[1];
+            const formData = new FormData();
+            formData.append(
+                'files',
+                { uri: image.uri, name: fileName, type: `image/${extension}` },
+            );
+            const imageResponse = await ApiService.post(`/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+            });
+            const avatarId = imageResponse.data && imageResponse.data[0].id ? imageResponse.data[0].id : null;
+            const result = await ApiService.put(`/users/${inputs.id}`, { avatar: avatarId });
+            if (result.status == 200) {
+                Alert.alert('Avatar actualizado con éxito.');
+            }
+        }
+    };
+
+    const handleShowImagePicker = show => {
+        setShowImagePicker(show);
     };
 
     const handleSaveButton = async () => {
         setIsLoading(true);
         try {
-            //TODO: Save all info
+            checkErrors();
+            const data = {
+                producto: inputs.category,
+                espesor: inputs.thickness,
+                ancho: inputs.width,
+                largo: inputs.height,
+                calidad: inputs.quality,
+                volumen_stock: inputs.stockVolume,
+                cantidad: inputs.stockQuantity,
+                especie: inputs.species,
+                comentarios: inputs.comments,
+                imagenes: [image],
+            };
+            const result = await ApiService.post('stocks', data);
+            resetFields();
+            if (result.status == 200) {
+                Alert.alert('Stock cargado con éxito.');
+            }
+            setIsloading(false);
         } catch (error) {
             setIsLoading(false);
             console.log(error);
         }
-    };
-
-    const verifyPermissions = async () => {
-        const result = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
-        if (result.status !== 'granted') {
-            Alert.alert('Permisos insuficientes.', 'Se debe dar permiso a la cámara para efectuar la operación.', [{ text: 'Ok' }]);
-            return false;
-        }
-        return true;
-    };
-
-    const takeImageHandler = async () => {
-        try {
-            const hasPermission = await verifyPermissions();
-            if (!hasPermission) {
-                return;
-            }
-            const image = await ImagePicker.launchCameraAsync({
-                allowsEditing: true,
-                quality: 0.2,
-                base64: true,
-            });
-            if (!image.cancelled) {
-                setUserProfilePhoto(`data:image/jpeg;base64,${image.base64}`);
-                const dateInMillis = new Date().getTime();
-                const fileName = `${dateInMillis}_${inputs.firstName}_${inputs.lastName}.jpg`;
-                const profilePhoto = new Parse.File(fileName, { base64: image.base64 });
-                userAccount.set('profilePhoto', profilePhoto);
-                setUserAccount(userAccount);
-                //TODO: Save account
-            }
-        } catch (error) {
-            console.log(error.message);
-        }
-    };
-
-    const handleLogOut = async () => {
-        await AuthService.logout(dispatch);
     };
 
     return (
@@ -146,25 +178,32 @@ const ProfileScreen = props => {
                             </View>
                         </View>
                         <View style={styles.inputsContainer}>
+                            <ImagerPicker
+                                aspect={[1, 1]}
+                                onRequestClose={() => setShowImagePicker(false)}
+                                show={handleShowImagePicker}
+                                visible={showImagePicker}
+                                takenImage={handleTakenImage}
+                            />
                             <View style={styles.avatarContainer}>
-                                {!userProfilePhoto ?
+                                {userProfilePhoto ?
                                     <Avatar
                                         size={120}
                                         rounded
-                                        icon={{ name: 'user', type: 'font-awesome' }}
-                                        onPress={takeImageHandler}
+                                        onPress={() => setShowImagePicker(true)}
                                         activeOpacity={0.5}
                                         showEditButton
+                                        source={{ uri: userProfilePhoto.uri }}
                                         containerStyle={styles.avatar}
                                     />
                                     :
                                     <Avatar
                                         size={120}
                                         rounded
-                                        onPress={takeImageHandler}
+                                        icon={{ name: 'user', type: 'font-awesome' }}
+                                        onPress={() => setShowImagePicker(true)}
                                         activeOpacity={0.5}
                                         showEditButton
-                                        source={{ uri: userProfilePhoto }}
                                         containerStyle={styles.avatar}
                                     />
                                 }
@@ -173,51 +212,71 @@ const ProfileScreen = props => {
                                 <Entypo style={{}} name={'lock'} size={16} color={colors.primaryDavysGray} />
                                 <Text style={{ ...styles.infoTextLink, marginLeft: 5, color: colors.primaryDavysGray, fontFamily: 'NunitoSans-Regular' }}>Cambiar contraseña</Text>
                             </TouchableOpacity> */}
-                            <Input
-                                label={'Nombre/s'}
-                                style={styles.input}
-                                blurOnSubmit
-                                keyboardType={'default'}
+                            <TextInput
+                                style={styles.inputsStyle}
+                                theme={theme}
+                                underlineColor={colors.primaryDavysGray}
                                 autoCapitalize={'none'}
-                                autoCorrect={false}
+                                label={'Nombre/s'}
                                 value={inputs.firstName}
                                 error={errorMessages.firstName}
                                 onChangeText={value => handleInput('firstName', value)}
                             />
-                            <Input
-                                label={'Apellidos/s'}
-                                style={styles.input}
-                                blurOnSubmit
-                                keyboardType={'default'}
+                            <HelperText
+                                type="error"
+                                visible={errorMessages.firstName}
+                            >
+                                {errorMessages.firstName}
+                            </HelperText>
+                            <TextInput
+                                style={styles.inputsStyle}
+                                theme={theme}
+                                underlineColor={colors.primaryDavysGray}
                                 autoCapitalize={'none'}
-                                autoCorrect={false}
+                                label={'Apellido'}
                                 value={inputs.lastName}
                                 error={errorMessages.lastName}
                                 onChangeText={value => handleInput('lastName', value)}
                             />
-                            <Input
+                            <HelperText
+                                type="error"
+                                visible={errorMessages.lastName}
+                            >
+                                {errorMessages.lastName}
+                            </HelperText>
+                            <TextInput
+                                style={styles.inputsStyle}
+                                theme={theme}
+                                underlineColor={colors.primaryDavysGray}
+                                autoCapitalize={'none'}
                                 label={'Apodo'}
-                                style={styles.input}
-                                blurOnSubmit
-                                keyboardType={'default'}
-                                autoCapitalize={'none'}
-                                autoCorrect={false}
-                                value={inputs.nickname}
-                                error={errorMessages.nickname}
-                                onChangeText={value => handleInput('nickname', value)}
+                                value={inputs.username}
+                                error={errorMessages.username}
+                                onChangeText={value => handleInput('username', value)}
                             />
-                            <Input
-                                label={'Email'}
-                                style={styles.input}
-                                blurOnSubmit
+                            <HelperText
+                                type="error"
+                                visible={errorMessages.username}
+                            >
+                                {errorMessages.username}
+                            </HelperText>
+                            <TextInput
                                 editable={false}
-                                keyboardType={'email-address'}
+                                style={styles.inputsStyle}
+                                theme={theme}
+                                underlineColor={colors.primaryDavysGray}
                                 autoCapitalize={'none'}
-                                autoCorrect={false}
+                                label={'Email'}
                                 value={inputs.email}
                                 error={errorMessages.email}
                                 onChangeText={value => handleInput('email', value)}
-                            />                            
+                            />
+                            <HelperText
+                                type="error"
+                                visible={errorMessages.email}
+                            >
+                                {errorMessages.email}
+                            </HelperText>
                             {/* <TouchableOpacity onPress={handleChangePassword} style={styles.changePassword}>
                                 <Text>Cambiar contraseña</Text>
                                 <MaterialIcons name={'chevron-right'} size={36} color={colors.primaryOldMossGreen} />
