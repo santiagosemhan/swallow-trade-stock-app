@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator, Picker } from 'react-native'
+import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-// import { Picker } from '@react-native-community/picker';
+import { Picker } from '@react-native-picker/picker';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../../constants/styles';
 import validate from '../../../services/Validate';
@@ -188,7 +188,7 @@ const HomeScreen = props => {
                                     <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 100, borderWidth: 3, borderColor: colors.bs.primary, padding: 30 }} onPress={() => handleShowImagePicker(true)}>
                                         {/* <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 4 }} onPress={() => handleShowImagePicker(true)}> */}
                                         {/* <Image style={{ resizeMode: 'contain', borderRadius: 2, padding: 20, margin: 20, width: 75, height: 75 }} source={require('./../../../../assets/img/camera.png')} /> */}
-                                        <Feather name={'camera'} size={60} color={colors.bs.primary}/>
+                                        <Feather name={'camera'} size={60} color={colors.bs.primary} />
                                     </TouchableOpacity>}
                             </View>
                         </View>

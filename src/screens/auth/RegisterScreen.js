@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator, StyleSheet } from 'react-native'
-import { Picker } from '@react-native-community/picker';
+import { Picker } from '@react-native-picker/picker';
 import { useDispatch } from 'react-redux';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../constants/styles';

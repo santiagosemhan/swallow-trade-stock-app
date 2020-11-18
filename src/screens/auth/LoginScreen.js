@@ -83,7 +83,7 @@ const LoginScreen = (props) => {
                 <ActivityIndicator
                     style={styles.screen}
                     size={"large"}
-                    color={colors.primaryOldMossGreen}
+                    color={colors.bs.primary}
                 />
             ) : (
                     <ScrollView style={styles.container}>
