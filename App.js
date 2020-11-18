@@ -16,14 +16,6 @@ const fetchFonts = () => {
     'OpenSans-Regular': require('./assets/fonts/OpenSans-Regular.ttf'),
     'OpenSans-SemiBold': require('./assets/fonts/OpenSans-SemiBold.ttf'),
     'OpenSans-Bold': require('./assets/fonts/OpenSans-Bold.ttf'),
-
-    'NunitoSans-Black': require('./assets/fonts/NunitoSans-Black.ttf'),
-    'NunitoSans-Bold': require('./assets/fonts/NunitoSans-Bold.ttf'),
-    'NunitoSans-ExtraBold': require('./assets/fonts/NunitoSans-ExtraBold.ttf'),
-    'NunitoSans-Italic': require('./assets/fonts/NunitoSans-Italic.ttf'),
-    'NunitoSans-Light': require('./assets/fonts/NunitoSans-Light.ttf'),
-    'NunitoSans-Regular': require('./assets/fonts/NunitoSans-Regular.ttf'),
-    'NunitoSans-SemiBold': require('./assets/fonts/NunitoSans-SemiBold.ttf'),
   })
 };
 
