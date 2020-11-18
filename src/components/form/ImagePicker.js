@@ -138,12 +138,12 @@ const styles = StyleSheet.create({
         paddingVertical: 10
     },
     text: {
-        fontFamily: 'Nunito-Regular',
+        fontFamily: 'OpenSans-Regular',
         fontSize: 18,
         marginLeft: 10
     },
     noIconText: {
-        fontFamily: 'Nunito-Regular',
+        fontFamily: 'OpenSans-Regular',
         fontSize: 18,
         textAlign: 'center'
     }

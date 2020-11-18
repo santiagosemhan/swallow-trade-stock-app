@@ -98,7 +98,7 @@ const ChangePasswordScreen = props => {
                     <View style={{ ...styles.headerIcons, padding: 20, paddingLeft: 7 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'NunitoSans-Bold', fontSize: 26, paddingLeft: 10 }}>
+                                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 26, paddingLeft: 10 }}>
                                     Cambiar contraseña
                                     </Text>
                             </View>
@@ -168,7 +168,7 @@ const ChangePasswordScreen = props => {
                         </View>
                     </View>
                     <TouchableOpacity style={{ alignItems: 'center' }} onPress={handleCancel}>
-                        <Text style={{ ...styles.infoTextLink, color: colors.primaryDavysGray, fontFamily: 'NunitoSans-Regular' }}>Cancelar</Text>
+                        <Text style={{ ...styles.infoTextLink, color: colors.primaryDavysGray, fontFamily: 'OpenSans-Regular' }}>Cancelar</Text>
                     </TouchableOpacity>
                 </ScrollView>
             }

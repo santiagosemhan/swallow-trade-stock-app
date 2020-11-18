@@ -15,6 +15,8 @@ import AuthService from '../../../services/Auth';
 import ApiService from './../../../services/Api';
 import env from './../../../../env';
 
+import Toast from 'react-native-simple-toast';
+
 const ProfileScreen = props => {
 
     const fields = {
@@ -108,6 +110,7 @@ const ProfileScreen = props => {
     };
 
     const handleTakenImage = async (image) => {
+        Toast.show('Guardando foto de perfil...', Toast.LONG);
         setUserProfilePhoto(image.uri);
         if (image) {
             try {
@@ -148,9 +151,10 @@ const ProfileScreen = props => {
                 firstName: inputs.firstName,
                 lastName: inputs.lastName,
             };
+            Toast.show('Actualizando perfil...', Toast.LONG);
             const result = await ApiService.put(`/users/${inputs.id}`, data);
             if (result.status == 200) {
-                Alert.alert('Datos actualizados.');
+                Toast.show('Perfil actualizado.', Toast.SHORT);
                 fetchData();
             }
         } catch (error) {
@@ -165,7 +169,7 @@ const ProfileScreen = props => {
                     <View style={{ ...styles.headerIcons, paddingHorizontal: 20, paddingTop: 20, paddingLeft: 7 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <Text style={{ fontFamily: 'NunitoSans-Bold', fontSize: 26, paddingLeft: 10 }}>
+                                <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 26, paddingLeft: 10 }}>
                                     Mi perfil
                                     </Text>
                                 <TouchableOpacity onPress={handleChangePassword} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>

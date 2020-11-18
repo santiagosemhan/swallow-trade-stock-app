@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
         // marginRight: 10
     },
     title: {
-        fontFamily: 'NunitoSans-Bold',
+        fontFamily: 'OpenSans-Bold',
         fontSize: 18
     },
     subTitle: {
-        fontFamily: 'NunitoSans-Regular',
+        fontFamily: 'OpenSans-Regular',
         fontSize: 14,
         color: 'gray'
     },

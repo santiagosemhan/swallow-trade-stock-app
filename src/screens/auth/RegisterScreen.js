@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator, StyleSheet } from 'react-native'
 import { Picker } from '@react-native-community/picker';
 import { useDispatch } from 'react-redux';
-import { setLoggedIn } from "../../redux/auth/actions";
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../constants/styles';
 import validate from '../../services/Validate';
-import Installation from '../../services/Installation';
 import colors from '../../constants/colors';
+import config from '../../constants/config';
 import Slugify from 'slugify';
 import AuthService from './../../services/Auth';
 import ApiService from './../../services/Api';
@@ -29,7 +28,6 @@ const RegisterScreen = props => {
     const dispatch = useDispatch();
 
     const fetchData = async () => {
-        setIsloading(true);
         try {
             const result = await ApiService.get('companies');
             const data = {
@@ -41,16 +39,20 @@ const RegisterScreen = props => {
         } catch (error) {
             console.log('RegisterScreen - fetchData Error:', error);
         }
-        setIsloading(false);
     };
 
-    const checkErrors = errors => {
-        for (item in errors) {
-            if (errors[item] !== null) {
-                console.log(item + ' => ' + errors[item]);
-                throw { message: 'Revise los datos!' };
+    const checkErrors = () => {
+        let errors = { ...errorMessages };
+        for (const [key, value] of Object.entries(inputs)) {
+            errors[key] = validate(key, value);
+        }
+        setErrorMessages(errors);
+        for (const [key, value] of Object.entries(errors)) {
+            if (errors[key] !== null) {
+                throw new Error(errors[key]);
             }
         }
+        return false;
     };
 
     const handleError = (field, value) => {
@@ -92,10 +94,6 @@ const RegisterScreen = props => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        console.log(inputs);
-    }, [inputs]);
-
     const handleRegister = async () => {
         setIsloading(true);
         try {
@@ -121,10 +119,10 @@ const RegisterScreen = props => {
 
     return (
         <View style={styles.screen}>
-            {isLoading ? <ActivityIndicator style={styles.screen} size={'large'} color={colors.accentLaurelGreen} /> :
+            {isLoading ? <ActivityIndicator style={styles.screen} size={'large'} color={colors.bs.primary} /> :
                 <ScrollView style={styles.container}>
                     <View style={{ width: '100%', alignItems: 'center' }}>
-                        <Image style={styles.screenLogoRegister} resizeMode="contain" source={require('../../../assets/img/example.jpg')} />
+                        <Image style={styles.screenLogoRegister} resizeMode="contain" source={config.brandImage} />
                     </View>
                     <View style={{ width: '100%' }}>
                         <TextInput

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -20,6 +21,8 @@ import StockDetailsScreen from '../screens/main/StockScreen/details';
 import InfoScreen from '../screens/main/InfoScreen';
 import Auth from '../services/Auth';
 import { FontAwesome, Feather } from 'react-native-vector-icons';
+
+import colors from './../constants/colors';
 
 const RootNavigator = () => {
 
@@ -68,9 +71,9 @@ const RootNavigator = () => {
         return (
             <HomeTabs.Navigator tabBarOptions={{
                 showLabel: false,
-                activeBackgroundColor: '#1c1c1c',
-                inactiveBackgroundColor: '#1c1c1c',
-                activeTintColor: 'white',
+                activeBackgroundColor: colors.bs.secondary,
+                inactiveBackgroundColor: colors.bs.secondary,
+                activeTintColor: colors.bs.primary,
             }}>
                 <HomeTabs.Screen
                     name={'Home'}
@@ -97,8 +100,13 @@ const RootNavigator = () => {
                     component={InfoScreen}
                     options={{
                         tabBarLabel: 'Info',
-                        tabBarIcon: ({ color, size }) => (
-                            <Feather name="info" color={color} size={size} />
+                        tabBarIcon: ({ color, size, focused }) => (
+                            // <Feather name="info" color={color} size={size} />
+                            <Image style={{ width: 24, height: 24 }} source={
+                                focused ?
+                                    require('./../../assets/swallow_icon_transparent.png') :
+                                    require('./../../assets/swallow_icon_transparent_gray.png')
+                            } />
                         ),
                     }}
                 />

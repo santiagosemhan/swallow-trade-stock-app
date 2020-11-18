@@ -1,7 +1,9 @@
 const colors = {
     bs: {
-        primary: '#007bff',
-        secondary: '#6c757d',
+        // primary: '#007bff',
+        primary: '#faa61a',
+        // secondary: '#6c757d',
+        secondary: '#292929',
         success: '#28a745',
         danger: '#dc3545',
         warning: '#ffc107',

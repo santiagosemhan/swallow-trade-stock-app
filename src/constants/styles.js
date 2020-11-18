@@ -8,7 +8,7 @@ const btn = {
 
 const btnText = {
     color: 'white',
-    fontFamily: "NunitoSans-Bold",
+    fontFamily: "OpenSans-Bold",
     fontSize: 22,
     textAlign: 'center',
     letterSpacing: 5
@@ -47,17 +47,17 @@ export const styles = {
     screenLogoLogin: {
         alignItems: 'center',
         width: '100%',
-        height: 50,
-        maxWidth: 300,
-        marginTop: 90,
-        marginBottom: 70,
+        height: 120,
+        maxWidth: 400,
+        marginTop: 50,
+        marginBottom: 30,
     },
     screenLogoRegister: {
         width: '100%',
-        height: 50,
+        height: 120,
         maxWidth: 300,
-        marginTop: 40,
-        marginBottom: 30,
+        marginTop: 20,
+        marginBottom: 10,
     },
     screenTitleContainer: {
         overflow: 'hidden',
@@ -83,7 +83,7 @@ export const styles = {
         elevation: 2,
     },
     screenTitle: {
-        fontFamily: 'NunitoSans-Bold',
+        fontFamily: 'OpenSans-Bold',
         fontSize: 22,
         padding: 18,
         borderBottomWidth: 1,
@@ -108,6 +108,10 @@ export const styles = {
     btnTextWhite: {
         ...btnText,
         color: 'white',
+    },
+    btnTextSwallow: {
+        ...btnText,
+        color: colors.bs.secondary,
     },
     actionBtnPrimary: {
         flexDirection: 'row',
@@ -171,13 +175,13 @@ export const styles = {
     actionBtnText: {
         paddingLeft: 10,
         color: 'white',
-        fontFamily: 'NunitoSans-Bold',
+        fontFamily: 'OpenSans-Bold',
         fontSize: 16,
         letterSpacing: 0
     },
     infoTextLink: {
         color: colors.bs.primary,
-        fontFamily: 'NunitoSans-Bold',
+        fontFamily: 'OpenSans-Bold',
         fontSize: 16,
     },
     infoContainer: {
@@ -186,12 +190,12 @@ export const styles = {
     },
     infoText: {
         color: colors.primaryDavysGray,
-        fontFamily: 'NunitoSans-Regular',
+        fontFamily: 'OpenSans-Regular',
         fontSize: 16
     },
     pickerContainer: {
         marginTop: 12,
-        marginBottom: 0,
+        marginBottom: 12,
         borderBottomColor: '#9a9a9a',
         borderBottomWidth: 1.5,
     },
@@ -199,7 +203,7 @@ export const styles = {
         marginLeft: 12,
         color: colors.primaryDavysGray,
         fontSize: 12,
-        fontFamily: 'NunitoSans-Regular'
+        fontFamily: 'OpenSans-Regular'
     },
     pickerSelector: {        
         height: 35
@@ -214,7 +218,7 @@ export const styles = {
         marginLeft: 12,
         color: colors.primaryDavysGray,
         fontSize: 12,
-        fontFamily: 'NunitoSans-Regular',
+        fontFamily: 'OpenSans-Regular',
     },
     customInputText: {
 
@@ -341,20 +345,20 @@ export const styles = {
         backgroundColor: '#fffbe6',
         borderWidth: 1,
         borderColor: '#ffe58f',
-        fontFamily: 'NunitoSans-Bold',
+        fontFamily: 'OpenSans-Bold',
     },
     antTagGreen: {
         color: '#52c41a',
         backgroundColor: '#f6ffed',
         borderWidth: 1,
         borderColor: '#b7eb8f',
-        fontFamily: 'NunitoSans-Bold',
+        fontFamily: 'OpenSans-Bold',
     },
     antTagRed: {
         color: '#f5222d',
         backgroundColor: '#fff1f0',
         borderWidth: 1,
         borderColor: '#ffa39e',
-        fontFamily: 'NunitoSans-Bold',
+        fontFamily: 'OpenSans-Bold',
     },
 };
