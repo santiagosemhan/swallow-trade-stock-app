@@ -108,22 +108,26 @@ const ProfileScreen = props => {
     const handleTakenImage = async (image) => {
         setUserProfilePhoto(image);
         if (image) {
-            const fileName = image.uri.match(/\/([a-zA-Z0-9\-.]+\.[\w]+)$/i)[1];
-            const extension = image.uri.match(/\.([0-9a-z]+)$/i)[1];
-            const formData = new FormData();
-            formData.append(
-                'files',
-                { uri: image.uri, name: fileName, type: `image/${extension}` },
-            );
-            const imageResponse = await ApiService.post(`/upload`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-            });
-            const avatarId = imageResponse.data && imageResponse.data[0].id ? imageResponse.data[0].id : null;
-            const result = await ApiService.put(`/users/${inputs.id}`, { avatar: avatarId });
-            if (result.status == 200) {
-                Alert.alert('Avatar actualizado con éxito.');
+            try{
+                const fileName = image.uri.match(/\/([a-zA-Z0-9\-.]+\.[\w]+)$/i)[1];
+                const extension = image.uri.match(/\.([0-9a-z]+)$/i)[1];
+                const formData = new FormData();
+                formData.append(
+                    'files',
+                    { uri: image.uri, name: fileName, type: `image/${extension}` },
+                );
+                const imageResponse = await ApiService.post(`/upload`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                });
+                const avatarId = imageResponse.data && imageResponse.data[0].id ? imageResponse.data[0].id : null;
+                const result = await ApiService.put(`/users/${inputs.id}`, { avatar: avatarId });
+                if (result.status == 200) {
+                    Alert.alert('Avatar actualizado con éxito.');
+                }
+            }catch(error){
+                console.log(error.response);
             }
         }
     };
@@ -137,27 +141,17 @@ const ProfileScreen = props => {
         try {
             checkErrors();
             const data = {
-                producto: inputs.category,
-                espesor: inputs.thickness,
-                ancho: inputs.width,
-                largo: inputs.height,
-                calidad: inputs.quality,
-                volumen_stock: inputs.stockVolume,
-                cantidad: inputs.stockQuantity,
-                especie: inputs.species,
-                comentarios: inputs.comments,
-                imagenes: [image],
+                firstName: inputs.firstName,
+                lastName: inputs.lastName,
             };
-            const result = await ApiService.post('stocks', data);
-            resetFields();
+            const result = await ApiService.put(`/users/${inputs.id}`, data);
             if (result.status == 200) {
                 Alert.alert('Stock cargado con éxito.');
             }
-            setIsloading(false);
         } catch (error) {
-            setIsLoading(false);
-            console.log(error);
+            console.log(error.response);
         }
+        setIsLoading(false);
     };
 
     return (
@@ -245,6 +239,7 @@ const ProfileScreen = props => {
                                 {errorMessages.lastName}
                             </HelperText>
                             <TextInput
+                                editable={false}
                                 style={styles.inputsStyle}
                                 theme={theme}
                                 underlineColor={colors.primaryDavysGray}

@@ -31,7 +31,7 @@ const post = (url, data, config) => {
 };
 
 const put = (url, data, config) => {
-  return axios.post(url, data, config);
+  return axios.put(url, data, config);
 };
 
 export default {
