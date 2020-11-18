@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator } from 'react-native'
+import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator, Picker } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { Picker } from '@react-native-community/picker';
+// import { Picker } from '@react-native-community/picker';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../../constants/styles';
 import validate from '../../../services/Validate';
 import colors from '../../../constants/colors';
 import ApiService from './../../../services/Api';
 import ImagerPicker from './../../../components/form/ImagePicker';
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Feather } from '@expo/vector-icons';
 import FormData from 'form-data';
 import { thicknesses, heights, qualities, stockVolumes, widths } from './data';
 
@@ -157,7 +157,7 @@ const HomeScreen = props => {
                 <View style={{ ...styles.headerIcons, paddingHorizontal: 20, paddingTop: 20, paddingLeft: 7 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Text style={{ fontFamily: 'NunitoSans-Bold', fontSize: 26, paddingLeft: 10 }}>
+                            <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 26, paddingLeft: 10 }}>
                                 Cargar stock
                                     </Text>
                         </View>
@@ -173,18 +173,22 @@ const HomeScreen = props => {
                             takenImage={handleTakenImage}
                         />
                         <View style={{ alignItems: 'flex-start' }}>
-                            <Text style={{ ...styles.pickerTitle, color: postImage ? colors.bs.primary : colors.primaryDavysGray }}>{postImage ? 'Foto' : 'Tomar foto'}</Text>
-                            <View style={{ width: '100%', alignItems: 'flex-start', maxHeight: 150 }}>
+                            {/* <Text style={{ ...styles.pickerTitle, color: postImage ? colors.bs.primary : colors.primaryDavysGray }}>{postImage ? 'Foto' : 'Tomar foto'}</Text> */}
+                            {/* <View style={{ width: '100%', alignItems: 'flex-start', maxHeight: 150 }}> */}
+                            <View style={{ width: '100%', alignItems: 'center', maxHeight: 150 }}>
                                 {postImage ?
                                     <View style={{ position: 'relative' }}>
                                         <TouchableOpacity onPress={handleCancelPhoto} style={{ position: 'absolute', top: 20, right: 20, zIndex: 999 }}>
-                                            <Entypo name={'circle-with-cross'} size={20} color={colors.primaryDavysGray} />
+                                            <Entypo name={'circle-with-cross'} size={20} color={colors.bs.primary} />
+                                            {/* <Entypo name={'circle-with-cross'} size={20} color={colors.primaryDavysGray} /> */}
                                         </TouchableOpacity>
-                                        <Image style={{ resizeMode: 'contain', borderRadius: 2, padding: 20, margin: 20, width: 120, height: 120 }} source={{ uri: postImage.uri }} />
+                                        <Image style={{ resizeMode: 'contain', borderRadius: 100, padding: 20, margin: 20, width: 120, height: 120 }} source={{ uri: postImage.uri }} />
                                     </View>
                                     :
-                                    <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 4 }} onPress={() => handleShowImagePicker(true)}>
-                                        <Image style={{ resizeMode: 'contain', borderRadius: 2, padding: 20, margin: 20, width: 75, height: 75 }} source={require('./../../../../assets/img/camera.png')} />
+                                    <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 100, borderWidth: 3, borderColor: colors.bs.primary, padding: 30 }} onPress={() => handleShowImagePicker(true)}>
+                                        {/* <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 4 }} onPress={() => handleShowImagePicker(true)}> */}
+                                        {/* <Image style={{ resizeMode: 'contain', borderRadius: 2, padding: 20, margin: 20, width: 75, height: 75 }} source={require('./../../../../assets/img/camera.png')} /> */}
+                                        <Feather name={'camera'} size={60} color={colors.bs.primary}/>
                                     </TouchableOpacity>}
                             </View>
                         </View>

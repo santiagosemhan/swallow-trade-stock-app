@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
     text: {
-        fontFamily: 'NunitoSans-Regular',
+        fontFamily: 'OpenSans-Regular',
         fontSize: 12,
         zIndex: 888,
     },

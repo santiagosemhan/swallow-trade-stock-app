@@ -12,22 +12,10 @@ import colors from './src/constants/colors';
 import { Appearance } from 'react-native'
 
 const fetchFonts = () => {
-  return Font.loadAsync({
-    'Nunito-Black': require('./assets/fonts/Nunito-Black.ttf'),
-    'Nunito-Bold': require('./assets/fonts/Nunito-Bold.ttf'),
-    'Nunito-ExtraBold': require('./assets/fonts/Nunito-ExtraBold.ttf'),
-    'Nunito-Italic': require('./assets/fonts/Nunito-Italic.ttf'),
-    'Nunito-Light': require('./assets/fonts/Nunito-Light.ttf'),
-    'Nunito-Regular': require('./assets/fonts/Nunito-Regular.ttf'),
-    'Nunito-SemiBold': require('./assets/fonts/Nunito-SemiBold.ttf'),
-
-    'NunitoSans-Black': require('./assets/fonts/NunitoSans-Black.ttf'),
-    'NunitoSans-Bold': require('./assets/fonts/NunitoSans-Bold.ttf'),
-    'NunitoSans-ExtraBold': require('./assets/fonts/NunitoSans-ExtraBold.ttf'),
-    'NunitoSans-Italic': require('./assets/fonts/NunitoSans-Italic.ttf'),
-    'NunitoSans-Light': require('./assets/fonts/NunitoSans-Light.ttf'),
-    'NunitoSans-Regular': require('./assets/fonts/NunitoSans-Regular.ttf'),
-    'NunitoSans-SemiBold': require('./assets/fonts/NunitoSans-SemiBold.ttf'),
+  return Font.loadAsync({    
+    'OpenSans-Regular': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'OpenSans-SemiBold': require('./assets/fonts/OpenSans-SemiBold.ttf'),
+    'OpenSans-Bold': require('./assets/fonts/OpenSans-Bold.ttf'),
   })
 };
 
@@ -49,15 +37,15 @@ export default App = () => {
   const fontConfig = {
     default: {
       bold: {
-        fontFamily: 'NunitoSans-Bold',
+        fontFamily: 'OpenSans-Bold',
         fontWeight: 'bold',
       },
       regular: {
-        fontFamily: 'NunitoSans-Regular',
+        fontFamily: 'OpenSans-Regular',
         fontWeight: 'normal',
       },
       light: {
-        fontFamily: 'NunitoSans-Light',
+        fontFamily: 'OpenSans-Light',
         fontWeight: 'normal',
       },
     },
@@ -76,7 +64,7 @@ export default App = () => {
     },
   };
 
-  const fondo = Appearance.getColorScheme() === 'dark' ? 'black' : 'white';
+  const fondo = Appearance.getColorScheme() === 'dark' ? colors.bs.secondary : 'white';
 
   return (
     <Provider store={store}>

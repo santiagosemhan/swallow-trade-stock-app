@@ -5,7 +5,7 @@ import { TextInput, HelperText } from "react-native-paper";
 import { styles, theme } from "../../constants/styles";
 import validate from "../../services/Validate";
 import colors from "../../constants/colors";
-
+import config from "../../constants/config";
 import AuthService from "./../../services/Auth";
 
 const LoginScreen = (props) => {
@@ -91,7 +91,7 @@ const LoginScreen = (props) => {
                             <Image
                                 style={styles.screenLogoLogin}
                                 resizeMode="contain"
-                                source={require("../../../assets/img/example.jpg")}
+                                source={config.brandImage}
                             />
                         </View>
                         <View style={{ width: "100%" }}>
@@ -141,7 +141,7 @@ const LoginScreen = (props) => {
                             <Text
                                 style={{
                                     ...styles.infoTextLink,
-                                    fontFamily: "NunitoSans-Regular",
+                                    fontFamily: "OpenSans-Regular",
                                 }}
                                 onPress={handleForgotPassword}
                             >

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, Image, Alert, ScrollView } from 'react-native'
 import Parse from 'parse/react-native';
-import { TextInput, HelperText } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import { styles, theme } from '../../constants/styles';
 import colors from '../../constants/colors';
+import config from '../../constants/config';
 
 const ForgotPasswordScreen = props => {
 
@@ -23,10 +24,10 @@ const ForgotPasswordScreen = props => {
         <View style={styles.screen}>
             <ScrollView style={styles.container}>
                 <View style={{ width: '100%', alignItems: 'center' }}>
-                    <Image style={styles.screenLogoLogin} resizeMode="contain" source={require('../../../assets/img/example.jpg')} />
+                    <Image style={styles.screenLogoLogin} resizeMode="contain" source={config.brandImage} />
                 </View>
                 <View style={{ width: '100%' }}>
-                    <View style={{ fontFamily: 'NunitoSans-Regular', textAlign: 'justify' }}>
+                    <View style={{ fontFamily: 'OpenSans-Regular', textAlign: 'justify' }}>
                         <Text style={{ marginBottom: 20 }}>A continuación, ingrese su email y le enviaremos un correo para recuperar su contraseña.</Text>
                         <Text style={{ marginBottom: 20 }}>Tenga en cuenta que el email debe ser válido y debe estar asociado a una cuenta.</Text>
                     </View>

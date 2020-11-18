@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, Image, ScrollView, ActivityIndicator, Dim
 import { useDispatch } from 'react-redux';
 import { styles } from '../../constants/styles';
 import colors from '../../constants/colors';
+import config from '../../constants/config';
 import HTML from 'react-native-render-html';
 
 const TnCScreen = props => {
@@ -74,7 +75,7 @@ const TnCScreen = props => {
     const tagStyles = {
         p: {
             color: colors.primaryGunMetal,
-            fontFamily: 'NunitoSans-Regular',
+            fontFamily: 'OpenSans-Regular',
         },
     };
 
@@ -83,7 +84,7 @@ const TnCScreen = props => {
             {isLoading ? <ActivityIndicator style={styles.screen} size={'large'} color={colors.primaryOldMossGreen} /> :
                 <View style={{ flex: 1, width: '100%' }}>
                     <View style={{ width: '100%', alignItems: 'center' }}>
-                        <Image style={{ ...styles.screenLogoLogin, marginTop: 10, marginBottom: 10 }} resizeMode="contain" source={require('../../../assets/img/example.jpg')} />
+                        <Image style={{ ...styles.screenLogoLogin, marginTop: 10, marginBottom: 10 }} resizeMode="contain" source={config.brandImage} />
                     </View>
                     {htmlContent ?
                         <ScrollView decelerationRate={0.99} onScroll={({ nativeEvent }) => {
