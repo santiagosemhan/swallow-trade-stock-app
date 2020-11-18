@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView, ActivityIndicator, Alert } from 'react-native';
 import { TextInput, HelperText } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Avatar } from 'react-native-elements';
@@ -13,6 +13,7 @@ import ImagerPicker from './../../../components/form/ImagePicker';
 import AuthorizedScreen from '../../../components/auth/AuthorizedScreen';
 import AuthService from '../../../services/Auth';
 import ApiService from './../../../services/Api';
+import env from './../../../../env';
 
 const ProfileScreen = props => {
 
@@ -24,18 +25,20 @@ const ProfileScreen = props => {
         email: '',
     };
     const [inputs, setInputs] = useState(fields);
+    const [userAccount, setUserAccount] = useState(null);
     const [errorMessages, setErrorMessages] = useState(fields);
-    const [isLoading, setIsLoading] = useState(true);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const [showImagePicker, setShowImagePicker] = useState(false);
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
     const fetchData = async () => {
-        setIsLoading(true);
         try {
-            const storageUser = await AsyncStorage.getItem('user');
-            const user = JSON.parse(storageUser);
+            const response = await ApiService.get(`users/me`);
+            const user = response.data
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+            setUserProfilePhoto(user.avatar ? env.BASE_URL + 'files/' + user.avatar.name : null);
+            setUserAccount(user);
             setInputs({
                 ...inputs,
                 id: user.id,
@@ -43,11 +46,10 @@ const ProfileScreen = props => {
                 lastName: user.lastName,
                 email: user.email,
                 username: user.username,
-            })
-        } catch (err) {
-            console.log('Error!! ' + err);
+            });
+        } catch (error) {
+            console.log(error.response);
         }
-        setIsLoading(false);
     };
 
     const checkErrors = () => {
@@ -106,9 +108,9 @@ const ProfileScreen = props => {
     };
 
     const handleTakenImage = async (image) => {
-        setUserProfilePhoto(image);
+        setUserProfilePhoto(image.uri);
         if (image) {
-            try{
+            try {
                 const fileName = image.uri.match(/\/([a-zA-Z0-9\-.]+\.[\w]+)$/i)[1];
                 const extension = image.uri.match(/\.([0-9a-z]+)$/i)[1];
                 const formData = new FormData();
@@ -124,9 +126,12 @@ const ProfileScreen = props => {
                 const avatarId = imageResponse.data && imageResponse.data[0].id ? imageResponse.data[0].id : null;
                 const result = await ApiService.put(`/users/${inputs.id}`, { avatar: avatarId });
                 if (result.status == 200) {
-                    Alert.alert('Avatar actualizado con éxito.');
+                    console.log('Avatar actualizado');
+                } else {
+                    console.log('No se pudo actualizar el avatar.');
                 }
-            }catch(error){
+                fetchData();
+            } catch (error) {
                 console.log(error.response);
             }
         }
@@ -137,7 +142,6 @@ const ProfileScreen = props => {
     };
 
     const handleSaveButton = async () => {
-        setIsLoading(true);
         try {
             checkErrors();
             const data = {
@@ -146,145 +150,144 @@ const ProfileScreen = props => {
             };
             const result = await ApiService.put(`/users/${inputs.id}`, data);
             if (result.status == 200) {
-                Alert.alert('Stock cargado con éxito.');
+                Alert.alert('Datos actualizados.');
+                fetchData();
             }
         } catch (error) {
             console.log(error.response);
         }
-        setIsLoading(false);
     };
 
     return (
         <AuthorizedScreen>
             <View style={styles.screen}>
-                {isLoading ? <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.primaryOldMossGreen} /> :
-                    <ScrollView style={{ flex: 1 }} >
-                        <View style={{ ...styles.headerIcons, paddingHorizontal: 20, paddingTop: 20, paddingLeft: 7 }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <Text style={{ fontFamily: 'NunitoSans-Bold', fontSize: 26, paddingLeft: 10 }}>
-                                        Mi perfil
+                <ScrollView style={{ flex: 1 }} >
+                    <View style={{ ...styles.headerIcons, paddingHorizontal: 20, paddingTop: 20, paddingLeft: 7 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Text style={{ fontFamily: 'NunitoSans-Bold', fontSize: 26, paddingLeft: 10 }}>
+                                    Mi perfil
                                     </Text>
-                                    <TouchableOpacity onPress={handleChangePassword} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Entypo style={{}} name={'key'} size={24} color={'black'} />
-                                    </TouchableOpacity>
-                                </View>
+                                <TouchableOpacity onPress={handleChangePassword} style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Entypo style={{}} name={'key'} size={24} color={'black'} />
+                                </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={styles.inputsContainer}>
-                            <ImagerPicker
-                                aspect={[1, 1]}
-                                onRequestClose={() => setShowImagePicker(false)}
-                                show={handleShowImagePicker}
-                                visible={showImagePicker}
-                                takenImage={handleTakenImage}
-                            />
-                            <View style={styles.avatarContainer}>
-                                {userProfilePhoto ?
-                                    <Avatar
-                                        size={120}
-                                        rounded
-                                        onPress={() => setShowImagePicker(true)}
-                                        activeOpacity={0.5}
-                                        showEditButton
-                                        source={{ uri: userProfilePhoto.uri }}
-                                        containerStyle={styles.avatar}
-                                    />
-                                    :
-                                    <Avatar
-                                        size={120}
-                                        rounded
-                                        icon={{ name: 'user', type: 'font-awesome' }}
-                                        onPress={() => setShowImagePicker(true)}
-                                        activeOpacity={0.5}
-                                        showEditButton
-                                        containerStyle={styles.avatar}
-                                    />
-                                }
-                            </View>
-                            {/* <TouchableOpacity onPress={handleChangePassword} style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    </View>
+                    <View style={styles.inputsContainer}>
+
+                        <ImagerPicker
+                            aspect={[1, 1]}
+                            onRequestClose={() => setShowImagePicker(false)}
+                            show={handleShowImagePicker}
+                            visible={showImagePicker}
+                            takenImage={handleTakenImage}
+                        />
+                        <View style={styles.avatarContainer}>
+                            {userProfilePhoto ?
+                                <Avatar
+                                    size={120}
+                                    rounded
+                                    onPress={() => setShowImagePicker(true)}
+                                    activeOpacity={0.5}
+                                    showEditButton
+                                    source={{ uri: userProfilePhoto }}
+                                    containerStyle={styles.avatar}
+                                />
+                                :
+                                <Avatar
+                                    size={120}
+                                    rounded
+                                    icon={{ name: 'user', type: 'font-awesome' }}
+                                    onPress={() => setShowImagePicker(true)}
+                                    activeOpacity={0.5}
+                                    showEditButton
+                                    containerStyle={styles.avatar}
+                                />
+                            }
+                        </View>
+                        {/* <TouchableOpacity onPress={handleChangePassword} style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <Entypo style={{}} name={'lock'} size={16} color={colors.primaryDavysGray} />
                                 <Text style={{ ...styles.infoTextLink, marginLeft: 5, color: colors.primaryDavysGray, fontFamily: 'NunitoSans-Regular' }}>Cambiar contraseña</Text>
                             </TouchableOpacity> */}
-                            <TextInput
-                                style={styles.inputsStyle}
-                                theme={theme}
-                                underlineColor={colors.primaryDavysGray}
-                                autoCapitalize={'none'}
-                                label={'Nombre/s'}
-                                value={inputs.firstName}
-                                error={errorMessages.firstName}
-                                onChangeText={value => handleInput('firstName', value)}
-                            />
-                            <HelperText
-                                type="error"
-                                visible={errorMessages.firstName}
-                            >
-                                {errorMessages.firstName}
-                            </HelperText>
-                            <TextInput
-                                style={styles.inputsStyle}
-                                theme={theme}
-                                underlineColor={colors.primaryDavysGray}
-                                autoCapitalize={'none'}
-                                label={'Apellido'}
-                                value={inputs.lastName}
-                                error={errorMessages.lastName}
-                                onChangeText={value => handleInput('lastName', value)}
-                            />
-                            <HelperText
-                                type="error"
-                                visible={errorMessages.lastName}
-                            >
-                                {errorMessages.lastName}
-                            </HelperText>
-                            <TextInput
-                                editable={false}
-                                style={styles.inputsStyle}
-                                theme={theme}
-                                underlineColor={colors.primaryDavysGray}
-                                autoCapitalize={'none'}
-                                label={'Apodo'}
-                                value={inputs.username}
-                                error={errorMessages.username}
-                                onChangeText={value => handleInput('username', value)}
-                            />
-                            <HelperText
-                                type="error"
-                                visible={errorMessages.username}
-                            >
-                                {errorMessages.username}
-                            </HelperText>
-                            <TextInput
-                                editable={false}
-                                style={styles.inputsStyle}
-                                theme={theme}
-                                underlineColor={colors.primaryDavysGray}
-                                autoCapitalize={'none'}
-                                label={'Email'}
-                                value={inputs.email}
-                                error={errorMessages.email}
-                                onChangeText={value => handleInput('email', value)}
-                            />
-                            <HelperText
-                                type="error"
-                                visible={errorMessages.email}
-                            >
-                                {errorMessages.email}
-                            </HelperText>
-                            {/* <TouchableOpacity onPress={handleChangePassword} style={styles.changePassword}>
+                        <TextInput
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Nombre/s'}
+                            value={inputs.firstName}
+                            error={errorMessages.firstName}
+                            onChangeText={value => handleInput('firstName', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.firstName}
+                        >
+                            {errorMessages.firstName}
+                        </HelperText>
+                        <TextInput
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Apellido'}
+                            value={inputs.lastName}
+                            error={errorMessages.lastName}
+                            onChangeText={value => handleInput('lastName', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.lastName}
+                        >
+                            {errorMessages.lastName}
+                        </HelperText>
+                        <TextInput
+                            editable={false}
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Apodo'}
+                            value={inputs.username}
+                            error={errorMessages.username}
+                            onChangeText={value => handleInput('username', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.username}
+                        >
+                            {errorMessages.username}
+                        </HelperText>
+                        <TextInput
+                            editable={false}
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Email'}
+                            value={inputs.email}
+                            error={errorMessages.email}
+                            onChangeText={value => handleInput('email', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.email}
+                        >
+                            {errorMessages.email}
+                        </HelperText>
+                        {/* <TouchableOpacity onPress={handleChangePassword} style={styles.changePassword}>
                                 <Text>Cambiar contraseña</Text>
                                 <MaterialIcons name={'chevron-right'} size={36} color={colors.primaryOldMossGreen} />
                             </TouchableOpacity> */}
-                            <TouchableOpacity onPress={handleSaveButton} style={styles.actionBtnPrimary}>
-                                <Text style={styles.actionBtnText}>Guardar cambios</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={handleLogOut} style={styles.actionBtnEndSession}>
-                                <Text style={{ ...styles.actionBtnText, color: '#1c1c1c' }}>Cerrar sesión</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </ScrollView>
-                }
+                        <TouchableOpacity onPress={handleSaveButton} style={styles.actionBtnPrimary}>
+                            <Text style={styles.actionBtnText}>Guardar cambios</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleLogOut} style={styles.actionBtnEndSession}>
+                            <Text style={{ ...styles.actionBtnText, color: '#1c1c1c' }}>Cerrar sesión</Text>
+                        </TouchableOpacity>
+                    </View>
+                </ScrollView>
             </View >
         </AuthorizedScreen>
     );
