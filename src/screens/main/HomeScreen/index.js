@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator } from 'react-native'
+import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator, Picker } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { Picker } from '@react-native-community/picker';
+// import { Picker } from '@react-native-community/picker';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../../constants/styles';
 import validate from '../../../services/Validate';

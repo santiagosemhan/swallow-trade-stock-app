@@ -35,7 +35,7 @@ const StockDetails = props => {
                 </View>
                 <View style={{ width: '100%', paddingHorizontal: 15, marginBottom: 20 }}>
                     <TextInput
-                        editable={false}
+                        disabled={true}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -43,7 +43,7 @@ const StockDetails = props => {
                         value={formattedDate + ' - ' + formattedHour}
                     />
                     <TextInput
-                        editable={false}
+                        disabled={true}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -51,7 +51,7 @@ const StockDetails = props => {
                         value={stock.producto.nombre}
                     />
                     <TextInput
-                        editable={false}
+                        disabled={true}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -59,7 +59,7 @@ const StockDetails = props => {
                         value={stock.espesor + '"'}
                     />
                     <TextInput
-                        editable={false}
+                        disabled={true}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -67,7 +67,7 @@ const StockDetails = props => {
                         value={stock.ancho + '"'}
                     />
                     <TextInput
-                        editable={false}
+                        disabled={true}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -75,7 +75,7 @@ const StockDetails = props => {
                         value={stock.largo + "'"}
                     />
                     <TextInput
-                        editable={false}
+                        disabled={true}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -83,7 +83,7 @@ const StockDetails = props => {
                         value={stock.calidad}
                     />
                     <TextInput
-                        editable={false}
+                        disabled={true}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -91,7 +91,7 @@ const StockDetails = props => {
                         value={stock.volumen_stock}
                     />
                     <TextInput
-                        editable={false}
+                        disabled={true}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
@@ -99,7 +99,7 @@ const StockDetails = props => {
                         value={stock.cantidad + ''}
                     />
                     <TextInput
-                        editable={false}
+                        disabled={true}
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}

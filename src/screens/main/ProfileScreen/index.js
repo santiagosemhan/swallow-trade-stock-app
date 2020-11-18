@@ -243,7 +243,7 @@ const ProfileScreen = props => {
                             {errorMessages.lastName}
                         </HelperText>
                         <TextInput
-                            editable={false}
+                            disabled={true}
                             style={styles.inputsStyle}
                             theme={theme}
                             underlineColor={colors.primaryDavysGray}
@@ -260,7 +260,7 @@ const ProfileScreen = props => {
                             {errorMessages.username}
                         </HelperText>
                         <TextInput
-                            editable={false}
+                            disabled={true}
                             style={styles.inputsStyle}
                             theme={theme}
                             underlineColor={colors.primaryDavysGray}
