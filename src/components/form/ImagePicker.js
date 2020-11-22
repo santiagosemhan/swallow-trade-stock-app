@@ -1,13 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, Modal, KeyboardAvoidingView, StyleSheet } from 'react-native';
 import * as ImagePickerExpo from 'expo-image-picker';
-import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import { Divider } from 'react-native-paper';
 import { Feather } from '@expo/vector-icons';
-
-
-
 
 const ImagePicker = props => {
 

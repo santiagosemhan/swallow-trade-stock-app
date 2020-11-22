@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-import { Picker } from '@react-native-picker/picker';
+// import { Picker } from '@react-native-picker/picker';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../../constants/styles';
 import validate from '../../../services/Validate';
@@ -163,6 +163,11 @@ const HomeScreen = props => {
                         </View>
                     </View>
                 </View>
+                <View style={{ width: '100%' }}>
+                    <Text style={{ fontFamily: 'OpenSans-Regular', fontSize: 14, color: colors.primaryGunMetal, paddingHorizontal: 20, paddingTop: 40 }}>
+                        Complete el formulario para notificar del stock disponible a Swallow Trade. Los campos marcados con (*) son obligatorios.
+                    </Text>
+                </View>
                 {isLoading ? <ActivityIndicator style={{ height: screenHeight }} size={'large'} color={colors.bs.primary} /> :
                     <View style={{ width: '100%', padding: 15 }}>
                         <ImagerPicker
@@ -172,27 +177,7 @@ const HomeScreen = props => {
                             visible={showImagePicker}
                             takenImage={handleTakenImage}
                         />
-                        <View style={{ alignItems: 'flex-start' }}>
-                            {/* <Text style={{ ...styles.pickerTitle, color: postImage ? colors.bs.primary : colors.primaryDavysGray }}>{postImage ? 'Foto' : 'Tomar foto'}</Text> */}
-                            {/* <View style={{ width: '100%', alignItems: 'flex-start', maxHeight: 150 }}> */}
-                            <View style={{ width: '100%', alignItems: 'center', maxHeight: 150 }}>
-                                {postImage ?
-                                    <View style={{ position: 'relative' }}>
-                                        <TouchableOpacity onPress={handleCancelPhoto} style={{ position: 'absolute', top: 20, right: 20, zIndex: 999 }}>
-                                            <Entypo name={'circle-with-cross'} size={20} color={colors.bs.primary} />
-                                            {/* <Entypo name={'circle-with-cross'} size={20} color={colors.primaryDavysGray} /> */}
-                                        </TouchableOpacity>
-                                        <Image style={{ resizeMode: 'contain', borderRadius: 100, padding: 20, margin: 20, width: 120, height: 120 }} source={{ uri: postImage.uri }} />
-                                    </View>
-                                    :
-                                    <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 100, borderWidth: 3, borderColor: colors.bs.primary, padding: 30 }} onPress={() => handleShowImagePicker(true)}>
-                                        {/* <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 4 }} onPress={() => handleShowImagePicker(true)}> */}
-                                        {/* <Image style={{ resizeMode: 'contain', borderRadius: 2, padding: 20, margin: 20, width: 75, height: 75 }} source={require('./../../../../assets/img/camera.png')} /> */}
-                                        <Feather name={'camera'} size={60} color={colors.bs.primary} />
-                                    </TouchableOpacity>}
-                            </View>
-                        </View>
-                        <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.category ? colors.bs.primary : '#9a9a9a' }}>
+                        {/* <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.category ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.category ? colors.bs.primary : colors.primaryDavysGray }}>Categoría</Text>
 
                             <Picker style={styles.pickerSelector}
@@ -302,7 +287,7 @@ const HomeScreen = props => {
                                     );
                                 })}
                             </Picker>
-                        </View>
+                        </View> */}
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.species}</Text>
                         <TextInput
                             style={styles.inputsStyle}
@@ -337,15 +322,139 @@ const HomeScreen = props => {
                         >
                             {errorMessages.comments}
                         </HelperText>
-                        <View style={{ width: '100%', marginTop: 20, marginBottom: 10 }}>
+
+                        <TextInput
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Comentarios'}
+                            value={inputs.comments}
+                            error={errorMessages.comments}
+                            onChangeText={value => handleInput('comments', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.comments}
+                        >
+                            {errorMessages.comments}
+                        </HelperText>
+
+                        <TextInput
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Comentarios'}
+                            value={inputs.comments}
+                            error={errorMessages.comments}
+                            onChangeText={value => handleInput('comments', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.comments}
+                        >
+                            {errorMessages.comments}
+                        </HelperText>
+
+                        <TextInput
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Comentarios'}
+                            value={inputs.comments}
+                            error={errorMessages.comments}
+                            onChangeText={value => handleInput('comments', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.comments}
+                        >
+                            {errorMessages.comments}
+                        </HelperText>
+
+                        <TextInput
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Comentarios (*)'}
+                            value={inputs.comments}
+                            error={errorMessages.comments}
+                            onChangeText={value => handleInput('comments', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.comments}
+                        >
+                            {errorMessages.comments}
+                        </HelperText>
+
+                        <TextInput
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Comentarios'}
+                            value={inputs.comments}
+                            error={errorMessages.comments}
+                            onChangeText={value => handleInput('comments', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.comments}
+                        >
+                            {errorMessages.comments}
+                        </HelperText>
+
+                        <TextInput
+                            multiline={true}
+                            numberOfLines={4}
+                            style={{ ...styles.inputsStyle, textAlignVertical: 'top' }}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Comentarios'}
+                            value={inputs.comments}
+                            error={errorMessages.comments}
+                            onChangeText={value => handleInput('comments', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.comments}
+                        >
+                            {errorMessages.comments}
+                        </HelperText>
+                        <View style={{ alignItems: 'flex-start' }}>
+                            <Text style={{ ...styles.pickerTitle, color: colors.primaryDavysGray }}>Si desea puede añadir una foto de su teléfono o capturar una foto haciendo click en el siguiente botón.</Text>
+                            {/* <View style={{ width: '100%', alignItems: 'flex-start', maxHeight: 150 }}> */}
+                            <View style={{ width: '100%', alignItems: 'center' }}>
+                                {postImage ?
+                                    <View style={{ position: 'relative' }}>
+                                        <TouchableOpacity onPress={handleCancelPhoto} style={{ position: 'absolute', top: 20, right: 20, zIndex: 999 }}>
+                                            <Entypo name={'circle-with-cross'} size={20} color={colors.bs.primary} />
+                                            {/* <Entypo name={'circle-with-cross'} size={20} color={colors.primaryDavysGray} /> */}
+                                        </TouchableOpacity>
+                                        <Image style={{ resizeMode: 'contain', borderRadius: 100, padding: 20, margin: 20, width: 120, height: 120 }} source={{ uri: postImage.uri }} />
+                                    </View>
+                                    :
+                                    <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 100, borderWidth: 3, borderColor: colors.bs.primary, padding: 40 }} onPress={() => handleShowImagePicker(true)}>
+                                        {/* <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 4 }} onPress={() => handleShowImagePicker(true)}> */}
+                                        {/* <Image style={{ resizeMode: 'contain', borderRadius: 2, padding: 20, margin: 20, width: 75, height: 75 }} source={require('./../../../../assets/img/camera.png')} /> */}
+                                        <Feather name={'camera'} size={40} color={colors.bs.primary} />
+                                    </TouchableOpacity>}
+                            </View>
+                        </View>
+                        <View style={{ width: '100%', marginTop: 0, marginBottom: 10 }}>
                             <TouchableOpacity style={{}} onPress={resetFields}>
                                 <Text style={{ color: colors.bs.primary, fontSize: 20, textDecorationLine: 'underline', marginBottom: 15, textAlign: 'center' }}>
-                                    Cancelar
+                                    Borrar formulario
                             </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.btnPrimary} onPress={handleSend}>
                                 <Text style={styles.btnTextWhite}>
-                                    AGREGAR
+                                    GUARDAR STOCK
                             </Text>
                             </TouchableOpacity>
                         </View>

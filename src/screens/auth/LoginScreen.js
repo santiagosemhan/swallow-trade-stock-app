@@ -69,7 +69,7 @@ const LoginScreen = (props) => {
             checkErrors();
             await AuthService.login({ email: inputs.email, password: inputs.password }, dispatch);
             resetFields();
-            setIsloading(false);
+            // setIsloading(false);
         } catch (err) {
             setIsloading(false);
             console.log(err.message);

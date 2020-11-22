@@ -15,8 +15,6 @@ import AuthService from '../../../services/Auth';
 import ApiService from './../../../services/Api';
 import env from './../../../../env';
 
-import Toast from 'react-native-simple-toast';
-
 const ProfileScreen = props => {
 
     const fields = {
@@ -110,7 +108,6 @@ const ProfileScreen = props => {
     };
 
     const handleTakenImage = async (image) => {
-        Toast.show('Guardando foto de perfil...', Toast.LONG);
         setUserProfilePhoto(image.uri);
         if (image) {
             try {
@@ -151,10 +148,8 @@ const ProfileScreen = props => {
                 firstName: inputs.firstName,
                 lastName: inputs.lastName,
             };
-            Toast.show('Actualizando perfil...', Toast.LONG);
             const result = await ApiService.put(`/users/${inputs.id}`, data);
             if (result.status == 200) {
-                Toast.show('Perfil actualizado.', Toast.SHORT);
                 fetchData();
             }
         } catch (error) {
@@ -179,7 +174,6 @@ const ProfileScreen = props => {
                         </View>
                     </View>
                     <View style={styles.inputsContainer}>
-
                         <ImagerPicker
                             aspect={[1, 1]}
                             onRequestClose={() => setShowImagePicker(false)}
@@ -214,6 +208,40 @@ const ProfileScreen = props => {
                                 <Entypo style={{}} name={'lock'} size={16} color={colors.primaryDavysGray} />
                                 <Text style={{ ...styles.infoTextLink, marginLeft: 5, color: colors.primaryDavysGray, fontFamily: 'NunitoSans-Regular' }}>Cambiar contraseña</Text>
                             </TouchableOpacity> */}
+                        {/* <TextInput
+                            disabled={true}
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Apodo'}
+                            value={inputs.username}
+                            error={errorMessages.username}
+                            onChangeText={value => handleInput('username', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.username}
+                        >
+                            {errorMessages.username}
+                        </HelperText> */}
+                        <TextInput
+                            disabled={true}
+                            style={styles.inputsStyle}
+                            theme={theme}
+                            underlineColor={colors.primaryDavysGray}
+                            autoCapitalize={'none'}
+                            label={'Email'}
+                            value={inputs.email}
+                            error={errorMessages.email}
+                            onChangeText={value => handleInput('email', value)}
+                        />
+                        <HelperText
+                            type="error"
+                            visible={errorMessages.email}
+                        >
+                            {errorMessages.email}
+                        </HelperText>
                         <TextInput
                             style={styles.inputsStyle}
                             theme={theme}
@@ -245,40 +273,6 @@ const ProfileScreen = props => {
                             visible={errorMessages.lastName}
                         >
                             {errorMessages.lastName}
-                        </HelperText>
-                        <TextInput
-                            disabled={true}
-                            style={styles.inputsStyle}
-                            theme={theme}
-                            underlineColor={colors.primaryDavysGray}
-                            autoCapitalize={'none'}
-                            label={'Apodo'}
-                            value={inputs.username}
-                            error={errorMessages.username}
-                            onChangeText={value => handleInput('username', value)}
-                        />
-                        <HelperText
-                            type="error"
-                            visible={errorMessages.username}
-                        >
-                            {errorMessages.username}
-                        </HelperText>
-                        <TextInput
-                            disabled={true}
-                            style={styles.inputsStyle}
-                            theme={theme}
-                            underlineColor={colors.primaryDavysGray}
-                            autoCapitalize={'none'}
-                            label={'Email'}
-                            value={inputs.email}
-                            error={errorMessages.email}
-                            onChangeText={value => handleInput('email', value)}
-                        />
-                        <HelperText
-                            type="error"
-                            visible={errorMessages.email}
-                        >
-                            {errorMessages.email}
                         </HelperText>
                         {/* <TouchableOpacity onPress={handleChangePassword} style={styles.changePassword}>
                                 <Text>Cambiar contraseña</Text>

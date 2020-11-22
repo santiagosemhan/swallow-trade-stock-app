@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator, StyleSheet } from 'react-native'
-import { Picker } from '@react-native-picker/picker';
+import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator, StyleSheet, Platform } from 'react-native'
+
+import RNPickerSelect from 'react-native-picker-select';
+
+
 import { useDispatch } from 'react-redux';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../constants/styles';
@@ -94,6 +97,12 @@ const RegisterScreen = props => {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        if (inputs.company) {
+            console.log('COMPANY', inputs.company);
+        }
+    }, [inputs.company])
+
     const handleRegister = async () => {
         setIsloading(true);
         try {
@@ -174,16 +183,25 @@ const RegisterScreen = props => {
                         </HelperText>
                         <View style={styles.pickerContainer}>
                             <Text style={styles.pickerTitle}>Empresa</Text>
-                            <Picker style={{}}
-                                selectedValue={inputs.company}
-                                onValueChange={value => handleInput('company', value)}
-                            >
-                                {companies && companies.map(item => {
-                                    return (
-                                        <Picker.Item key={item.id} label={item.name} value={item.id} />
-                                    );
-                                })}
-                            </Picker>
+                            {companies ?
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={false}
+                                    onValueChange={value => handleInput('company', value)}
+                                    itemKey={inputs.company}
+                                    value={inputs.company}
+                                    placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
+                                    style={{
+                                        ...pickerSelectStyles,
+                                        iconContainer: {
+                                            top: 20,
+                                            right: 10,
+                                        },
+                                        placeholder: {},
+                                    }}
+                                    items={companies.map(company => ({ key: company.id, label: company.name, value: company.id }))}
+                                /> :
+                                <View></View>
+                            }
                         </View>
                         <TextInput
                             style={styles.inputsStyle}
@@ -251,6 +269,27 @@ const customStyles = StyleSheet.create({
         marginLeft: 12,
         fontSize: 18,
     }
+});
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        fontSize: 17,
+        paddingVertical: 10,
+        // paddingHorizontal: 10,
+        // borderWidth: 1,
+        // borderColor: 'gray',
+        // borderRadius: 4,
+        // color: 'black',
+        // paddingRight: 30, // to ensure the text is never behind the icon
+        paddingLeft: 13,
+    },
+    inputAndroid: {
+        fontSize: 16,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        color: 'black',
+        paddingRight: 30, // to ensure the text is never behind the icon
+    },
 });
 
 export default RegisterScreen;

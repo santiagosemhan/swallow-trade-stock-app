@@ -41,14 +41,16 @@ const styles = StyleSheet.create({
         width: '95%',
         marginVertical: 5,
         backgroundColor: 'white',
+        // Iphone
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 1,
         },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
+        shadowOpacity: 0.18,
+        shadowRadius: 1.00,
+        // Android
+        elevation: 1,
     },
 });
 
