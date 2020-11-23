@@ -22,6 +22,8 @@
     "expo-google-sign-in": "~8.3.0",
     "expo-image-picker": "~9.1.0",
     "expo-location": "~9.0.0",
+    "expo-notifications": "~0.7.2",
+    "expo-permissions": "~9.3.0",
     "expo-task-manager": "~8.5.0",
     "form-data": "^3.0.0",
     "mqtt": "^4.0.1",

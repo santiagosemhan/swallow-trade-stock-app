@@ -22,8 +22,8 @@ const setAuthToken = (authToken) => {
   }
 };
 
-const get = (url) => {
-  return axios.get(url);
+const get = (url, params = null) => {
+  return axios.get(url, { params });
 };
 
 const post = (url, data, config) => {

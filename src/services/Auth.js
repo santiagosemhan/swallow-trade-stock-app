@@ -1,6 +1,7 @@
 import ApiService from './Api';
 import { setLoggedIn } from '../redux/auth/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
 
 const loginIfOk = async (res, dispatch) => {
     if (res.status == 200) {
@@ -8,12 +9,30 @@ const loginIfOk = async (res, dispatch) => {
             ApiService.setAuthToken(res.data.jwt);
             await AsyncStorage.setItem('user', JSON.stringify(res.data.user));
             await AsyncStorage.setItem('auth_token', JSON.stringify(res.data.jwt));
+            saveInstallationId(res.data.user);
             dispatch(setLoggedIn(true));
         } catch (error) {
             console.log('Auth Service - LoginIfOk Error: ', error);
         }
     } else {
         console.log('Auth Service - LoginIfOk Error: ', res.data);
+    }
+};
+
+const saveInstallationId = async (user) => {
+    try {
+        const pushToken = await AsyncStorage.getItem('pushToken');
+        const data = {
+            installationId: Constants.installationId,
+            pushToken,
+            user: user.id,
+        }
+        const hasInstallation = await ApiService.get('/installations', { installationId: Constants.installationId });
+        if (!hasInstallation.data.length) {
+            await ApiService.post('/installations', data);
+        }
+    } catch (error) {
+        console.log('AuthService - saveInstallationId Error', error.response);
     }
 };
 
