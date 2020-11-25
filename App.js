@@ -23,6 +23,14 @@ const fetchFonts = () => {
   })
 };
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
 enableScreens();
 
 export default App = () => {
