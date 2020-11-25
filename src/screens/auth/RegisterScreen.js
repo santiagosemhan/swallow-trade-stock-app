@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator, StyleSheet, Platform } from 'react-native'
-
+import { View, TouchableOpacity, Text, Image, ScrollView, Alert, ActivityIndicator, StyleSheet } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
-
-
 import { useDispatch } from 'react-redux';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../constants/styles';

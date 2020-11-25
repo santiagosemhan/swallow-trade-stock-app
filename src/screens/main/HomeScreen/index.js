@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator } from 'react-native'
+import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator, StyleSheet } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
-// import { Picker } from '@react-native-picker/picker';
+import RNPickerSelect from 'react-native-picker-select';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../../constants/styles';
 import validate from '../../../services/Validate';
@@ -177,117 +177,166 @@ const HomeScreen = props => {
                             visible={showImagePicker}
                             takenImage={handleTakenImage}
                         />
-                        {/* <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.category ? colors.bs.primary : '#9a9a9a' }}>
+                        <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.category ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.category ? colors.bs.primary : colors.primaryDavysGray }}>Categoría</Text>
-
-                            <Picker style={styles.pickerSelector}
-                                selectedValue={inputs.category}
-                                onValueChange={value => handleInput('category', value)}
-                            >
-                                <Picker.Item key={'category_id'} label={'Seleccione una opción...'} value={null} />
-                                {categories && categories.map(item => {
-                                    return (
-                                        <Picker.Item key={item.id} label={item.nombre} value={item.id} />
-                                    );
-                                })}
-                            </Picker>
+                            {categories ?
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={false}
+                                    onValueChange={value => handleInput('category', value)}
+                                    itemKey={inputs.category}
+                                    value={inputs.category}
+                                    placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
+                                    style={{
+                                        ...pickerSelectStyles,
+                                        iconContainer: {
+                                            top: 20,
+                                            right: 10,
+                                        },
+                                        placeholder: {},
+                                    }}
+                                    items={category.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                /> :
+                                <View></View>
+                            }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.category}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.thickness ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.thickness ? colors.bs.primary : colors.primaryDavysGray }}>Espesor</Text>
-                            {thicknesses &&
-                                <Picker style={styles.pickerSelector}
-                                    selectedValue={inputs.thickness}
+                            {thicknesses ?
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('thickness', value)}
-                                >
-                                    {thicknesses.map(item => {
-                                        return (
-                                            <Picker.Item key={item.id} label={item.name} value={item.id} />
-                                        );
-                                    })}
-                                </Picker>
+                                    itemKey={inputs.thickness}
+                                    value={inputs.thickness}
+                                    placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
+                                    style={{
+                                        ...pickerSelectStyles,
+                                        iconContainer: {
+                                            top: 20,
+                                            right: 10,
+                                        },
+                                        placeholder: {},
+                                    }}
+                                    items={thicknesses.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                /> :
+                                <View></View>
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.thickness}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.width ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.width ? colors.bs.primary : colors.primaryDavysGray }}>Ancho</Text>
-                            {widths &&
-                                <Picker style={styles.pickerSelector}
-                                    selectedValue={inputs.width}
+                            {widths ?
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('width', value)}
-                                >
-                                    {widths
-                                        .map(item => {
-                                            return (
-                                                <Picker.Item key={item.id} label={item.name} value={item.id} />
-                                            );
-                                        })}
-                                </Picker>
+                                    itemKey={inputs.width}
+                                    value={inputs.width}
+                                    placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
+                                    style={{
+                                        ...pickerSelectStyles,
+                                        iconContainer: {
+                                            top: 20,
+                                            right: 10,
+                                        },
+                                        placeholder: {},
+                                    }}
+                                    items={widths.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                /> :
+                                <View></View>
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.width}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.height ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.height ? colors.bs.primary : colors.primaryDavysGray }}>Largo</Text>
-                            {heights &&
-                                <Picker style={styles.pickerSelector}
-                                    selectedValue={inputs.height}
+                            {heights ?
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('height', value)}
-                                >
-                                    {heights.map(item => {
-                                        return (
-                                            <Picker.Item key={item.id} label={item.name} value={item.id} />
-                                        );
-                                    })}
-                                </Picker>
+                                    itemKey={inputs.height}
+                                    value={inputs.height}
+                                    placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
+                                    style={{
+                                        ...pickerSelectStyles,
+                                        iconContainer: {
+                                            top: 20,
+                                            right: 10,
+                                        },
+                                        placeholder: {},
+                                    }}
+                                    items={heights.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                /> :
+                                <View></View>
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.height}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.quality ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.quality ? colors.bs.primary : colors.primaryDavysGray }}>Calidad</Text>
-                            {qualities &&
-                                <Picker style={styles.pickerSelector}
-                                    selectedValue={inputs.quality}
+                            {qualities ?
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('quality', value)}
-                                >
-                                    {qualities.map(item => {
-                                        return (
-                                            <Picker.Item key={item.id} label={item.name} value={item.id} />
-                                        );
-                                    })}
-                                </Picker>
+                                    itemKey={inputs.quality}
+                                    value={inputs.quality}
+                                    placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
+                                    style={{
+                                        ...pickerSelectStyles,
+                                        iconContainer: {
+                                            top: 20,
+                                            right: 10,
+                                        },
+                                        placeholder: {},
+                                    }}
+                                    items={qualities.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                /> :
+                                <View></View>
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.quality}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.stockVolume ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.stockVolume ? colors.bs.primary : colors.primaryDavysGray }}>Volumen de stock</Text>
-                            {stockVolumes &&
-                                <Picker style={styles.pickerSelector}
-                                    selectedValue={inputs.stockVolume}
+                            {stockVolumes ?
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('stockVolume', value)}
-                                >
-                                    {stockVolumes.map(item => {
-                                        return (
-                                            <Picker.Item key={item.id} label={item.name} value={item.id} />
-                                        );
-                                    })}
-                                </Picker>
+                                    itemKey={inputs.stockVolume}
+                                    value={inputs.stockVolume}
+                                    placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
+                                    style={{
+                                        ...pickerSelectStyles,
+                                        iconContainer: {
+                                            top: 20,
+                                            right: 10,
+                                        },
+                                        placeholder: {},
+                                    }}
+                                    items={stockVolumes.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                /> :
+                                <View></View>
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.stockVolume}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.species ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.species ? colors.bs.primary : colors.primaryDavysGray }}>Especie</Text>
-                            <Picker style={styles.pickerSelector}
-                                selectedValue={inputs.species}
-                                onValueChange={value => handleInput('species', value)}
-                            >
-                                <Picker.Item key={'species_id'} label={'Seleccione una opción...'} value={null} />
-                                {species && species.map(item => {
-                                    return (
-                                        <Picker.Item key={item.id} label={item.nombre} value={item.id} />
-                                    );
-                                })}
-                            </Picker>
-                        </View> */}
+                            {species ?
+                                <RNPickerSelect
+                                    useNativeAndroidPickerStyle={false}
+                                    onValueChange={value => handleInput('species', value)}
+                                    itemKey={inputs.species}
+                                    value={inputs.species}
+                                    placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
+                                    style={{
+                                        ...pickerSelectStyles,
+                                        iconContainer: {
+                                            top: 20,
+                                            right: 10,
+                                        },
+                                        placeholder: {},
+                                    }}
+                                    items={species.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                /> :
+                                <View></View>
+                            }
+                        </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.species}</Text>
                         <TextInput
                             style={styles.inputsStyle}
@@ -308,110 +357,6 @@ const HomeScreen = props => {
                         </HelperText>
                         <TextInput
                             style={styles.inputsStyle}
-                            theme={theme}
-                            underlineColor={colors.primaryDavysGray}
-                            autoCapitalize={'none'}
-                            label={'Comentarios'}
-                            value={inputs.comments}
-                            error={errorMessages.comments}
-                            onChangeText={value => handleInput('comments', value)}
-                        />
-                        <HelperText
-                            type="error"
-                            visible={errorMessages.comments}
-                        >
-                            {errorMessages.comments}
-                        </HelperText>
-
-                        <TextInput
-                            style={styles.inputsStyle}
-                            theme={theme}
-                            underlineColor={colors.primaryDavysGray}
-                            autoCapitalize={'none'}
-                            label={'Comentarios'}
-                            value={inputs.comments}
-                            error={errorMessages.comments}
-                            onChangeText={value => handleInput('comments', value)}
-                        />
-                        <HelperText
-                            type="error"
-                            visible={errorMessages.comments}
-                        >
-                            {errorMessages.comments}
-                        </HelperText>
-
-                        <TextInput
-                            style={styles.inputsStyle}
-                            theme={theme}
-                            underlineColor={colors.primaryDavysGray}
-                            autoCapitalize={'none'}
-                            label={'Comentarios'}
-                            value={inputs.comments}
-                            error={errorMessages.comments}
-                            onChangeText={value => handleInput('comments', value)}
-                        />
-                        <HelperText
-                            type="error"
-                            visible={errorMessages.comments}
-                        >
-                            {errorMessages.comments}
-                        </HelperText>
-
-                        <TextInput
-                            style={styles.inputsStyle}
-                            theme={theme}
-                            underlineColor={colors.primaryDavysGray}
-                            autoCapitalize={'none'}
-                            label={'Comentarios'}
-                            value={inputs.comments}
-                            error={errorMessages.comments}
-                            onChangeText={value => handleInput('comments', value)}
-                        />
-                        <HelperText
-                            type="error"
-                            visible={errorMessages.comments}
-                        >
-                            {errorMessages.comments}
-                        </HelperText>
-
-                        <TextInput
-                            style={styles.inputsStyle}
-                            theme={theme}
-                            underlineColor={colors.primaryDavysGray}
-                            autoCapitalize={'none'}
-                            label={'Comentarios (*)'}
-                            value={inputs.comments}
-                            error={errorMessages.comments}
-                            onChangeText={value => handleInput('comments', value)}
-                        />
-                        <HelperText
-                            type="error"
-                            visible={errorMessages.comments}
-                        >
-                            {errorMessages.comments}
-                        </HelperText>
-
-                        <TextInput
-                            style={styles.inputsStyle}
-                            theme={theme}
-                            underlineColor={colors.primaryDavysGray}
-                            autoCapitalize={'none'}
-                            label={'Comentarios'}
-                            value={inputs.comments}
-                            error={errorMessages.comments}
-                            onChangeText={value => handleInput('comments', value)}
-                        />
-                        <HelperText
-                            type="error"
-                            visible={errorMessages.comments}
-                        >
-                            {errorMessages.comments}
-                        </HelperText>
-
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={4}
-                            style={{ ...styles.inputsStyle, textAlignVertical: 'top' }}
                             theme={theme}
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
@@ -464,5 +409,43 @@ const HomeScreen = props => {
         </View >
     )
 };
+
+const customStyles = StyleSheet.create({
+    pickerContainer: {
+        borderBottomColor: '#c6c6c6',
+        borderBottomWidth: 1.35,
+    },
+    picker: {
+        marginLeft: 15,
+    },
+    label: {
+        color: colors.primaryDavysGray,
+        marginTop: 25,
+        marginBottom: 10,
+        marginLeft: 12,
+        fontSize: 18,
+    }
+});
+
+const pickerSelectStyles = StyleSheet.create({
+    inputIOS: {
+        fontSize: 17,
+        paddingVertical: 10,
+        // paddingHorizontal: 10,
+        // borderWidth: 1,
+        // borderColor: 'gray',
+        // borderRadius: 4,
+        // color: 'black',
+        // paddingRight: 30, // to ensure the text is never behind the icon
+        paddingLeft: 13,
+    },
+    inputAndroid: {
+        fontSize: 16,
+        paddingHorizontal: 10,
+        paddingVertical: 8,
+        color: 'black',
+        paddingRight: 30, // to ensure the text is never behind the icon
+    },
+});
 
 export default HomeScreen;
