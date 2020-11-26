@@ -74,6 +74,7 @@ const HomeScreen = props => {
     };
 
     const handleInput = (field, value) => {
+        console.log(field, value);
         handleError(field, value);
         handleField(field, value);
     };
@@ -81,6 +82,7 @@ const HomeScreen = props => {
     const resetFields = () => {
         setPostImage(null);
         setInputs(fields);
+        setErrorMessages(fields);
     };
 
     useEffect(() => {
@@ -179,7 +181,7 @@ const HomeScreen = props => {
                         />
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.category ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.category ? colors.bs.primary : colors.primaryDavysGray }}>Categoría</Text>
-                            {categories ?
+                            {categories &&
                                 <RNPickerSelect
                                     useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('category', value)}
@@ -194,9 +196,8 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={category.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
-                                /> :
-                                <View></View>
+                                    items={categories.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                />
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.category}</Text>
@@ -217,7 +218,7 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={thicknesses.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                    items={thicknesses.map(item => ({ key: item.id, label: item.name, value: item.name }))}
                                 /> :
                                 <View></View>
                             }
@@ -240,7 +241,7 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={widths.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                    items={widths.map(item => ({ key: item.id, label: item.name, value: item.name }))}
                                 /> :
                                 <View></View>
                             }
@@ -263,7 +264,7 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={heights.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                    items={heights.map(item => ({ key: item.id, label: item.name, value: item.name }))}
                                 /> :
                                 <View></View>
                             }
@@ -286,7 +287,7 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={qualities.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                    items={qualities.map(item => ({ key: item.id, label: item.name, value: item.name }))}
                                 /> :
                                 <View></View>
                             }
@@ -309,7 +310,7 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={stockVolumes.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
+                                    items={stockVolumes.map(item => ({ key: item.id, label: item.name, name: item.name }))}
                                 /> :
                                 <View></View>
                             }

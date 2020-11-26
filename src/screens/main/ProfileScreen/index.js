@@ -100,7 +100,7 @@ const ProfileScreen = props => {
     }, [navigation]);
 
     const handleChangePassword = () => {
-        props.navigation.navigate('ChangePassword');
+        props.navigation.navigate('ChangePassword', { id: inputs.id });
     };
 
     const handleLogOut = async () => {
