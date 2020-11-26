@@ -15,13 +15,13 @@ import { thicknesses, heights, qualities, stockVolumes, widths } from './data';
 const HomeScreen = props => {
 
     const fields = {
-        category: '',
-        thickness: '',
-        width: '',
-        height: '',
-        quality: '',
-        stockVolume: '',
-        species: '',
+        category: null,
+        thickness: null,
+        width: null,
+        height: null,
+        quality: null,
+        stockVolume: null,
+        species: null,
         stockQuantity: '',
         comments: '',
     };
@@ -74,16 +74,20 @@ const HomeScreen = props => {
     };
 
     const handleInput = (field, value) => {
-        console.log(field, value);
         handleError(field, value);
         handleField(field, value);
     };
 
     const resetFields = () => {
-        setPostImage(null);
-        setInputs(fields);
         setErrorMessages(fields);
+        setInputs(fields);
+        setPostImage(null);
     };
+
+    useEffect(() => {
+        console.log('Inputs', inputs);
+        console.log('Errors', errorMessages);
+    }, [errorMessages]);
 
     useEffect(() => {
         fetchData();
@@ -185,7 +189,6 @@ const HomeScreen = props => {
                                 <RNPickerSelect
                                     useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('category', value)}
-                                    itemKey={inputs.category}
                                     value={inputs.category}
                                     placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
                                     style={{
@@ -203,11 +206,10 @@ const HomeScreen = props => {
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.category}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.thickness ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.thickness ? colors.bs.primary : colors.primaryDavysGray }}>Espesor</Text>
-                            {thicknesses ?
+                            {thicknesses &&
                                 <RNPickerSelect
                                     useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('thickness', value)}
-                                    itemKey={inputs.thickness}
                                     value={inputs.thickness}
                                     placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
                                     style={{
@@ -218,19 +220,17 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={thicknesses.map(item => ({ key: item.id, label: item.name, value: item.name }))}
-                                /> :
-                                <View></View>
+                                    items={thicknesses.map(item => ({ label: item.name, value: item.name }))}
+                                />
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.thickness}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.width ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.width ? colors.bs.primary : colors.primaryDavysGray }}>Ancho</Text>
-                            {widths ?
+                            {widths &&
                                 <RNPickerSelect
                                     useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('width', value)}
-                                    itemKey={inputs.width}
                                     value={inputs.width}
                                     placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
                                     style={{
@@ -241,19 +241,17 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={widths.map(item => ({ key: item.id, label: item.name, value: item.name }))}
-                                /> :
-                                <View></View>
+                                    items={widths.map(item => ({ label: item.name, value: item.name }))}
+                                />
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.width}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.height ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.height ? colors.bs.primary : colors.primaryDavysGray }}>Largo</Text>
-                            {heights ?
+                            {heights &&
                                 <RNPickerSelect
                                     useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('height', value)}
-                                    itemKey={inputs.height}
                                     value={inputs.height}
                                     placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
                                     style={{
@@ -264,19 +262,17 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={heights.map(item => ({ key: item.id, label: item.name, value: item.name }))}
-                                /> :
-                                <View></View>
+                                    items={heights.map(item => ({ label: item.name, value: item.name }))}
+                                />
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.height}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.quality ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.quality ? colors.bs.primary : colors.primaryDavysGray }}>Calidad</Text>
-                            {qualities ?
+                            {qualities &&
                                 <RNPickerSelect
                                     useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('quality', value)}
-                                    itemKey={inputs.quality}
                                     value={inputs.quality}
                                     placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
                                     style={{
@@ -287,19 +283,17 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={qualities.map(item => ({ key: item.id, label: item.name, value: item.name }))}
-                                /> :
-                                <View></View>
+                                    items={qualities.map(item => ({ label: item.name, value: item.name }))}
+                                />
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.quality}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.stockVolume ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.stockVolume ? colors.bs.primary : colors.primaryDavysGray }}>Volumen de stock</Text>
-                            {stockVolumes ?
+                            {stockVolumes &&
                                 <RNPickerSelect
                                     useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('stockVolume', value)}
-                                    itemKey={inputs.stockVolume}
                                     value={inputs.stockVolume}
                                     placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
                                     style={{
@@ -310,19 +304,17 @@ const HomeScreen = props => {
                                         },
                                         placeholder: {},
                                     }}
-                                    items={stockVolumes.map(item => ({ key: item.id, label: item.name, name: item.name }))}
-                                /> :
-                                <View></View>
+                                    items={stockVolumes.map(item => ({ label: item.name, value: item.name }))}
+                                />
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.stockVolume}</Text>
                         <View style={{ ...styles.pickerContainer, borderBottomColor: inputs.species ? colors.bs.primary : '#9a9a9a' }}>
                             <Text style={{ ...styles.pickerTitle, color: inputs.species ? colors.bs.primary : colors.primaryDavysGray }}>Especie</Text>
-                            {species ?
+                            {species &&
                                 <RNPickerSelect
                                     useNativeAndroidPickerStyle={false}
                                     onValueChange={value => handleInput('species', value)}
-                                    itemKey={inputs.species}
                                     value={inputs.species}
                                     placeholder={{ key: null, label: 'Seleccionar un item...', value: null }}
                                     style={{
@@ -334,8 +326,7 @@ const HomeScreen = props => {
                                         placeholder: {},
                                     }}
                                     items={species.map(item => ({ key: item.id, label: item.nombre, value: item.id }))}
-                                /> :
-                                <View></View>
+                                />
                             }
                         </View>
                         <Text style={{ marginLeft: 7, color: 'red', fontSize: 12 }}>{errorMessages.species}</Text>
@@ -374,20 +365,16 @@ const HomeScreen = props => {
                         </HelperText>
                         <View style={{ alignItems: 'flex-start' }}>
                             <Text style={{ ...styles.pickerTitle, color: colors.primaryDavysGray }}>Si desea puede añadir una foto de su teléfono o capturar una foto haciendo click en el siguiente botón.</Text>
-                            {/* <View style={{ width: '100%', alignItems: 'flex-start', maxHeight: 150 }}> */}
                             <View style={{ width: '100%', alignItems: 'center' }}>
                                 {postImage ?
                                     <View style={{ position: 'relative' }}>
                                         <TouchableOpacity onPress={handleCancelPhoto} style={{ position: 'absolute', top: 20, right: 20, zIndex: 999 }}>
                                             <Entypo name={'circle-with-cross'} size={20} color={colors.bs.primary} />
-                                            {/* <Entypo name={'circle-with-cross'} size={20} color={colors.primaryDavysGray} /> */}
                                         </TouchableOpacity>
                                         <Image style={{ resizeMode: 'contain', borderRadius: 100, padding: 20, margin: 20, width: 120, height: 120 }} source={{ uri: postImage.uri }} />
                                     </View>
                                     :
                                     <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 100, borderWidth: 3, borderColor: colors.bs.primary, padding: 40 }} onPress={() => handleShowImagePicker(true)}>
-                                        {/* <TouchableOpacity style={{ margin: 20, borderWidth: 1, borderColor: colors.primaryGunMetal, borderRadius: 4 }} onPress={() => handleShowImagePicker(true)}> */}
-                                        {/* <Image style={{ resizeMode: 'contain', borderRadius: 2, padding: 20, margin: 20, width: 75, height: 75 }} source={require('./../../../../assets/img/camera.png')} /> */}
                                         <Feather name={'camera'} size={40} color={colors.bs.primary} />
                                     </TouchableOpacity>}
                             </View>
