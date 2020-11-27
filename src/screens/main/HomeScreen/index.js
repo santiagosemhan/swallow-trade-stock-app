@@ -350,6 +350,8 @@ const HomeScreen = props => {
                         <TextInput
                             style={styles.inputsStyle}
                             theme={theme}
+                            numberOfLines={4}
+                            multiline={true}
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Comentarios'}
