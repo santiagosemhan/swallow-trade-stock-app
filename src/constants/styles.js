@@ -205,7 +205,7 @@ export const styles = {
         fontSize: 12,
         fontFamily: 'OpenSans-Regular'
     },
-    pickerSelector: {        
+    pickerSelector: {
         height: 35
     },
     customInputContainer: {
@@ -238,11 +238,10 @@ export const styles = {
     },
     avatarContainer: {
         alignItems: 'center',
-        marginTop: 40,
+        marginVertical: 20,
     },
     avatar: {
         flex: 2,
-        marginLeft: 20,
         backgroundColor: colors.primarySilver
     },
     saveIcon: {

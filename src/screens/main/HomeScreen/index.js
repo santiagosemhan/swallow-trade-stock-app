@@ -388,7 +388,7 @@ const HomeScreen = props => {
                             </Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={styles.btnPrimary} onPress={handleSend}>
-                                <Text style={styles.btnTextWhite}>
+                                <Text style={{ ...styles.btnTextWhite, fontSize: 18, letterSpacing: 2 }}>
                                     GUARDAR STOCK
                             </Text>
                             </TouchableOpacity>

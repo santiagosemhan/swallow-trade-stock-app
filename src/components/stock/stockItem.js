@@ -21,7 +21,7 @@ const StockItem = props => {
             {stockImage ?
                 <Image style={{ width: 65, height: 65 }} source={{ uri: env.BASE_URL + 'files/' + stockImage }} />
                 :
-                <Image style={{ width: 65, height: 65 }} source={require('./../../../assets/img/wood.jpeg')} />
+                <Image resizeMode={'contain'} style={{ width: 65, height: 65 }} source={require('./../../../assets/img/placeholder-square.jpg')} />
             }
             <View style={{ padding: 3, flex: 1 }}>
                 <Text style={{}}>{stock.producto.nombre.toUpperCase()}</Text>

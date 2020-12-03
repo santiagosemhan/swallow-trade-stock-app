@@ -35,5 +35,5 @@ export const qualities = [
 
 export const stockVolumes = [
     { id: 'Pie', name: 'Pie' },
-    { id: 'M3', name: 'm3' },
+    { id: 'M3', name: 'M3' },
 ];

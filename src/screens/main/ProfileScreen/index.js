@@ -25,7 +25,6 @@ const ProfileScreen = props => {
         email: '',
     };
     const [inputs, setInputs] = useState(fields);
-    const [userAccount, setUserAccount] = useState(null);
     const [errorMessages, setErrorMessages] = useState(fields);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const [showImagePicker, setShowImagePicker] = useState(false);
@@ -38,7 +37,6 @@ const ProfileScreen = props => {
             const user = response.data
             await AsyncStorage.setItem('user', JSON.stringify(user));
             setUserProfilePhoto(user.avatar ? env.BASE_URL + 'files/' + user.avatar.name : null);
-            setUserAccount(user);
             setInputs({
                 ...inputs,
                 id: user.id,
@@ -204,27 +202,6 @@ const ProfileScreen = props => {
                                 />
                             }
                         </View>
-                        {/* <TouchableOpacity onPress={handleChangePassword} style={{ marginTop: 15, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                <Entypo style={{}} name={'lock'} size={16} color={colors.primaryDavysGray} />
-                                <Text style={{ ...styles.infoTextLink, marginLeft: 5, color: colors.primaryDavysGray, fontFamily: 'NunitoSans-Regular' }}>Cambiar contraseña</Text>
-                            </TouchableOpacity> */}
-                        {/* <TextInput
-                            disabled={true}
-                            style={styles.inputsStyle}
-                            theme={theme}
-                            underlineColor={colors.primaryDavysGray}
-                            autoCapitalize={'none'}
-                            label={'Apodo'}
-                            value={inputs.username}
-                            error={errorMessages.username}
-                            onChangeText={value => handleInput('username', value)}
-                        />
-                        <HelperText
-                            type="error"
-                            visible={errorMessages.username}
-                        >
-                            {errorMessages.username}
-                        </HelperText> */}
                         <TextInput
                             disabled={true}
                             style={styles.inputsStyle}
