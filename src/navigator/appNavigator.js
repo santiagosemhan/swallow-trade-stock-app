@@ -79,6 +79,7 @@ const RootNavigator = () => {
                     name={'Home'}
                     component={HomeNavigator}
                     options={{
+                        unmountOnBlur: true,
                         tabBarLabel: 'Inicio',
                         tabBarIcon: ({ color, size }) => (
                             <Feather name="home" color={color} size={size} />
@@ -89,6 +90,7 @@ const RootNavigator = () => {
                     name={'Product'}
                     component={StockNavigator}
                     options={{
+                        unmountOnBlur: true,
                         tabBarLabel: 'Stock',
                         tabBarIcon: ({ color, size }) => (
                             <Feather name="box" color={color} size={size} />
@@ -100,8 +102,7 @@ const RootNavigator = () => {
                     component={InfoScreen}
                     options={{
                         tabBarLabel: 'Info',
-                        tabBarIcon: ({ color, size, focused }) => (
-                            // <Feather name="info" color={color} size={size} />
+                        tabBarIcon: ({ focused }) => (
                             <Image style={{ width: 24, height: 24 }} source={
                                 focused ?
                                     require('./../../assets/swallow_icon_transparent.png') :
@@ -114,6 +115,7 @@ const RootNavigator = () => {
                     name={'User'}
                     component={ProfileNavigator}
                     options={{
+                        unmountOnBlur: true,
                         tabBarLabel: 'Perfil',
                         tabBarIcon: ({ color, size }) => (
                             <FontAwesome name="user-o" color={color} size={size} />
