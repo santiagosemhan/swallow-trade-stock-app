@@ -2,21 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../../../constants/styles';
-import StockItem from './../../../components/stock/stockItem';
+import StockList from './../../../components/stock/stockList';
 import ApiService from './../../../services/Api';
 import colors from './../../../constants/colors';
+import env from './../../../../env';
 
 const StockScreen = props => {
 
+    const POST_PER_LOAD_LIMIT = env.LOAD_STOCK_QTY || 10;
     const [stocks, setStocks] = useState(null);
     const navigation = useNavigation();
 
+    const [isLoadingMore, setIsLoadingMore] = useState(null);
+
     const fetchData = async () => {
         try {
-            const res = await ApiService.get('stocks');
-            setStocks(res.data.reverse());
+            const res = await ApiService.get(`stocks?_sort=createdAt:DESC&_limit=${POST_PER_LOAD_LIMIT}`);
+            setStocks(res.data);
         } catch (error) {
             console.log('StockScreen - fetchData Error: ', error.response);
+        }
+    };
+
+    const loadMoreStock = async () => {
+        try {
+            setIsLoadingMore(true);
+            const res = await ApiService.get(`stocks?_sort=createdAt:DESC&_start=${stocks.length}&_limit=${POST_PER_LOAD_LIMIT}`);
+            const updatedPosts = [...stocks, ...res.data];
+            setStocks(updatedPosts);
+            setIsLoadingMore(false);
+        } catch (error) {
+            console.log('StockScreen - loadMoreStock Error: ', error.response);
         }
     };
 
@@ -46,14 +62,12 @@ const StockScreen = props => {
                     </View>
                 </View>
             </View>
-            <ScrollView style={{ flex: 1, marginTop: 20 }}>
-                <View style={{ alignItems: 'center' }}>
-                    {stocks ? stocks.map(stock => <StockItem key={stock.id} stock={stock} onPress={() => handleOnDetailPress(stock)} />)
-                        :
-                        <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.bs.primary} />
-                    }
-                </View>
-            </ScrollView>
+            {stocks ?
+                <StockList handleOnDetailPress={handleOnDetailPress} data={stocks} onEndReached={loadMoreStock} />
+                :
+                <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.bs.primary} />
+            }
+            {isLoadingMore && <ActivityIndicator size={'large'} color={colors.bs.primary} />}
         </View>
     );
 };

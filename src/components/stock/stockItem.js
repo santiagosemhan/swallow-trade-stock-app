@@ -7,7 +7,7 @@ import env from './../../../env';
 const StockItem = props => {
 
     const stock = props.stock;
-    const stockImage = stock.imagenes[0] && stock.imagenes[0].name ? env.BASE_URL + 'files/' + stock.imagenes[0].formats.thumbnail.name : null;
+    const stockImage = stock.imagenes && stock.imagenes[0] ? env.BASE_URL + 'files/' + stock.imagenes[0].formats.thumbnail.name : null;
     const date = new Date(stock.createdAt);
     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     const formattedHour = `${date.getHours()}:${date.getMinutes()}`;
