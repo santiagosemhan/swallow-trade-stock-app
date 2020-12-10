@@ -94,12 +94,6 @@ const RegisterScreen = props => {
         fetchData();
     }, []);
 
-    useEffect(() => {
-        if (inputs.company) {
-            console.log('COMPANY', inputs.company);
-        }
-    }, [inputs.company])
-
     const handleRegister = async () => {
         setIsloading(true);
         try {
@@ -112,7 +106,7 @@ const RegisterScreen = props => {
                 password: inputs.password,
                 username: Slugify(`${inputs.firstName.charAt(0)} ${inputs.lastName}`, '_').toLowerCase(),
                 confirmed: "true",
-                empresa: inputs.company
+                company: inputs.company
             };
             await AuthService.register(userData, dispatch);
             setIsloading(false);
