@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar, SafeAreaView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppLoading } from 'expo';
@@ -73,7 +73,12 @@ export default App = () => {
       });
     }
   };
+
   registerForPushNotificationsAsync();
+
+  Notifications.addNotificationReceivedListener(notification => {
+    console.log('NOTIFICATION REVEIVED EVENT LISTENER', notification);
+  });
 
   const fontConfig = {
     default: {

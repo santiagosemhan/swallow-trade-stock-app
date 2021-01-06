@@ -68,12 +68,10 @@ const LoginScreen = (props) => {
         try {
             checkErrors();
             await AuthService.login({ email: inputs.email, password: inputs.password }, dispatch);
-            resetFields();
-            // setIsloading(false);
+            resetFields();            
         } catch (err) {
             setIsloading(false);
-            console.log(err.message);
-            Alert.alert("Error:", err.message);
+            Alert.alert("Usuario o contraseña inválidos.");
         }
     };
 

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "App Name",
-    "slug": "app_name",
+    "name": "Swallow Trade",
+    "slug": "swallow_trade",
     "platforms": [
       "ios",
       "android",

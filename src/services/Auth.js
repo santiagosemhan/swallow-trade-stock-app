@@ -16,6 +16,7 @@ const loginIfOk = async (res, dispatch) => {
         }
     } else {
         console.log('Auth Service - LoginIfOk Error: ', res.data);
+
     }
 };
 
@@ -37,16 +38,12 @@ const saveInstallationId = async (user) => {
 };
 
 const login = async (credentials, dispatch) => {
-    try {
-        const res = await ApiService.post(
-            'auth/local', {
-            identifier: credentials.email,
-            password: credentials.password
-        });
-        loginIfOk(res, dispatch);
-    } catch (error) {
-        console.log('AuthService - Login Error:', error.response);
-    }
+    const res = await ApiService.post(
+        'auth/local', {
+        identifier: credentials.email,
+        password: credentials.password
+    });
+    loginIfOk(res, dispatch);
 };
 
 const register = async (userData, dispatch) => {
