@@ -63,7 +63,12 @@ const StockScreen = props => {
                 </View>
             </View>
             {stocks ?
-                <StockList handleOnDetailPress={handleOnDetailPress} data={stocks} onEndReached={loadMoreStock} />
+                stocks.length ?
+                    <StockList handleOnDetailPress={handleOnDetailPress} data={stocks} onEndReached={loadMoreStock} />
+                    :
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ margin: 20, fontSize: 16 }}>No tiene stock registrado.</Text>
+                    </View>
                 :
                 <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.bs.primary} />
             }
