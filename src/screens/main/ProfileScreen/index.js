@@ -4,7 +4,7 @@ import { TextInput, HelperText } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Avatar } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Entypo } from 'react-native-vector-icons';
 import validate from '../../../services/Validate';
 import colors from '../../../constants/colors';
@@ -28,6 +28,8 @@ const ProfileScreen = props => {
     const [errorMessages, setErrorMessages] = useState(fields);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const [showImagePicker, setShowImagePicker] = useState(false);
+    const stateUser = useSelector(state => state.user);
+    const stateAvatar = stateUser.avatar ? env.BASE_URL + 'files/' + stateUser.avatar.name : null;
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -180,14 +182,14 @@ const ProfileScreen = props => {
                             takenImage={handleTakenImage}
                         />
                         <View style={styles.avatarContainer}>
-                            {userProfilePhoto ?
+                            {userProfilePhoto || stateAvatar ?
                                 <Avatar
                                     size={120}
                                     rounded
                                     onPress={() => setShowImagePicker(true)}
                                     activeOpacity={0.5}
                                     showEditButton
-                                    source={{ uri: userProfilePhoto }}
+                                    source={{ uri: userProfilePhoto || stateAvatar }}
                                     containerStyle={styles.avatar}
                                 />
                                 :
@@ -209,7 +211,7 @@ const ProfileScreen = props => {
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Email'}
-                            value={inputs.email}
+                            value={inputs.email || stateUser.email}
                             error={errorMessages.email}
                             onChangeText={value => handleInput('email', value)}
                         />
@@ -225,7 +227,7 @@ const ProfileScreen = props => {
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Nombre/s'}
-                            value={inputs.firstName}
+                            value={inputs.firstName || stateUser.firstName}
                             error={errorMessages.firstName}
                             onChangeText={value => handleInput('firstName', value)}
                         />
@@ -241,7 +243,7 @@ const ProfileScreen = props => {
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Apellido'}
-                            value={inputs.lastName}
+                            value={inputs.lastName || stateUser.lastName}
                             error={errorMessages.lastName}
                             onChangeText={value => handleInput('lastName', value)}
                         />
