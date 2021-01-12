@@ -35,6 +35,8 @@ const RootNavigator = () => {
 
     const Drawer = createDrawerNavigator();
     const isLoggedIn = useSelector(state => state.auth);
+    const user = useSelector(state => state.user);
+    const userRole = user && user.role ? user.role.name : null;
     const dispatch = useDispatch();
 
     const handleLogOut = () => {
@@ -75,17 +77,19 @@ const RootNavigator = () => {
                 inactiveBackgroundColor: colors.bs.secondary,
                 activeTintColor: colors.bs.primary,
             }}>
-                <HomeTabs.Screen
-                    name={'Home'}
-                    component={HomeNavigator}
-                    options={{
-                        unmountOnBlur: true,
-                        tabBarLabel: 'Inicio',
-                        tabBarIcon: ({ color, size }) => (
-                            <Feather name="home" color={color} size={size} />
-                        ),
-                    }}
-                />
+                { userRole && userRole !== 'Administrator' &&
+                    <HomeTabs.Screen
+                        name={'Home'}
+                        component={HomeNavigator}
+                        options={{
+                            unmountOnBlur: true,
+                            tabBarLabel: 'Inicio',
+                            tabBarIcon: ({ color, size }) => (
+                                <Feather name="home" color={color} size={size} />
+                            ),
+                        }}
+                    />
+                }
                 <HomeTabs.Screen
                     name={'Product'}
                     component={StockNavigator}
