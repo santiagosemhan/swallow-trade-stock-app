@@ -5,6 +5,7 @@ import { styles } from '../../constants/styles';
 import colors from '../../constants/colors';
 import config from '../../constants/config';
 import HTML from 'react-native-render-html';
+import TermsAndConditions from './tnc';
 
 const TnCScreen = props => {
 
@@ -18,31 +19,7 @@ const TnCScreen = props => {
 
     const fetchData = () => {
         try {
-            const content = '<p>Terms and conditions</p>' + 
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>' +
-                            '<p>Terms and conditions</p>';
+            const content = TermsAndConditions;
             setHtmlContent(content);
         } catch (error) {
             console.log(error);
