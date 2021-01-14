@@ -1,5 +1,6 @@
 import ApiService from './Api';
 import { setLoggedIn } from '../redux/auth/actions';
+import { setUserData } from '../redux/user/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
 
@@ -11,6 +12,7 @@ const loginIfOk = async (res, dispatch) => {
             await AsyncStorage.setItem('auth_token', JSON.stringify(res.data.jwt));
             saveInstallationId(res.data.user);
             dispatch(setLoggedIn(true));
+            dispatch(setUserData(res.data.user));
         } catch (error) {
             console.log('Auth Service - LoginIfOk Error: ', error);
         }
@@ -66,6 +68,7 @@ const logout = async (dispatch) => {
         await AsyncStorage.removeItem('user');
         await AsyncStorage.removeItem('auth_token');
         dispatch(setLoggedIn(false));
+        dispatch(setUserData(null));
     } catch (error) {
         console.log('Auth Service - logOut Error: ', error);
     }
@@ -84,7 +87,8 @@ const isSignedIn = async (dispatch) => {
     }
     if (user && auth_token) {
         ApiService.setAuthToken(auth_token);
-        dispatch(setLoggedIn(user ? true : false));
+        dispatch(setLoggedIn(true));
+        dispatch(setUserData(user));
         return user;
     } else {
         logout(dispatch);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../../../constants/styles';
 import StockList from './../../../components/stock/stockList';
@@ -11,6 +12,8 @@ const StockScreen = props => {
 
     const POST_PER_LOAD_LIMIT = env.LOAD_STOCK_QTY || 10;
     const [stocks, setStocks] = useState(null);
+    const userRole = user && user.role ? user.role.name : null;
+    const screenTitle = userRole && userRole == 'Administrator' ? 'Mi Stock' : 'Stock general';
     const navigation = useNavigation();
 
     const [isLoadingMore, setIsLoadingMore] = useState(null);
@@ -57,13 +60,18 @@ const StockScreen = props => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 26, paddingLeft: 10 }}>
-                            Mi Stock
+
                         </Text>
                     </View>
                 </View>
             </View>
             {stocks ?
-                <StockList handleOnDetailPress={handleOnDetailPress} data={stocks} onEndReached={loadMoreStock} />
+                stocks.length ?
+                    <StockList handleOnDetailPress={handleOnDetailPress} data={stocks} onEndReached={loadMoreStock} />
+                    :
+                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ margin: 20, fontSize: 16 }}>No tiene stock registrado.</Text>
+                    </View>
                 :
                 <ActivityIndicator style={{ flex: 1 }} size={'large'} color={colors.bs.primary} />
             }

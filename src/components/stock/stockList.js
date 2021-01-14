@@ -24,7 +24,6 @@ const StockList = props => {
 
     const buildSections = () => {
         let sections = {};
-
         data.forEach(item => {
             const itemDate = new Date(item.createdAt);
             const itemYear = itemDate.getFullYear();
@@ -42,7 +41,6 @@ const StockList = props => {
                 sections[itemYear][itemMonth].push(item);
             }
         });
-
         let fullData = [];
         for (const [year, yearStock] of Object.entries(sections)) {
             fullData.push(sectionDivider(year, true));
@@ -50,8 +48,7 @@ const StockList = props => {
                 fullData.push(sectionDivider(month));
                 monthStock.forEach(item => fullData.push(stockItem(item)));
             }
-        }
-        
+        }        
         setItems(fullData);
     };
 
