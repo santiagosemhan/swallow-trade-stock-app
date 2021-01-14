@@ -23,27 +23,6 @@ const StockList = props => {
     }
 
     const buildSections = () => {
-
-        const sortina = (o) => {
-            var sorted = {},
-                key, a = [];
-
-            for (key in o) {
-                if (o.hasOwnProperty(key)) {
-                    a.push(key);
-                }
-            }
-
-            a.sort((a, b) => b-a);
-
-            console.log(a);
-
-            for (key = 0; key < a.length; key++) {
-                sorted[a[key]] = o[a[key]];
-            }
-            return sorted;
-        }
-
         let sections = {};
         data.forEach(item => {
             const itemDate = new Date(item.createdAt);
@@ -62,7 +41,6 @@ const StockList = props => {
                 sections[itemYear][itemMonth].push(item);
             }
         });
-        sections = sortina(sections);
         let fullData = [];
         for (const [year, yearStock] of Object.entries(sections)) {
             fullData.push(sectionDivider(year, true));
@@ -70,7 +48,7 @@ const StockList = props => {
                 fullData.push(sectionDivider(month));
                 monthStock.forEach(item => fullData.push(stockItem(item)));
             }
-        }
+        }        
         setItems(fullData);
     };
 
