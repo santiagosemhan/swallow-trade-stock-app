@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Dimensions, RefreshControl } from 'react-native';
 import colors from './../../constants/colors';
 import StockItem from './stockItem';
 
@@ -9,6 +9,13 @@ const StockList = props => {
     const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
     const [items, setItems] = useState(null);
     const screenWidth = Dimensions.get('window').width;
+    const [refreshing, setRefreshing] = React.useState(false);
+
+    const onRefresh = React.useCallback(async () => {
+        setRefreshing(true);
+        await props.onRefresh();
+        setRefreshing(false);
+    }, []);
 
     const sectionDivider = (title, year) => {
         return (
@@ -48,7 +55,7 @@ const StockList = props => {
                 fullData.push(sectionDivider(month));
                 monthStock.forEach(item => fullData.push(stockItem(item)));
             }
-        }        
+        }
         setItems(fullData);
     };
 
@@ -77,6 +84,9 @@ const StockList = props => {
                 renderItem={renderItem}
                 onEndReached={handleOnEndReached}
                 onEndReachedThreshold={0.1}
+                refreshControl={
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                }
             />
         </View >
     );

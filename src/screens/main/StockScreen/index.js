@@ -12,8 +12,9 @@ const StockScreen = props => {
 
     const POST_PER_LOAD_LIMIT = env.LOAD_STOCK_QTY || 10;
     const [stocks, setStocks] = useState(null);
+    const user = useSelector(state => state.user);
     const userRole = user && user.role ? user.role.name : null;
-    const screenTitle = userRole && userRole == 'Administrator' ? 'Mi Stock' : 'Stock general';
+    const screenTitle = userRole && userRole == 'Administrator' ? 'Stock general' : 'Mi Stock';
     const navigation = useNavigation();
 
     const [isLoadingMore, setIsLoadingMore] = useState(null);
@@ -60,14 +61,14 @@ const StockScreen = props => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
                         <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 26, paddingLeft: 10 }}>
-
+                            {screenTitle}
                         </Text>
                     </View>
                 </View>
             </View>
             {stocks ?
                 stocks.length ?
-                    <StockList handleOnDetailPress={handleOnDetailPress} data={stocks} onEndReached={loadMoreStock} />
+                    <StockList handleOnDetailPress={handleOnDetailPress} data={stocks} onEndReached={loadMoreStock} onRefresh={fetchData} />
                     :
                     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={{ margin: 20, fontSize: 16 }}>No tiene stock registrado.</Text>
