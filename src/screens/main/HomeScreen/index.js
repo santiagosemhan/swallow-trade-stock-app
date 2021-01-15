@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator, StyleSheet } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
 import RNPickerSelect from 'react-native-picker-select';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../../constants/styles';
 import validate from '../../../services/Validate';
@@ -26,26 +27,33 @@ const HomeScreen = props => {
         comments: '',
     };
     const [inputs, setInputs] = useState(fields);
-    const [categories, setCategories] = useState(null);
-    const [species, setSpecies] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [species, setSpecies] = useState([]);
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
     const [postImage, setPostImage] = useState(null);
     const [showImagePicker, setShowImagePicker] = useState(false);
     const navigation = useNavigation();
+    const { currentTab } = useSelector(state => state.navigation);
     const screenHeight = Dimensions.get('window').height - 50;
 
-    const fetchData = async () => {
-        resetFields();
-        try {
-            const categoriesResult = await ApiService.get('productos');
-            const speciesResult = await ApiService.get('especies');
-            setCategories(categoriesResult.data);
-            setSpecies(speciesResult.data);
-        } catch (error) {
-            console.log('HomeScreen - fetchData Error:', error);
-        }
-    };
+    const fetchData = React.useCallback(
+        async () => {
+            resetFields();
+            try {
+                const [categoriesResult, speciesResult] = await Promise.all([
+                    ApiService.get('productos'),
+                    ApiService.get('especies')
+                ]);
+                if (currentTab === 'home') {
+                    setCategories(categoriesResult.data);
+                    setSpecies(speciesResult.data);
+                }
+            } catch (error) {
+                console.log('HomeScreen - fetchData Error:', error);
+            }
+        }, [currentTab]
+    );
 
     const checkErrors = () => {
         let errors = { ...errorMessages };
@@ -85,17 +93,8 @@ const HomeScreen = props => {
     };
 
     useEffect(() => {
-        console.log('Inputs', inputs);
-        console.log('Errors', errorMessages);
-    }, [errorMessages]);
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            fetchData();
+            setTimeout(fetchData, 2000);
         });
         return unsubscribe;
     }, [navigation]);
@@ -165,7 +164,7 @@ const HomeScreen = props => {
                         <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Text style={{ fontFamily: 'OpenSans-Bold', fontSize: 26, paddingLeft: 10 }}>
                                 Cargar stock
-                                    </Text>
+                            </Text>
                         </View>
                     </View>
                 </View>

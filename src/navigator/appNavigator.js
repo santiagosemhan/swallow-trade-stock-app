@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { setNavigationState } from '../redux/navigation/actions';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -33,20 +34,15 @@ const RootNavigator = () => {
     const StockStack = createStackNavigator();
     const ProfileStack = createStackNavigator();
 
-    const Drawer = createDrawerNavigator();
     const isLoggedIn = useSelector(state => state.auth);
     const user = useSelector(state => state.user);
     const userRole = user && user.role ? user.role.name : null;
     const dispatch = useDispatch();
 
-    const handleLogOut = () => {
-        Auth.logOut(dispatch);
-    };
-
     const HomeNavigator = () => {
         return (
             <HomeStack.Navigator>
-                <HomeStack.Screen name={'Index'} component={HomeScreen} options={{ headerShown: false }} />
+                <HomeStack.Screen name={'HomeIndex'} component={HomeScreen} options={{ headerShown: false }} />
             </HomeStack.Navigator>
         );
     };
@@ -54,7 +50,7 @@ const RootNavigator = () => {
     const StockNavigator = () => {
         return (
             <StockStack.Navigator>
-                <StockStack.Screen name={'Index'} component={StockScreen} options={{ headerShown: false }} />
+                <StockStack.Screen name={'StockIndex'} component={StockScreen} options={{ headerShown: false }} />
                 <StockStack.Screen name={'Details'} component={StockDetailsScreen} options={{ headerShown: false }} />
             </StockStack.Navigator>
         );
@@ -63,7 +59,7 @@ const RootNavigator = () => {
     const ProfileNavigator = () => {
         return (
             <ProfileStack.Navigator>
-                <ProfileStack.Screen name={'Index'} component={ProfileScreen} options={{ headerShown: false }} />
+                <ProfileStack.Screen name={'ProfileIndex'} component={ProfileScreen} options={{ headerShown: false }} />
                 <ProfileStack.Screen name={'ChangePassword'} component={ChangePasswordScreen} options={{ headerShown: false }} />
             </ProfileStack.Navigator>
         );
@@ -71,12 +67,15 @@ const RootNavigator = () => {
 
     const homeTabsNavigator = () => {
         return (
-            <HomeTabs.Navigator tabBarOptions={{
-                showLabel: false,
-                activeBackgroundColor: colors.bs.secondary,
-                inactiveBackgroundColor: colors.bs.secondary,
-                activeTintColor: colors.bs.primary,
-            }}>
+            <HomeTabs.Navigator
+                tabBarOptions={{
+                    showLabel: false,
+                    activeBackgroundColor: colors.bs.secondary,
+                    inactiveBackgroundColor: colors.bs.secondary,
+                    activeTintColor: colors.bs.primary,
+                }}
+
+            >
                 { userRole && userRole !== 'Administrator' &&
                     <HomeTabs.Screen
                         name={'Home'}
@@ -88,10 +87,15 @@ const RootNavigator = () => {
                                 <Feather name="home" color={color} size={size} />
                             ),
                         }}
+                        listeners={({ navigation, route }) => ({
+                            tabPress: e => {
+                                dispatch(setNavigationState({ currentTab: 'home' }));
+                            },
+                        })}
                     />
                 }
                 <HomeTabs.Screen
-                    name={'Product'}
+                    name={'Stock'}
                     component={StockNavigator}
                     options={{
                         unmountOnBlur: true,
@@ -100,6 +104,12 @@ const RootNavigator = () => {
                             <Feather name="box" color={color} size={size} />
                         ),
                     }}
+                    listeners={({ navigation, route }) => ({
+                        tabPress: e => {
+                            dispatch(setNavigationState({ currentTab: 'stock' }));
+                        },
+                    })}
+
                 />
                 <HomeTabs.Screen
                     name={'Info'}
@@ -114,6 +124,11 @@ const RootNavigator = () => {
                             } />
                         ),
                     }}
+                    listeners={({ navigation, route }) => ({
+                        tabPress: e => {
+                            dispatch(setNavigationState({ currentTab: 'info' }));
+                        },
+                    })}
                 />
                 <HomeTabs.Screen
                     name={'User'}
@@ -125,25 +140,13 @@ const RootNavigator = () => {
                             <FontAwesome name="user-o" color={color} size={size} />
                         ),
                     }}
+                    listeners={({ navigation, route }) => ({
+                        tabPress: e => {
+                            dispatch(setNavigationState({ currentTab: 'profile' }));
+                        },
+                    })}
                 />
             </HomeTabs.Navigator>
-        );
-    };
-
-    const CustomDrawerContent = props => {
-        return (
-            <DrawerContentScrollView {...props}>
-                <DrawerItemList {...props} />
-                <DrawerItem label="Cerrar sesión" onPress={handleLogOut} />
-            </DrawerContentScrollView>
-        );
-    };
-
-    const drawerNavigator = () => {
-        return (
-            <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
-                <Drawer.Screen name="Home" component={homeTabsNavigator} />
-            </Drawer.Navigator>
         );
     };
 

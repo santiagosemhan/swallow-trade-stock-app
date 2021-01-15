@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from '../../../constants/styles';
@@ -13,10 +13,10 @@ const StockScreen = props => {
     const POST_PER_LOAD_LIMIT = env.LOAD_STOCK_QTY || 10;
     const [stocks, setStocks] = useState(null);
     const user = useSelector(state => state.user);
+    const { currentTab } = useSelector(state => state.navigation);
     const userRole = user && user.role ? user.role.name : null;
     const screenTitle = userRole && userRole == 'Administrator' ? 'Stock general' : 'Mi Stock';
     const navigation = useNavigation();
-
     const [isLoadingMore, setIsLoadingMore] = useState(null);
 
     const fetchData = async () => {
@@ -25,7 +25,7 @@ const StockScreen = props => {
             setStocks(res.data);
         } catch (error) {
             console.log('StockScreen - fetchData Error: ', error.response);
-        }
+        };
     };
 
     const loadMoreStock = async () => {
@@ -41,12 +41,10 @@ const StockScreen = props => {
     };
 
     useEffect(() => {
-        fetchData();
-    }, []);
-
-    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            fetchData();
+            if (currentTab === 'stock') {
+                fetchData();
+            }
         });
         return unsubscribe;
     }, [navigation]);

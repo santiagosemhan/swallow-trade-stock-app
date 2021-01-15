@@ -29,6 +29,7 @@ const ProfileScreen = props => {
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const [showImagePicker, setShowImagePicker] = useState(false);
     const stateUser = useSelector(state => state.user);
+    const { currentTab } = useSelector(state => state.navigation);
     const stateAvatar = stateUser.avatar ? env.BASE_URL + 'files/' + stateUser.avatar.name : null;
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const ProfileScreen = props => {
     const fetchData = async () => {
         try {
             const response = await ApiService.get(`users/me`);
-            const user = response.data
+            const user = response.data;
             await AsyncStorage.setItem('user', JSON.stringify(user));
             setUserProfilePhoto(user.avatar ? env.BASE_URL + 'files/' + user.avatar.name : null);
             setInputs({
@@ -82,22 +83,6 @@ const ProfileScreen = props => {
         handleError(field, value);
         handleField(field, value);
     };
-
-    const resetFields = () => {
-        setUserProfilePhoto(null);
-        setInputs(fields);
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-            fetchData();
-        });
-        return unsubscribe;
-    }, [navigation]);
 
     const handleChangePassword = () => {
         props.navigation.navigate('ChangePassword', { id: inputs.id });
@@ -253,10 +238,6 @@ const ProfileScreen = props => {
                         >
                             {errorMessages.lastName}
                         </HelperText>
-                        {/* <TouchableOpacity onPress={handleChangePassword} style={styles.changePassword}>
-                                <Text>Cambiar contraseña</Text>
-                                <MaterialIcons name={'chevron-right'} size={36} color={colors.primaryOldMossGreen} />
-                            </TouchableOpacity> */}
                         <TouchableOpacity onPress={handleSaveButton} style={styles.actionBtnPrimary}>
                             <Text style={styles.actionBtnText}>Guardar cambios</Text>
                         </TouchableOpacity>
