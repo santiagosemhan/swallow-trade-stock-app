@@ -94,7 +94,7 @@ const HomeScreen = props => {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            setTimeout(fetchData, 2000);
+            setTimeout(fetchData, 500);
         });
         return unsubscribe;
     }, [navigation]);

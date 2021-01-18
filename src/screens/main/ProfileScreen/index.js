@@ -3,7 +3,6 @@ import { Text, View, TouchableOpacity, ScrollView, ActivityIndicator, Alert } fr
 import { TextInput, HelperText } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Avatar } from 'react-native-elements';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Entypo } from 'react-native-vector-icons';
 import validate from '../../../services/Validate';
@@ -28,10 +27,8 @@ const ProfileScreen = props => {
     const [errorMessages, setErrorMessages] = useState(fields);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const [showImagePicker, setShowImagePicker] = useState(false);
-    const stateUser = useSelector(state => state.user);
-    const { currentTab } = useSelector(state => state.navigation);
-    const stateAvatar = stateUser.avatar ? env.BASE_URL + 'files/' + stateUser.avatar.name : null;
-    const navigation = useNavigation();
+    const userState = useSelector(state => state.user);
+    const stateAvatar = userState.avatar ? env.BASE_URL + 'files/' + userState.avatar.name : null;
     const dispatch = useDispatch();
 
     const fetchData = async () => {
@@ -39,19 +36,32 @@ const ProfileScreen = props => {
             const response = await ApiService.get(`users/me`);
             const user = response.data;
             await AsyncStorage.setItem('user', JSON.stringify(user));
-            setUserProfilePhoto(user.avatar ? env.BASE_URL + 'files/' + user.avatar.name : null);
-            setInputs({
-                ...inputs,
+            const updatedInputs = {
                 id: user.id,
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
                 username: user.username,
-            });
+            };
+            setInputs(updatedInputs);
+            setUserProfilePhoto(user.avatar ? env.BASE_URL + 'files/' + user.avatar.name : null);
         } catch (error) {
             console.log(error.response);
         }
     };
+
+    useEffect(() => {
+        if (errorMessages) {
+            console.log('ERROR MESSAGES:', errorMessages);
+        }
+    }, [errorMessages]);
+
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+            fetchData();
+        });
+        return unsubscribe;
+    }, [props.navigation]);
 
     const checkErrors = () => {
         let errors = { ...errorMessages };
@@ -196,7 +206,7 @@ const ProfileScreen = props => {
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Email'}
-                            value={inputs.email || stateUser.email}
+                            value={inputs.email || userState.email}
                             error={errorMessages.email}
                             onChangeText={value => handleInput('email', value)}
                         />
@@ -212,7 +222,7 @@ const ProfileScreen = props => {
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Nombre/s'}
-                            value={inputs.firstName || stateUser.firstName}
+                            value={inputs.firstName || userState.firstName}
                             error={errorMessages.firstName}
                             onChangeText={value => handleInput('firstName', value)}
                         />
@@ -228,7 +238,7 @@ const ProfileScreen = props => {
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Apellido'}
-                            value={inputs.lastName || stateUser.lastName}
+                            value={inputs.lastName || userState.lastName}
                             error={errorMessages.lastName}
                             onChangeText={value => handleInput('lastName', value)}
                         />

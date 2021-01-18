@@ -76,12 +76,13 @@ const ChangePasswordScreen = props => {
             setIsloading(false);
             Alert.alert('Contraseña cambiada');
             props.navigation.goBack();
-        } catch (err) {
+        } catch (error) {
             setIsloading(false);
-            if (err.code && err.code === 101) {
+            console.log(error);
+            if (error.code && error.code === 101) {
                 Alert.alert('Error', 'Su contraseña actual es incorrecta.');
             } else {
-                Alert.alert('Error', err.message);
+                Alert.alert('Error', error.message);
             }
         }
     };
