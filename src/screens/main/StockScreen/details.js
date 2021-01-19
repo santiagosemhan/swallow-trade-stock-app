@@ -26,14 +26,7 @@ const StockDetails = props => {
                 </View>
             </View>
             <ScrollView>
-                <View style={{}}>
-                    {stockImage ?
-                        <View style={{ width: '100%', height: screenWidth + 1, alignItems: 'center' }}>
-                            <Image style={{ resizeMode: 'contain', width: '100%', height: '100%' }} source={{ uri: stockImage }} />
-                        </View>
-                        : <View></View>}
-                </View>
-                <View style={{ width: '100%', paddingHorizontal: 15, marginBottom: 20 }}>
+                <View style={{ width: '100%', paddingHorizontal: 10, marginBottom: 20 }}>
                     <TextInput
                         disabled={true}
                         style={styles.inputsStyle}
@@ -106,6 +99,13 @@ const StockDetails = props => {
                         label={'Especie'}
                         value={stock.especie.nombre}
                     />
+                    <View style={{}}>
+                        {stockImage &&
+                            <View style={{ width: '100%', height: screenWidth + 1, alignItems: 'center' }}>
+                                <Image style={{ resizeMode: 'contain', width: '100%', height: '100%' }} source={{ uri: stockImage }} />
+                            </View>
+                        }
+                    </View>
                 </View>
             </ScrollView>
         </View>

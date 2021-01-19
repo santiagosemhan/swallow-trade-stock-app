@@ -4,6 +4,7 @@ import { TextInput, HelperText } from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Avatar } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { Entypo } from 'react-native-vector-icons';
 import validate from '../../../services/Validate';
 import colors from '../../../constants/colors';
@@ -27,6 +28,7 @@ const ProfileScreen = props => {
     const [errorMessages, setErrorMessages] = useState(fields);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const [showImagePicker, setShowImagePicker] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const userState = useSelector(state => state.user);
     const stateAvatar = userState.avatar ? env.BASE_URL + 'files/' + userState.avatar.name : null;
     const dispatch = useDispatch();
@@ -47,18 +49,16 @@ const ProfileScreen = props => {
             setUserProfilePhoto(user.avatar ? env.BASE_URL + 'files/' + user.avatar.name : null);
         } catch (error) {
             console.log(error.response);
-        }
+        };
     };
 
     useEffect(() => {
-        if (errorMessages) {
-            console.log('ERROR MESSAGES:', errorMessages);
-        }
-    }, [errorMessages]);
+        fetchData();
+    }, []);
 
     useEffect(() => {
-        const unsubscribe = props.navigation.addListener('focus', () => {
-            fetchData();
+        const unsubscribe = props.navigation.addListener('focus', async () => {
+            await fetchData();
         });
         return unsubscribe;
     }, [props.navigation]);
@@ -137,6 +137,7 @@ const ProfileScreen = props => {
     };
 
     const handleSaveButton = async () => {
+        setIsLoading(true);
         try {
             checkErrors();
             const data = {
@@ -150,6 +151,7 @@ const ProfileScreen = props => {
         } catch (error) {
             console.log(error.response);
         }
+        setIsLoading(false);
     };
 
     return (
@@ -248,8 +250,8 @@ const ProfileScreen = props => {
                         >
                             {errorMessages.lastName}
                         </HelperText>
-                        <TouchableOpacity onPress={handleSaveButton} style={styles.actionBtnPrimary}>
-                            <Text style={styles.actionBtnText}>Guardar cambios</Text>
+                        <TouchableOpacity disabled={isLoading} onPress={handleSaveButton} style={styles.actionBtnPrimary}>
+                            <Text style={styles.actionBtnText}>{isLoading ? 'Guardando...' : 'Guardar cambios'}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={handleLogOut} style={styles.actionBtnEndSession}>
                             <Text style={{ ...styles.actionBtnText, color: '#1c1c1c' }}>Cerrar sesión</Text>

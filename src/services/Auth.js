@@ -35,7 +35,7 @@ const saveInstallationId = async (user) => {
             await ApiService.post('/installations', data);
         }
     } catch (error) {
-        console.log('AuthService - saveInstallationId Error', error.response);
+        console.log('Auth Service - saveInstallationId Error', error.response);
     }
 };
 
@@ -58,7 +58,7 @@ const register = async (userData, dispatch) => {
         );
         loginIfOk(res, dispatch);
     } catch (error) {
-        console.log('AuthService - Register Error: ', error.response);
+        console.log('Auth Service - Register Error: ', error.response);
     }
 };
 
@@ -67,8 +67,8 @@ const logout = async (dispatch) => {
         ApiService.resetAuthToken();
         await AsyncStorage.removeItem('user');
         await AsyncStorage.removeItem('auth_token');
-        dispatch(setLoggedIn(false));
         dispatch(setUserData(null));
+        dispatch(setLoggedIn(false));
     } catch (error) {
         console.log('Auth Service - logOut Error: ', error);
     }
@@ -83,7 +83,7 @@ const isSignedIn = async (dispatch) => {
         user = JSON.parse(res);
         auth_token = JSON.parse(jwt);
     } catch (error) {
-        console.log('Aut hService - isSignedIn error: ', error);
+        console.log('Auth Service - isSignedIn error: ', error);
     }
     if (user && auth_token) {
         ApiService.setAuthToken(auth_token);
