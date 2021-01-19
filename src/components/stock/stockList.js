@@ -27,35 +27,27 @@ const StockList = props => {
 
     const stockItem = (item) => {
         return <StockItem key={item.id} stock={item} onPress={() => handleOnDetailPress(item)} />;
-    }
+    };
 
     const buildSections = () => {
-        let sections = {};
+        let sections = [];
+        let currentYear = -1;
+        let currentMonth = -1;
+        let fullData = [];
         data.forEach(item => {
             const itemDate = new Date(item.createdAt);
             const itemYear = itemDate.getFullYear();
-            const itemMonth = months[itemDate.getMonth()];
-            if (itemYear in sections) {
-                if (itemMonth in sections[itemYear]) {
-                    sections[itemYear][itemMonth].push(item);
-                } else {
-                    sections[itemYear][itemMonth] = [];
-                    sections[itemYear][itemMonth].push(item);
-                }
-            } else {
-                sections[itemYear] = {};
-                sections[itemYear][itemMonth] = [];
-                sections[itemYear][itemMonth].push(item);
+            const itemMonth = itemDate.getMonth();
+            if (itemYear !== currentYear) {
+                currentYear = itemYear;
+                fullData.push(sectionDivider(currentYear, true));
             }
+            if (itemMonth !== currentMonth) {
+                currentMonth = itemMonth;
+                fullData.push(sectionDivider(months[currentMonth], false));
+            }
+            fullData.push(stockItem(item));
         });
-        let fullData = [];
-        for (const [year, yearStock] of Object.entries(sections)) {
-            fullData.push(sectionDivider(year, true));
-            for (const [month, monthStock] of Object.entries(yearStock)) {
-                fullData.push(sectionDivider(month));
-                monthStock.forEach(item => fullData.push(stockItem(item)));
-            }
-        }
         setItems(fullData);
     };
 
