@@ -41,6 +41,10 @@ const StockScreen = props => {
     };
 
     useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             if (currentTab === 'stock') {
                 fetchData();

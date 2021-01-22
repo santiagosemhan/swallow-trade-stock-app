@@ -7,7 +7,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/swallow_icon.png",
     "splash": {
@@ -22,17 +22,18 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.company.appname"
+      "bundleIdentifier": "com.swallowtrade.stock"
     },
     "android": {
-      "package": "com.company.app_name",
+      "package": "com.swallowtrade.stock",
       "config": {
         "googleMaps": {
           "apiKey": ""
         }
       },
       "versionCode": 1,
-      "useNextNotificationsApi": true
+      "useNextNotificationsApi": true,
+      "permissions" : [ "CAMERA", "ACCESS_FINE_LOCATION" ]
     }
   }
 }

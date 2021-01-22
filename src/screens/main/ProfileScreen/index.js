@@ -17,6 +17,7 @@ import env from './../../../../env';
 
 const ProfileScreen = props => {
 
+    const userState = useSelector(state => state.user);
     const fields = {
         id: '',
         firstName: '',
@@ -24,12 +25,17 @@ const ProfileScreen = props => {
         username: '',
         email: '',
     };
-    const [inputs, setInputs] = useState(fields);
+    const [inputs, setInputs] = useState({
+        id: userState.id,
+        firstName: userState.firstName,
+        lastName: userState.lastName,
+        email: userState.email,
+        username: userState.username,
+    });
     const [errorMessages, setErrorMessages] = useState(fields);
     const [userProfilePhoto, setUserProfilePhoto] = useState(null);
     const [showImagePicker, setShowImagePicker] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const userState = useSelector(state => state.user);
     const stateAvatar = userState.avatar ? env.BASE_URL + 'files/' + userState.avatar.name : null;
     const dispatch = useDispatch();
 
@@ -53,6 +59,14 @@ const ProfileScreen = props => {
     };
 
     useEffect(() => {
+        const updatedInputs = {
+            id: userState.id,
+            firstName: userState.firstName,
+            lastName: userState.lastName,
+            email: userState.email,
+            username: userState.username,
+        };
+        setInputs(updatedInputs);
         fetchData();
     }, []);
 
@@ -186,7 +200,7 @@ const ProfileScreen = props => {
                                     onPress={() => setShowImagePicker(true)}
                                     activeOpacity={0.5}
                                     showEditButton
-                                    source={{ uri: userProfilePhoto || stateAvatar }}
+                                    source={{ uri: userProfilePhoto }}
                                     containerStyle={styles.avatar}
                                 />
                                 :
@@ -208,7 +222,7 @@ const ProfileScreen = props => {
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Email'}
-                            value={inputs.email || userState.email}
+                            value={inputs.email}
                             error={errorMessages.email}
                             onChangeText={value => handleInput('email', value)}
                         />
@@ -224,7 +238,7 @@ const ProfileScreen = props => {
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Nombre/s'}
-                            value={inputs.firstName || userState.firstName}
+                            value={inputs.firstName}
                             error={errorMessages.firstName}
                             onChangeText={value => handleInput('firstName', value)}
                         />
@@ -240,7 +254,7 @@ const ProfileScreen = props => {
                             underlineColor={colors.primaryDavysGray}
                             autoCapitalize={'none'}
                             label={'Apellido'}
-                            value={inputs.lastName || userState.lastName}
+                            value={inputs.lastName}
                             error={errorMessages.lastName}
                             onChangeText={value => handleInput('lastName', value)}
                         />
