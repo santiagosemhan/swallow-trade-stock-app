@@ -4,11 +4,12 @@ import Parse from 'parse/react-native';
 import { TextInput } from 'react-native-paper';
 import { styles, theme } from '../../constants/styles';
 import colors from '../../constants/colors';
-import config from '../../constants/config';
+import ImagesUtil from '../../utils/Images';
 
 const ForgotPasswordScreen = props => {
 
     const [email, setEmail] = useState(null);
+    const brandImage = ImagesUtil.getBrandImage();
 
     const handleRecoverPassword = async () => {
         try {
@@ -24,7 +25,7 @@ const ForgotPasswordScreen = props => {
         <View style={styles.screen}>
             <ScrollView style={styles.container}>
                 <View style={{ width: '100%', alignItems: 'center' }}>
-                    <Image style={styles.screenLogoLogin} resizeMode="contain" source={config.brandImage} />
+                    <Image style={styles.screenLogoLogin} resizeMode="contain" source={brandImage} />
                 </View>
                 <View style={{ width: '100%' }}>
                     <View style={{ fontFamily: 'OpenSans-Regular', textAlign: 'justify' }}>

@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import { styles } from '../../../constants/styles';
-import config from "../../../constants/config";
+import ImagesUtil from '../../../utils/Images';
 
 const InfoScreen = props => {
+    
+    const brandImage = ImagesUtil.getBrandImage();
 
     return (
         <View style={styles.screen}>
@@ -12,7 +14,7 @@ const InfoScreen = props => {
                     <Image
                         style={styles.screenLogoLogin}
                         resizeMode="contain"
-                        source={config.brandImage}
+                        source={brandImage}
                     />
                     <Text style={{ fontFamily: 'OpenSans-Regular', textAlign: 'justify' }}>Comercializamos más de 70 productos certificados internacionalmente, procedentes de industrias de América Latina, Europa, Asia y África.</Text>
                 </View>

@@ -5,7 +5,7 @@ import { TextInput, HelperText } from "react-native-paper";
 import { styles, theme } from "../../constants/styles";
 import validate from "../../services/Validate";
 import colors from "../../constants/colors";
-import config from "../../constants/config";
+import ImagesUtil from '../../utils/Images';
 import AuthService from "./../../services/Auth";
 
 const LoginScreen = (props) => {
@@ -18,6 +18,7 @@ const LoginScreen = (props) => {
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
     const dispatch = useDispatch();
+    const brandImage = ImagesUtil.getBrandImage();
 
     AuthService.isSignedIn(dispatch);
 
@@ -90,7 +91,7 @@ const LoginScreen = (props) => {
                         <Image
                             style={styles.screenLogoLogin}
                             resizeMode="contain"
-                            source={config.brandImage}
+                            source={brandImage}
                         />
                     </View>
                     <View style={{ width: "100%" }}>

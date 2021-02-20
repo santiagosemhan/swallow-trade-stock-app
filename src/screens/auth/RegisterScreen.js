@@ -6,7 +6,7 @@ import { TextInput, HelperText } from 'react-native-paper';
 import { styles, theme } from '../../constants/styles';
 import validate from '../../services/Validate';
 import colors from '../../constants/colors';
-import config from '../../constants/config';
+import ImagesUtil from '../../utils/Images';
 import Slugify from 'slugify';
 import AuthService from './../../services/Auth';
 import ApiService from './../../services/Api';
@@ -26,6 +26,7 @@ const RegisterScreen = props => {
     const [errorMessages, setErrorMessages] = useState(fields);
     const [isLoading, setIsloading] = useState(false);
     const dispatch = useDispatch();
+    const brandImage = ImagesUtil.getBrandImage();
 
     const fetchData = async () => {
         try {
@@ -122,7 +123,7 @@ const RegisterScreen = props => {
             {isLoading ? <ActivityIndicator style={styles.screen} size={'large'} color={colors.bs.primary} /> :
                 <ScrollView style={styles.container}>
                     <View style={{ width: '100%', alignItems: 'center' }}>
-                        <Image style={styles.screenLogoRegister} resizeMode="contain" source={config.brandImage} />
+                        <Image style={styles.screenLogoRegister} resizeMode="contain" source={brandImage} />
                     </View>
                     <View style={{ width: '100%' }}>
                         <TextInput

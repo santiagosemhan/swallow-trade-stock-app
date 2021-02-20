@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar, SafeAreaView } from 'react-native';
+import { StatusBar, SafeAreaView, Appearance } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppLoading } from 'expo';
 import { enableScreens } from 'react-native-screens';
@@ -9,7 +9,6 @@ import * as Font from 'expo-font';
 import { Provider } from 'react-redux';
 import store from './src/redux/store/store';
 import colors from './src/constants/colors';
-import { Appearance } from 'react-native'
 
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
