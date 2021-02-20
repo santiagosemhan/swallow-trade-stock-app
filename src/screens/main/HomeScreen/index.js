@@ -34,31 +34,54 @@ const HomeScreen = props => {
     const [postImage, setPostImage] = useState(null);
     const [showImagePicker, setShowImagePicker] = useState(false);
     const navigation = useNavigation();
-    const { currentTab } = useSelector(state => state.navigation);
     const screenHeight = Dimensions.get('window').height - 50;
+    const [others, setOthers] = useState(null);
 
-    const fetchData = React.useCallback(
-        async () => {
-            resetFields();
-            try {
-                const [categoriesResult, speciesResult] = await Promise.all([
-                    ApiService.get('productos'),
-                    ApiService.get('especies')
-                ]);
-                if (currentTab === 'home') {
-                    setCategories(categoriesResult.data);
-                    setSpecies(speciesResult.data);
+    const handleCategories = (categories) => {
+        if (categories) {
+            let i;
+            for (i = 0; i < categories.length; i++) {
+                const name = categories[i].nombre.toLowerCase();
+                if (name.includes('otro')) {
+                    setOthers(categories[i]);
+                    categories.splice(i, 1);
                 }
-            } catch (error) {
-                console.log('HomeScreen - fetchData Error:', error);
             }
-        }, [currentTab]
-    );
+            categories.sort((a, b) => {
+                if (a.nombre < b.nombre) return -1;
+                if (a.nombre > b.nombre) return 1;
+                return 0;
+            });
+            categories.push(others);
+            // console.log(categories);
+        }
+        setCategories(categories);
+    };
+
+    const fetchData = async () => {
+        try {
+            const [categoriesResult, speciesResult] = await Promise.all([
+                ApiService.get('productos'),
+                ApiService.get('especies')
+            ]);
+            handleCategories(categoriesResult.data);
+            setSpecies(speciesResult.data);
+        } catch (error) {
+            console.log('HomeScreen - fetchData Error:', error);
+        }
+    };
 
     const checkErrors = () => {
         let errors = { ...errorMessages };
+        let extra = null;
         for (const [key, value] of Object.entries(inputs)) {
             errors[key] = validate(key, value);
+            if (key == 'category' && value == others.id && inputs.comments == '') {
+                extra = 'Debe especificar en un comentario la categoría.';
+            }
+        }
+        if (extra) {
+            errors['comments'] = extra;
         }
         setErrorMessages(errors);
         for (const [key, value] of Object.entries(errors)) {
@@ -93,8 +116,14 @@ const HomeScreen = props => {
     };
 
     useEffect(() => {
+        resetFields();
+        fetchData();
+    }, []);
+
+    useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            setTimeout(fetchData, 500);
+            resetFields();
+            fetchData();
         });
         return unsubscribe;
     }, [navigation]);
