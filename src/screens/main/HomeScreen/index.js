@@ -37,25 +37,30 @@ const HomeScreen = props => {
     const screenHeight = Dimensions.get('window').height - 50;
     const [others, setOthers] = useState(null);
 
-    const handleCategories = (categories) => {
+    const processCategories = (categories) => {
         if (categories) {
             let i;
+            let othersCategory = null;
             for (i = 0; i < categories.length; i++) {
                 const name = categories[i].nombre.toLowerCase();
                 if (name.includes('otro')) {
                     setOthers(categories[i]);
+                    othersCategory = categories[i];
                     categories.splice(i, 1);
                 }
             }
             categories.sort((a, b) => {
-                if (a.nombre < b.nombre) return -1;
-                if (a.nombre > b.nombre) return 1;
+                if (a && b) {
+                    if (a.nombre < b.nombre) return -1;
+                    if (a.nombre > b.nombre) return 1;
+                }
                 return 0;
             });
-            categories.push(others);
-            // console.log(categories);
+            if (othersCategory) {
+                categories.push(othersCategory);
+            }
         }
-        setCategories(categories);
+        return categories;
     };
 
     const fetchData = async () => {
@@ -64,7 +69,8 @@ const HomeScreen = props => {
                 ApiService.get('productos'),
                 ApiService.get('especies')
             ]);
-            handleCategories(categoriesResult.data);
+            const procededCats = processCategories(categoriesResult.data);
+            setCategories(procededCats);
             setSpecies(speciesResult.data);
         } catch (error) {
             console.log('HomeScreen - fetchData Error:', error);
@@ -76,8 +82,10 @@ const HomeScreen = props => {
         let extra = null;
         for (const [key, value] of Object.entries(inputs)) {
             errors[key] = validate(key, value);
-            if (key == 'category' && value == others.id && inputs.comments == '') {
-                extra = 'Debe especificar en un comentario la categoría.';
+            if (others) {
+                if (key == 'category' && value == others.id && inputs.comments == '') {
+                    extra = 'Debe especificar en un comentario la categoría.';
+                }
             }
         }
         if (extra) {
