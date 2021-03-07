@@ -31,12 +31,15 @@ const RegisterScreen = props => {
     const fetchData = async () => {
         try {
             const result = await ApiService.get('companies');
-            const data = {
-                ...inputs,
-                company: result.data[0].id,
+            if (result && result.data) {
+                const data = {
+                    ...inputs,
+                    company: result.data[1].id,
+                }
+                const sortedData = result.data.sort((a, b) => a.name > b.name);
+                setInputs(data);
+                setCompanies(result.data);
             }
-            setInputs(data);
-            setCompanies(result.data);
         } catch (error) {
             console.log('RegisterScreen - fetchData Error:', error);
         }

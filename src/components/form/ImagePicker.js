@@ -28,9 +28,6 @@ const ImagePicker = props => {
                 // base64: true
             });
             if (!result.cancelled) {
-
-                console.log('ARCHIVO DE FOTO SACADO', result);
-
                 props.takenImage(result, 'pic.jpg');
             }
             handleShowModal(false)

@@ -10,22 +10,6 @@ export default function validate(fieldName, value) {
         message: '^Email no válido.',
       }
     },
-    firstName: {
-      presence: true,
-      format: {
-        pattern: /[a-zA-Z\s\.\//\á\é\í\ó\ú\ü\ç]+/,
-        flags: "i",
-        message: "^Ingrese un nombre válido."
-      },
-    },
-    lastName: {
-      presence: true,
-      format: {
-        pattern: /[a-zA-Z\s\.\//\á\é\í\ó\ú\ü\ç]+/,
-        flags: "i",
-        message: "^Ingrese un apellido válido."
-      },
-    },
     startDate: {
       presence: true,
       format: {

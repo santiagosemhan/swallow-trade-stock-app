@@ -33,13 +33,13 @@ export const heights = [
 ];
 
 export const qualities = [
-    { id: 'Tercera', name: 'Premium' },
+    { id: 'Premium', name: 'Premium' },
     { id: 'Primera', name: 'Primera' },
     { id: 'Segunda', name: 'Segunda' },
 ];
 
 export const stockVolumes = [
-    { id: 'Pie', name: 'Pie2' },
+    { id: 'Pie2', name: 'Pie2' },
     { id: 'M2', name: 'M2' },
     { id: 'M3', name: 'M3' },
 ];
