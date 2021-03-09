@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator, StyleSheet } from 'react-native'
+import { View, TouchableOpacity, Text, Dimensions, ScrollView, Image, Alert, ActivityIndicator, StyleSheet, Linking } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
@@ -148,6 +148,10 @@ const HomeScreen = props => {
         setPostImage(null);
     };
 
+    const handleOpenWhatsApp = () => {
+        Linking.openURL('https://api.whatsapp.com/send?phone=5493751300435&text=Hola!%20Me%20estoy%20comunicando%20desde%20la%20app%20de%20Swallow%20Trade.%20Necesito%20contactarme%20contigo%20a%20la%20brevedad.');
+    };
+
     const handleSend = async () => {
         setIsloading(true);
         try {
@@ -195,6 +199,9 @@ const HomeScreen = props => {
 
     return (
         <View style={styles.screen}>
+            <TouchableOpacity onPress={handleOpenWhatsApp} style={{ position: 'absolute', bottom: 10, right: 10, zIndex: 99999, borderRadius: 50, width: 60, height: 60, justifyContent: 'center', alignItems: 'center' }}>
+                <Image resizeMode={'contain'} style={{ width: '100%' }} source={require('../../../../assets/whatsapp.png')} />
+            </TouchableOpacity>
             <ScrollView style={{ flex: 1 }}>
                 <View style={{ ...styles.headerIcons, paddingHorizontal: 20, paddingTop: 20, paddingLeft: 7 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -436,33 +443,10 @@ const HomeScreen = props => {
     )
 };
 
-const customStyles = StyleSheet.create({
-    pickerContainer: {
-        borderBottomColor: '#c6c6c6',
-        borderBottomWidth: 1.35,
-    },
-    picker: {
-        marginLeft: 15,
-    },
-    label: {
-        color: colors.primaryDavysGray,
-        marginTop: 25,
-        marginBottom: 10,
-        marginLeft: 12,
-        fontSize: 18,
-    }
-});
-
 const pickerSelectStyles = StyleSheet.create({
     inputIOS: {
         fontSize: 17,
         paddingVertical: 10,
-        // paddingHorizontal: 10,
-        // borderWidth: 1,
-        // borderColor: 'gray',
-        // borderRadius: 4,
-        // color: 'black',
-        // paddingRight: 30, // to ensure the text is never behind the icon
         paddingLeft: 13,
     },
     inputAndroid: {
@@ -470,7 +454,7 @@ const pickerSelectStyles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 8,
         color: 'black',
-        paddingRight: 30, // to ensure the text is never behind the icon
+        paddingRight: 30,
     },
 });
 

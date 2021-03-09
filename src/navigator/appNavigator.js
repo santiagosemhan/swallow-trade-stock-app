@@ -111,6 +111,22 @@ const RootNavigator = () => {
 
                 />
                 <HomeTabs.Screen
+                    name={'User'}
+                    component={ProfileNavigator}
+                    options={{
+                        unmountOnBlur: true,
+                        tabBarLabel: 'Perfil',
+                        tabBarIcon: ({ color, size }) => (
+                            <FontAwesome name="user-o" color={color} size={size} />
+                        ),
+                    }}
+                    listeners={({ navigation, route }) => ({
+                        tabPress: e => {
+                            dispatch(setNavigationState({ currentTab: 'profile' }));
+                        },
+                    })}
+                />
+                <HomeTabs.Screen
                     name={'Info'}
                     component={InfoScreen}
                     options={{
@@ -126,22 +142,6 @@ const RootNavigator = () => {
                     listeners={({ navigation, route }) => ({
                         tabPress: e => {
                             dispatch(setNavigationState({ currentTab: 'info' }));
-                        },
-                    })}
-                />
-                <HomeTabs.Screen
-                    name={'User'}
-                    component={ProfileNavigator}
-                    options={{
-                        unmountOnBlur: true,
-                        tabBarLabel: 'Perfil',
-                        tabBarIcon: ({ color, size }) => (
-                            <FontAwesome name="user-o" color={color} size={size} />
-                        ),
-                    }}
-                    listeners={({ navigation, route }) => ({
-                        tabPress: e => {
-                            dispatch(setNavigationState({ currentTab: 'profile' }));
                         },
                     })}
                 />

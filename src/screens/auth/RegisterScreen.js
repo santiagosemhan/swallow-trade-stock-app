@@ -101,6 +101,9 @@ const RegisterScreen = props => {
     const handleRegister = async () => {
         setIsloading(true);
         try {
+            if (!inputs.company) {
+                throw new Error('Ingresar la empresa a la que pertecene.');
+            }
             await AuthService.isSignedIn(dispatch);
             checkErrors();
             const userData = {
