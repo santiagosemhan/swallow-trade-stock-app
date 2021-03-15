@@ -95,9 +95,43 @@ const isSignedIn = async (dispatch) => {
     }
 };
 
+const forgotPassword = async (email) => {
+    try {
+        const res = await ApiService.post(
+            'auth/forgot-password',
+            {
+                email,
+            }
+        );
+        return true;
+    } catch (error) {
+        console.log('Auth Service - forgotPassword error: ', error);
+    }
+    return false;
+};
+
+const setNewPassword = async (code, password, passwordConfirmation) => {
+    try {
+        const res = await ApiService.post(
+            'auth/reset-password',
+            {
+                code, // code contained in the reset link of step 3.
+                password,
+                passwordConfirmation,
+            }
+        );
+        return true;
+    } catch (error) {
+        console.log('Auth Service - setNewPassword error: ', error);
+    }
+    return false;
+}
+
 export default {
     login,
     logout,
     register,
     isSignedIn,
+    forgotPassword,
+    setNewPassword,
 };

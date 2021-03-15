@@ -9,6 +9,7 @@ import LoginScreen from '../screens/auth/LoginScreen';
 import TnCScreen from '../screens/auth/TnCScreen';
 import RegisterScreen from '../screens/auth/RegisterScreen';
 import ForgotPasswordScreen from '../screens/auth/ForgotPasswordScreen';
+import NewPasswordScreen from '../screens/auth/NewPasswordScreen';
 
 import HomeScreen from '../screens/main/HomeScreen';
 
@@ -162,6 +163,7 @@ const RootNavigator = () => {
                         <AppStack.Screen name={'TnC'} component={TnCScreen} options={{ headerShown: false }} />
                         <AppStack.Screen name={'Register'} component={RegisterScreen} options={{ headerShown: false }} />
                         <AppStack.Screen name={'ForgotPassword'} component={ForgotPasswordScreen} options={{ headerShown: false }} />
+                        <AppStack.Screen name={'NewPassword'} component={NewPasswordScreen} options={{ headerShown: false }} />
                     </>
                 }
             </AppStack.Navigator>

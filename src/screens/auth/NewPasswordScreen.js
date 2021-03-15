@@ -6,18 +6,19 @@ import colors from '../../constants/colors';
 import ImagesUtil from '../../utils/Images';
 import AuthService from '../../services/Auth';
 
-
 const ForgotPasswordScreen = props => {
 
-    const [email, setEmail] = useState(null);
+    const { code } = props.route.params;
+    const [password, setPassword] = useState('');
+    const [passwordConfirmation, setPasswordConfirmation] = useState('');
     const brandImage = ImagesUtil.getBrandImage();
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleRecoverPassword = async () => {
+    const handleSetNewPassword = async () => {
         setIsLoading(true);
-        const result = await AuthService.forgotPassword(email);
+        const result = await AuthService.setNewPassword(code, password, passwordConfirmation);
         if (result) {
-            Alert.alert('Se envió un correo para resetear su password');
+            Alert.alert('Su contraseña se restauró con éxito.');
             props.navigation.navigate('Login');
         } else {
             Alert.alert('Ocurrió un error. Intente nuevamente o contáctese con Swallow Trade.');
@@ -32,21 +33,28 @@ const ForgotPasswordScreen = props => {
                     <Image style={styles.screenLogoLogin} resizeMode="contain" source={brandImage} />
                 </View>
                 <View style={{ width: '100%' }}>
-                    <View style={{ fontFamily: 'OpenSans-Regular', textAlign: 'justify' }}>
-                        <Text style={{ marginBottom: 20 }}>A continuación, ingrese su email y le enviaremos un correo para recuperar su contraseña.</Text>
-                        <Text style={{ marginBottom: 20 }}>Tenga en cuenta que el email debe ser válido y debe estar asociado a una cuenta.</Text>
-                    </View>
                     <TextInput
                         style={styles.inputsStyle}
                         theme={theme}
                         underlineColor={colors.primaryDavysGray}
-                        keyboardType={"email-address"}
-                        label={'Email'}
-                        value={email}
-                        onChangeText={value => setEmail(value)}
+                        keyboardType={"default"}
+                        label={'Nueva contraseña'}
+                        value={password}
+                        secureTextEntry
+                        onChangeText={value => setPassword(value)}
+                    />
+                    <TextInput
+                        style={styles.inputsStyle}
+                        theme={theme}
+                        underlineColor={colors.primaryDavysGray}
+                        keyboardType={"default"}
+                        label={'Confirmar nueva contraseña'}
+                        value={passwordConfirmation}
+                        secureTextEntry
+                        onChangeText={value => setPasswordConfirmation(value)}
                     />
                     <View style={{ width: '100%', marginTop: 40 }}>
-                        <TouchableOpacity disabled={isLoading} style={isLoading ? styles.btnDisabled : styles.btnPrimary} onPress={handleRecoverPassword}>
+                        <TouchableOpacity disabled={isLoading} style={isLoading ? styles.btnDisabled : styles.btnPrimary} onPress={handleSetNewPassword}>
                             <Text style={styles.btnTextWhite}>
                                 {isLoading ?
                                     'ENVIANDO...'

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TouchableOpacity, Text, Image, Alert, ScrollView, ActivityIndicator } from "react-native";
 import { useDispatch } from "react-redux";
 import { TextInput, HelperText } from "react-native-paper";
@@ -7,6 +7,8 @@ import validate from "../../services/Validate";
 import colors from "../../constants/colors";
 import ImagesUtil from '../../utils/Images';
 import AuthService from "./../../services/Auth";
+
+import * as Linking from 'expo-linking';
 
 const LoginScreen = (props) => {
 
@@ -21,6 +23,29 @@ const LoginScreen = (props) => {
     const brandImage = ImagesUtil.getBrandImage();
 
     AuthService.isSignedIn(dispatch);
+
+    useEffect(() => {
+        // let redirectUrl = Linking.makeUrl('reset-password', { hello: 'world', goodbye: 'now' }, 'swallowtrade');
+        // console.log('REDIRECT URL', redirectUrl);
+        Linking.addEventListener('url', url => handleUrl(url));
+        return () => {
+            Linking.removeEventListener('url', url => handleUrl(url));
+        }
+    }, []);
+
+    const handleUrl = url => {
+        Linking.removeEventListener('url', url => handleUrl(url));
+        const { queryParams } = Linking.parse(url.url);
+        console.log('QUERY PARAMSSSSSSSS', queryParams);
+        if (queryParams && queryParams.code && queryParams.action && queryParams.action === 'reset-password') {
+            props.navigation.navigate('NewPassword', {
+                action: queryParams.action,
+                code: queryParams.code,
+            });
+        } else {
+            Alert.alert('Ocurrió un error. Intente nuevamente o contáctese con Swallow Trade.');
+        }
+    };
 
     const checkErrors = () => {
         let errors = { ...errorMessages };
@@ -135,6 +160,9 @@ const LoginScreen = (props) => {
                             <Text style={styles.infoTextLink} onPress={handlePressRegister}>
                                 Registrate
                                 </Text>
+                        </Text>
+                        <Text onPress={handleForgotPassword} style={{ ...styles.infoText, marginTop: 25 }}>
+                            Olvidé mi contraseña
                         </Text>
                     </View>
                 </ScrollView>

@@ -8,7 +8,7 @@
       "web"
     ],
     "scheme": "swallowtrade",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/swallow_icon.png",
     "splash": {
@@ -32,8 +32,24 @@
           "apiKey": ""
         }
       },
-      "versionCode": 7,
+      "versionCode": 8,
       "useNextNotificationsApi": true,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "swallowtrade",
+              "host": "*"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ],
       "permissions": [
         "CAMERA",
         "WRITE_EXTERNAL_STORAGE"

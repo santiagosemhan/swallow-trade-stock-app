@@ -360,4 +360,8 @@ export const styles = {
         borderColor: '#ffa39e',
         fontFamily: 'OpenSans-Bold',
     },
+
+    forgotPassword: {
+        
+    }
 };
