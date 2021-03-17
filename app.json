@@ -8,7 +8,7 @@
       "web"
     ],
     "scheme": "swallowtrade",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "orientation": "portrait",
     "icon": "./assets/swallow_icon.png",
     "splash": {
@@ -32,7 +32,7 @@
           "apiKey": ""
         }
       },
-      "versionCode": 8,
+      "versionCode": 9,
       "useNextNotificationsApi": true,
       "intentFilters": [
         {

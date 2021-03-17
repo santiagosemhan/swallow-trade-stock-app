@@ -25,8 +25,6 @@ const LoginScreen = (props) => {
     AuthService.isSignedIn(dispatch);
 
     useEffect(() => {
-        // let redirectUrl = Linking.makeUrl('reset-password', { hello: 'world', goodbye: 'now' }, 'swallowtrade');
-        // console.log('REDIRECT URL', redirectUrl);
         Linking.addEventListener('url', url => handleUrl(url));
         return () => {
             Linking.removeEventListener('url', url => handleUrl(url));
@@ -36,10 +34,8 @@ const LoginScreen = (props) => {
     const handleUrl = url => {
         Linking.removeEventListener('url', url => handleUrl(url));
         const { queryParams } = Linking.parse(url.url);
-        console.log('QUERY PARAMSSSSSSSS', queryParams);
-        if (queryParams && queryParams.code && queryParams.action && queryParams.action === 'reset-password') {
+        if (queryParams && queryParams.code) {
             props.navigation.navigate('NewPassword', {
-                action: queryParams.action,
                 code: queryParams.code,
             });
         } else {

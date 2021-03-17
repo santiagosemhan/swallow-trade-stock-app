@@ -97,7 +97,7 @@ const isSignedIn = async (dispatch) => {
 
 const forgotPassword = async (email) => {
     try {
-        const res = await ApiService.post(
+        await ApiService.post(
             'auth/forgot-password',
             {
                 email,
@@ -112,7 +112,7 @@ const forgotPassword = async (email) => {
 
 const setNewPassword = async (code, password, passwordConfirmation) => {
     try {
-        const res = await ApiService.post(
+        await ApiService.post(
             'auth/reset-password',
             {
                 code, // code contained in the reset link of step 3.
